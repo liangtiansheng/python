@@ -123,11 +123,95 @@ $ pyenv shell 3.5.3
 ```
 + 影响只作用于当前会话   
 
-> 
+> local 本地设置   
+
+```bash
+ $ pyenv local 3.5.3
+```
++ 使用pyenv local设置从当前工作目录开始向下递归都继承这个设置。   
+
+## Virtualenv 虚拟环境设置
++ 为什么要使用虚拟环境?   
++ 因为刚才使用的Python环境都是一个公共的空间，如果多个项目使用不同Python版本开发，或者使用不同的Python版本部署运行，或者使用同样的版本开发的但不同项目使用了不同版本的库，等等这些问题都会带来冲突。最好的解决办法就是每一个项目独立运行自己的“独立小环境”中。   
+> 使用插件，在plugins/pyenv-virtualenv中   
+
+```bash
+$ pyenv virtualenv 3.5.3 mag353
+```
+
+> 使用python3.5.3版本创建出一个独立的虚拟空间。   
+
+```bash
+$ pyenv versions
+* system (set by /home/python/.pyenv/version)
+  3.5.3
+  3.5.3/envs/mag353
+  mag353
+```
++ 可以在版本列表中存在，就和3.5.3是一样的，就是一个版本了。   
++ 真实目录在~/.pyenv/versions/下，以后只要使用这个虚拟版本，包就会安装到这些对应的目录下去，而不是使用3.5.3。   
+
+```bash
+[python@node ~]$ mkdir -p magedu/projects/web
+[python@node ~]$ cd magedu/projects/web/
+[python@node web]$ pyenv local mag353
+(mag353) [python@node web]$ cd ..
+[python@node projects]$ cd web/
+(mag353) [python@node web]$
+```
+
+# pip 通用配置
++ pip 是Python的包管理工具，3.x的版本直接带了，可以直接使用。 和yun一样为了使用国内镜像，如下配置。   
+
+> Linux系统   
+
+```bash
+$ mkdir ~/.pip
+$ vim ~/.pip/pip.conf
+[global]
+index-url=https://mirrors.aliyun.com/pypi/simple/
+trusted-host=mirrors.aliyun.com
+```
++ 在不同的虚拟环境中，安装redis包，使用pip list看看效果。   
+
+```bash
+$ pip -V
+$ pip install pkgname
+```
++ windows系统 windows下pip的配置文件在~/pip/pip.ini，内容同上
 
 
+# 安装ipython
+> ipython 是增强的交互式Python命令行工具   
 
+```bash
+$ pip install ipython
+$ ipython
+```
 
+> Jupyter 是基于WEB的交互式笔记本，其中可以非常方便的使用Python。 安装Jupyter，也会安装ipython的   
+
+```bash
+$ pip install jupyter
+$ jupyter notebook help
+$ jupyter notebook --ip=0.0.0.0 --no-browser
+$ ss -tanl
+```
+
+# 导出包
++ 虚拟环境的好处就在于和其他项目运行环境隔离。每一个独立的环境都可以使用pip命令导出已经安装的包，在另一个环境中安装这些包。   
+
+```bash
+(mag353) [python@node web]$ pip freeze > requirement
+(mag353) [python@node web]$ mkdir ~/magedu/projects/pro1
+(mag353) [python@node web]$ cd ~/magedu/projects/pro1
+[python@node pro1]$ pyenv install --list
+[python@node pro1]$ pyenv install 3.6.4
+[python@node pro1]$ pyenv virtualenv 3.6.4 mag364
+[python@node pro1]$ pyenv local mag364
+(mag364) [python@node pro1]$ mv ../web/requirement ./
+(mag364) [python@node pro1]$ pip install -r requirement
+```
 
 
 
