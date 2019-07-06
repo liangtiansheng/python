@@ -38,3 +38,18 @@ $ env2/bin/pip install -r requirements.txt
 ```
 
 > 参考pip官网https://pypi.org/project/pip/
+
+# python开发友好工具
+> IPython   
+> > 增强的Python Shell，自动补全、自动缩进、支持shell，增加了很多函数   
+
+> Jupyter   
+> > + jupyter notebook password   
+> > + jupyter notebook --ip=192.168.1.30 --port=8888   
+> > + 从IPython中独立出来   
+> > + 独立的交互式笔记本，后台使用Ipython   
+> > + 快捷键：shift + Enter、Ctrl + Enter、dd、m   
+
+# IDE工具
+> Pycharm   
+> > https://www.jetbrains.com/pycharm/
