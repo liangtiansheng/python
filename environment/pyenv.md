@@ -91,7 +91,7 @@ $ pyenv install --list
 在线安装指定版本
 $ pyenv install 3.5.3
 $ pyenv versions
-+ 这样的安装可能较慢，为了提速，可是选用cache方法。
+这样的安装可能较慢，为了提速，可是选用cache方法。
 ```
 
 
