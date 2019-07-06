@@ -102,6 +102,35 @@ $ pyenv install 3.6.4
 ```
 
 ## pyenv的python版本控制
++ version 显示当前的python版本 versions 显示所有可用的python版本，和当前版本   
+> global 全局设置   
+
+```bash
+$ pyenv global 3.5.3 
+```
++ 可以看到所有受pyenv控制的窗口中都是3.5.3的python版本了。   
++ 这里用global是作用于非root用户python用户上，如果是root用户安装，请不要使用global，否则影响太大。   
++ 比如，这里使用的CentOS7.5就是Python2.7，使用了global就成了3.x，会带来很不好的影响。   
+
+```bash
+$ pyenv global system
+```
+
+> shell 会话设置   
+
+```bash
+$ pyenv shell 3.5.3
+```
++ 影响只作用于当前会话   
+
+> 
+
+
+
+
+
+
+
 
 
 
