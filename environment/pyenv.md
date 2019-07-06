@@ -172,7 +172,7 @@ $ vim ~/.pip/pip.conf
 index-url=https://mirrors.aliyun.com/pypi/simple/
 trusted-host=mirrors.aliyun.com
 ```
-+ 在不同的虚拟环境中，安装redis包，使用pip list看看效果。   
+> 在不同的虚拟环境中，安装redis包，使用pip list看看效果。   
 
 ```bash
 $ pip -V
@@ -199,7 +199,7 @@ $ ss -tanl
 ```
 
 # 导出包
-+ 虚拟环境的好处就在于和其他项目运行环境隔离。每一个独立的环境都可以使用pip命令导出已经安装的包，在另一个环境中安装这些包。   
+> 虚拟环境的好处就在于和其他项目运行环境隔离。每一个独立的环境都可以使用pip命令导出已经安装的包，在另一个环境中安装这些包。   
 
 ```bash
 (mag353) [python@node web]$ pip freeze > requirement
