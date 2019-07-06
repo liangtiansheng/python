@@ -52,4 +52,48 @@ $ source ~/.bash_profile
 
 + 这样当用户启动的时候，会执行用户的.bash_profile中的脚本，就会启动pyenv。 安装好的pyenv就在~/.pyenv中
 
+# Pyenv的使用
+## python 版本及path路径   
+
+```bash
+$ python --version
+$ python -V
+$ echo $PATH
+```
++ 可以看到当前系统Python路径
+
+## pyenv 命令
+```bash
+[python@localhost ~]$ pyenv --help
+Usage: pyenv <command> [<args>]
+
+Some useful pyenv commands are:
+   commands    List all available pyenv commands
+   local       Set or show the local application-specific Python version
+   global      Set or show the global Python version
+   shell       Set or show the shell-specific Python version
+   install     Install a Python version using python-build
+   uninstall   Uninstall a specific Python version
+   rehash      Rehash pyenv shims (run this after installing executables)
+   version     Show the current Python version and its origin
+   versions    List all Python versions available to pyenv
+   which       Display the full path to an executable
+   whence      List all Python versions that contain the given executable
+
+See \`pyenv help <command>\' for information on a specific command.
+For full documentation, see: https://github.com/pyenv/pyenv#readme
+[python@localhost ~]$
+```
+
+```bash
+列出所有可用版本
+$ pyenv install --list
+在线安装指定版本
+$ pyenv install 3.5.3
+$ pyenv versions
++ 这样的安装可能较慢，为了提速，可是选用cache方法。
+```
+
+
+
 
