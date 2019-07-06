@@ -3,6 +3,7 @@
 > > + 管理Python解释器   
 > > + 管理Python版本   
 > > + 管理Python的虚拟环境   
+> 
 > 官网 https://github.com/pyenv/pyenv   
 
 # Pyenv安装
