@@ -88,6 +88,7 @@ For full documentation, see: https://github.com/pyenv/pyenv#readme
 ```bash
 列出所有可用版本
 $ pyenv install --list
+
 在线安装指定版本
 $ pyenv install 3.5.3
 $ pyenv versions
@@ -95,8 +96,12 @@ $ pyenv versions
 
 使用缓存方式安装 在~/.pyenv目录下，新建cache目录，放入下载好的待安装版本的文件。 不确定要哪一个文件，把下载的3个文件都放进去。   
 $ pyenv install 3.5.3 -v
+
+为了方便演示，请用客户端再打开两个会话窗口。 提前安装备用
+$ pyenv install 3.6.4
 ```
 
+## pyenv的python版本控制
 
 
 
