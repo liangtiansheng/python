@@ -39,6 +39,16 @@ name=CentOS-Updates
 baseurl=https://mirrors.aliyun.com/centos/6.9/os/x86_64
 gpgcheck=0
 ```
-> > 3. 然后更新nss # yum update nss
+> > 3. 然后更新nss # yum update nss   
+
+> 在python用户的~/.bash_profile中追加   
+
+```bash
+export PATH="/home/python/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+$ source ~/.bash_profile
+```
++ 这样当用户启动的时候，会执行用户的.bash_profile中的脚本，就会启动pyenv。 安装好的pyenv就在~/.pyenv中
 
 
