@@ -49,6 +49,7 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 $ source ~/.bash_profile
 ```
+
 + 这样当用户启动的时候，会执行用户的.bash_profile中的脚本，就会启动pyenv。 安装好的pyenv就在~/.pyenv中
 
 
