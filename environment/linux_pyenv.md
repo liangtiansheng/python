@@ -3,8 +3,8 @@
 
 ## 操作系统准备
 
-> + 准备Linux最小系统即可。   
-> + 如果在虚拟机中克隆，MAC地址会变。 这里使用CentOS 6.5+   
+> + 准备Linux最小系统即可。
+> + 如果在虚拟机中克隆，MAC地址会变。 这里使用CentOS 6.5+
 
 ## pyenv安装方式
 
@@ -46,7 +46,7 @@ gpgcheck=0
 ```
 > > 3. 然后更新nss # yum update nss   
 
-> 在python用户的~/.bash_profile中追加   
+> 在python用户的~/.bash_profile中追加
 
 ```bash
 export PATH="/home/python/.pyenv/bin:$PATH"
