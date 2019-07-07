@@ -18,6 +18,34 @@
 + 安装完成
 
 
+## 检验
+> 运行windows CMD打开命令行界面   
+
+![运行cmd](images/运行cmd.png)
+
+> 输入path命令   
+
+![检验python环境](images/检验python环境.png)
++ 这就是python的安装路径
+
+## 使用python
+> 测试python和pip的版本   
+
+![查看版本](images/查看python和pip版本.png)
+
+> 打开python交互式界面   
+
+![python交互界面](images/python交互界面.png)
+
+## 安装ipython
+> 命令行中输入pip install ipython   
+
+![安装ipython](images/安装ipython.png)
+
+> 安装完成后输入ipython进入交互式界面   
+
+![ipython界面](images/ipython界面.png)
+
 
 
 
