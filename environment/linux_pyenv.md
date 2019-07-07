@@ -52,6 +52,25 @@ $ source ~/.bash_profile
 
 + 这样当用户启动的时候，会执行用户的.bash_profile中的脚本，就会启动pyenv。 安装好的pyenv就在~/.pyenv中
 
+### 离线安装
+> 首先从github上克隆项目   
+
+```bash
+$ git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+$ git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
+$ git clone https://github.com/pyenv/pyenv-update.git ~/.pyenv/plugins/pyenv-update
+$ git clone https://github.com/pyenv/pyenv-which-ext.git ~/.pyenv/plugins/pyenv-which-ext
+```
++ 可以把克隆的目录打包，方便以后离线使用。   
+
+```bash
+$ vim ~/.bash_profile
+export PATH="/home/python/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+$ source ~/.bash_profile
+```
+
 # Pyenv的使用
 ## python 版本及path路径   
 
