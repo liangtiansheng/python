@@ -93,5 +93,3 @@
 >
 > IronPython
 > > 与Jython类似，运行在.Net平台上的解释器，Python代码被编译成.Net的字节码
-
-## Python基础语法
