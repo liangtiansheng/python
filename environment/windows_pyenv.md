@@ -56,7 +56,10 @@
 ```bash
 $ jupyter notebook
 ```
+![运行jupyter](images/运行jupyter.png)
 + 打开windows下的浏览器，输入http://127.0.0.1:8888
+
+![jupyter界面](images/jupyter界面.png)
 
 
 
