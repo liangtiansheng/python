@@ -1,10 +1,15 @@
+
 # Pyenv安装
+
 ## 操作系统准备
+
 > + 准备Linux最小系统即可。   
 > + 如果在虚拟机中克隆，MAC地址会变。 这里使用CentOS 6.5+   
 
 ## pyenv安装方式
+
 ### git 安装
+
 > 安装git   
 
 ```bash
@@ -53,6 +58,7 @@ $ source ~/.bash_profile
 + 这样当用户启动的时候，会执行用户的.bash_profile中的脚本，就会启动pyenv。 安装好的pyenv就在~/.pyenv中
 
 ### 离线安装
+
 > 首先从github上克隆项目   
 
 ```bash
@@ -61,6 +67,7 @@ $ git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv
 $ git clone https://github.com/pyenv/pyenv-update.git ~/.pyenv/plugins/pyenv-update
 $ git clone https://github.com/pyenv/pyenv-which-ext.git ~/.pyenv/plugins/pyenv-which-ext
 ```
+
 + 可以把克隆的目录打包，方便以后离线使用。   
 
 ```bash
@@ -72,6 +79,7 @@ $ source ~/.bash_profile
 ```
 
 # Pyenv的使用
+
 ## python 版本及path路径   
 
 ```bash
@@ -79,9 +87,11 @@ $ python --version
 $ python -V
 $ echo $PATH
 ```
+
 + 可以看到当前系统Python路径
 
 ## pyenv 命令
+
 ```bash
 [python@localhost ~]$ pyenv --help
 Usage: pyenv <command> [<args>]
@@ -121,12 +131,15 @@ $ pyenv install 3.6.4
 ```
 
 ## pyenv的python版本控制
-+ version 显示当前的python版本 versions 显示所有可用的python版本，和当前版本   
+
++ version 显示当前的python版本 versions 显示所有可用的python版本，和当前版本  
+ 
 > global 全局设置   
 
 ```bash
 $ pyenv global 3.5.3 
 ```
+
 + 可以看到所有受pyenv控制的窗口中都是3.5.3的python版本了。   
 + 这里用global是作用于非root用户python用户上，如果是root用户安装，请不要使用global，否则影响太大。   
 + 比如，这里使用的CentOS7.5就是Python2.7，使用了global就成了3.x，会带来很不好的影响。   
@@ -140,6 +153,7 @@ $ pyenv global system
 ```bash
 $ pyenv shell 3.5.3
 ```
+
 + 影响只作用于当前会话   
 
 > local 本地设置   
@@ -147,11 +161,14 @@ $ pyenv shell 3.5.3
 ```bash
  $ pyenv local 3.5.3
 ```
+
 + 使用pyenv local设置从当前工作目录开始向下递归都继承这个设置。   
 
 ## Virtualenv 虚拟环境设置
+
 + 为什么要使用虚拟环境?   
 + 因为刚才使用的Python环境都是一个公共的空间，如果多个项目使用不同Python版本开发，或者使用不同的Python版本部署运行，或者使用同样的版本开发的但不同项目使用了不同版本的库，等等这些问题都会带来冲突。最好的解决办法就是每一个项目独立运行自己的“独立小环境”中。   
+
 > 使用插件，在plugins/pyenv-virtualenv中   
 
 ```bash
@@ -167,6 +184,7 @@ $ pyenv versions
   3.5.3/envs/mag353
   mag353
 ```
+
 + 可以在版本列表中存在，就和3.5.3是一样的，就是一个版本了。   
 + 真实目录在~/.pyenv/versions/下，以后只要使用这个虚拟版本，包就会安装到这些对应的目录下去，而不是使用3.5.3。   
 
@@ -180,6 +198,7 @@ $ pyenv versions
 ```
 
 # pip 通用配置
+
 + pip 是Python的包管理工具，3.x的版本直接带了，可以直接使用。 和yun一样为了使用国内镜像，如下配置。   
 
 > Linux系统   
@@ -191,16 +210,19 @@ $ vim ~/.pip/pip.conf
 index-url=https://mirrors.aliyun.com/pypi/simple/
 trusted-host=mirrors.aliyun.com
 ```
+
 > 在不同的虚拟环境中，安装redis包，使用pip list看看效果。   
 
 ```bash
 $ pip -V
 $ pip install pkgname
 ```
+
 + windows系统 windows下pip的配置文件在~/pip/pip.ini，内容同上
 
 
 # 安装ipython
+
 > ipython 是增强的交互式Python命令行工具   
 
 ```bash
@@ -218,6 +240,7 @@ $ ss -tanl
 ```
 
 # 导出包
+
 > 虚拟环境的好处就在于和其他项目运行环境隔离。每一个独立的环境都可以使用pip命令导出已经安装的包，在另一个环境中安装这些包。   
 
 ```bash
