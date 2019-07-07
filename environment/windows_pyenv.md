@@ -58,6 +58,7 @@ $ jupyter notebook
 ```
 ![运行jupyter](images/运行jupyter.png)
 + 打开windows下的浏览器，输入http://127.0.0.1:8888
++ 注意第一次通过浏览器登陆，可能会要求输入密码或者token，使用运行界面中输出的token即可
 
 ![jupyter界面](images/jupyter界面.png)
 
