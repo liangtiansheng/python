@@ -46,7 +46,17 @@
 
 ![ipython界面](images/ipython界面.png)
 
+## 安装jupyter
+> 通过pip像安装ipyhton一样安装jupyter   
 
+![安装jupyter](images/安装jupyter.png)
+
+> 运行jupyter   
+
+```bash
+$ jupyter notebook
+```
++ 打开windows下的浏览器，输入http://127.0.0.1:8888
 
 
 
