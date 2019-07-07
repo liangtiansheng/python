@@ -62,5 +62,40 @@ $ jupyter notebook
 
 ![jupyter界面](images/jupyter界面.png)
 
+## 安装pycharm
+> 下载pycharm   
 
+![下载pycharm](images/下载pycharm.png)
 
+> 选择社区版下载就够用
+
+![pycharm社区版](images/选择社区版下载.png)
+
+> 开始安装   
+
+![安装pycharm](images/安装pycharm.png)
++ 按提示直接安装即可
+
+> 第一次启动pycharm
+
+![启动pycharm](images/第一次启动pycharm.png)
+
+> 第一次设置pycharm
+
+![设置pycharm](images/pycharm第一次设置.png)
+
+![设置pycharm](images/pycharm第一次设置1.png)
+
+![设置pycharm](images/pycharm第一次设置2.png)
+
+> 创建python文件   
+
+![创建python文件](images/创建python文件.png)
+
+> 输入一个文件名first，会生成first.py文件   
+
+![第一个py文件](images/创建第一个py文件.png)
+
+> 输入一行语句，然后运行
+
+![运行第一个程序](images/运行第一个程序.png)
