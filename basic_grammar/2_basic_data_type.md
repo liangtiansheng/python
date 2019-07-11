@@ -153,7 +153,7 @@ del var_a, var_b
 
 ## 数值类型实例
 
-int	| float	| complex
+int    | float    | complex
 :-:|:-:|:-:
 10|0.0|3.14j
 100|15.20|45.j
