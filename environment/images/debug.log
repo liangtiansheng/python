@@ -7,3 +7,4 @@
 [0707/220734:WARNING:webmediaplayer_impl.cc(341)] Using MultibufferDataSource
 [0707/220752:WARNING:webmediaplayer_impl.cc(341)] Using MultibufferDataSource
 [0707/220755:ERROR:ffmpeg_demuxer.cc(1510)] media::FFmpegDemuxer::OnReadFrameDone result=-541478725 IsMaxMemoryUsageReached=0
+[0708/003226:ERROR:browser_gpu_channel_host_factory.cc(119)] Failed to launch GPU process.
