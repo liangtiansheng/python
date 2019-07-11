@@ -62,7 +62,6 @@ python 3.x
 Python中单行注释以 # 开头，实例如下：
 
 ```bash
-实例(Python 3.0+)
 #!/usr/bin/python3
 
 # 第一个注释
@@ -78,7 +77,6 @@ Hello, Python!
 多行注释可以用多个 # 号，还有 ''' 和 """：
 
 ```bash
-实例(Python 3.0+)
 #!/usr/bin/python3
 
 # 第一个注释
@@ -109,7 +107,6 @@ python最具特色的就是使用缩进来表示代码块，不需要使用大�
 缩进的空格数是可变的，但是同一个代码块的语句必须包含相同的缩进空格数。实例如下：
 
 ```bash
-实例(Python 3.0+)
 if True:
     print ("True")
 else:
@@ -183,7 +180,6 @@ paragraph = """这是一个段落，
 ```
 
 ```bash
-实例(Python 3.0+)
 #!/usr/bin/python3
 
 str='Runoob'
@@ -232,7 +228,6 @@ hello\nrunoob
 执行下面的程序在按回车键后就会等待用户输入：
 
 ```bash
-实例(Python 3.0+)
 #!/usr/bin/python3
 
 input("\n\n按下 enter 键后退出。")
@@ -245,7 +240,6 @@ input("\n\n按下 enter 键后退出。")
 Python可以在同一行中使用多条语句，语句之间使用分号(;)分割，以下是一个简单的实例：
 
 ```bash
-实例(Python 3.0+)
 #!/usr/bin/python3
 
 import sys; x = 'runoob'; sys.stdout.write(x + '\n')
@@ -289,7 +283,6 @@ else :
 print 默认输出是换行的，如果要实现不换行需要在变量末尾加上 end=""：
 
 ```bash
-实例(Python 3.0+)
 #!/usr/bin/python3
 
 x="a"
