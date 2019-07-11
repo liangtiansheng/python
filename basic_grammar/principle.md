@@ -362,3 +362,42 @@ Options and arguments (and corresponding environment variables):
 
 [ etc. ]
 ```
+
+## 要善用 help() 方法
+
+通过命令 help(print) 我们知道这个方法里第三个为缺省参数 sep=' '。
+
+这里表示我们使用分隔符为一个空格。
+
+```bash
+>>> help(print)
+Help on built-in function print in module builtins:
+print(...)
+    print(value, ..., sep=' ', end='\n', file=sys.stdout, flush=False)
+    Prints the values to a stream, or to sys.stdout by default.
+    Optional keyword arguments:
+    file:  a file-like object (stream); defaults to the current sys.stdout.
+    sep:   string inserted between values, default a space.
+    end:   string appended after the last value, default a newline.
+    flush: whether to forcibly flush the stream.
+```
+
+所以在打印 dict 类的使用, 可以这样写:
+
+```bash
+>>> def getPairs(dict):
+...     for k,v in dict.items() :
+...             print(k,v,sep=':')
+...
+```
+
+测试代码:
+
+```bash
+>>> getPairs({ x : x ** 3 for x in (1,2,3,4)})
+1:1
+2:8
+3:27
+4:64
+>>>
+```
