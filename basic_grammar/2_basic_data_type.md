@@ -341,3 +341,204 @@ if __name__ == "__main__":
 ```bash
 runoob like I
 ```
+
+## Tuple（元组）
+
+元组（tuple）与列表类似，不同之处在于元组的元素不能修改。元组写在小括号 () 里，元素之间用逗号隔开。
+
+元组中的元素类型也可以不相同：
+
+```bash
+#!/usr/bin/python3
+
+tuple = ( 'abcd', 786 , 2.23, 'runoob', 70.2  )
+tinytuple = (123, 'runoob')
+
+print (tuple)             # 输出完整元组
+print (tuple[0])          # 输出元组的第一个元素
+print (tuple[1:3])        # 输出从第二个元素开始到第三个元素
+print (tuple[2:])         # 输出从第三个元素开始的所有元素
+print (tinytuple * 2)     # 输出两次元组
+print (tuple + tinytuple) # 连接元组
+```
+
+以上实例输出结果：
+
+```bash
+('abcd', 786, 2.23, 'runoob', 70.2)
+abcd
+(786, 2.23)
+(2.23, 'runoob', 70.2)
+(123, 'runoob', 123, 'runoob')
+('abcd', 786, 2.23, 'runoob', 70.2, 123, 'runoob')
+```
+
+元组与字符串类似，可以被索引且下标索引从0开始，-1 为从末尾开始的位置。也可以进行截取（看上面，这里不再赘述）。
+
+其实，可以把字符串看作一种特殊的元组。
+
+```bash
+>>>tup = (1, 2, 3, 4, 5, 6)
+>>> print(tup[0])
+1
+>>> print(tup[1:5])
+(2, 3, 4, 5)
+>>> tup[0] = 11  # 修改元组元素的操作是非法的
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'tuple' object does not support item assignment
+>>>
+```
+
+虽然tuple的元素不可改变，但它可以包含可变的对象，比如list列表。
+
+构造包含 0 个或 1 个元素的元组比较特殊，所以有一些额外的语法规则：
+
+```bash
+tup1 = ()    # 空元组
+tup2 = (20,) # 一个元素，需要在元素后添加逗号
+```
+
+**string、list 和 tuple 都属于 sequence（序列）。**
+
+**注意：**
+
+1. 与字符串一样，元组的元素不能修改。
+2. 元组也可以被索引和切片，方法一样。
+3. 注意构造包含 0 或 1 个元素的元组的特殊语法规则。
+4. 元组也可以使用+操作符进行拼接。
+
+## Set（集合）
+
++ 集合（set）是由一个或数个形态各异的大小整体组成的，构成集合的事物或对象称作元素或是成员。
++ 基本功能是进行成员关系测试和删除重复元素。
++ 可以使用大括号 { } 或者 set() 函数创建集合，注意：创建一个空集合必须用 set() 而不是 { }，因为 { } 是用来创建一个空字典。
+
+创建格式：
+
+```bash
+parame = {value01,value02,...}
+或者
+set(value)
+```
+
+```bash
+#!/usr/bin/python3
+
+student = {'Tom', 'Jim', 'Mary', 'Tom', 'Jack', 'Rose'}
+
+print(student)   # 输出集合，重复的元素被自动去掉
+
+# 成员测试
+if 'Rose' in student :
+    print('Rose 在集合中')
+else :
+    print('Rose 不在集合中')
+
+
+# set可以进行集合运算
+a = set('abracadabra')
+b = set('alacazam')
+
+print(a)
+
+print(a - b)     # a 和 b 的差集
+
+print(a | b)     # a 和 b 的并集
+
+print(a & b)     # a 和 b 的交集
+
+print(a ^ b)     # a 和 b 中不同时存在的元素
+```
+
+以上实例输出结果：
+
+```bash
+{'Mary', 'Jim', 'Rose', 'Jack', 'Tom'}
+Rose 在集合中
+{'b', 'a', 'c', 'r', 'd'}
+{'b', 'd', 'r'}
+{'l', 'r', 'a', 'c', 'z', 'm', 'b', 'd'}
+{'a', 'c'}
+{'l', 'r', 'z', 'm', 'b', 'd'}
+```
+
+## Dictionary（字典）
+
++ 字典（dictionary）是Python中另一个非常有用的内置数据类型。
++ 列表是有序的对象集合，字典是无序的对象集合。两者之间的区别在于：字典当中的元素是通过键来存取的，而不是通过偏移存取。
++ 字典是一种映射类型，字典用 { } 标识，它是一个无序的 键(key) : 值(value) 的集合。
++ 键(key)必须使用不可变类型。
++ 在同一个字典中，键(key)必须是唯一的。
+
+```bash
+#!/usr/bin/python3
+
+dict = {}
+dict['one'] = "1 - 菜鸟教程"
+dict[2]     = "2 - 菜鸟工具"
+
+tinydict = {'name': 'runoob','code':1, 'site': 'www.runoob.com'}
+
+
+print (dict['one'])       # 输出键为 'one' 的值
+print (dict[2])           # 输出键为 2 的值
+print (tinydict)          # 输出完整的字典
+print (tinydict.keys())   # 输出所有键
+print (tinydict.values()) # 输出所有值
+```
+
+以上实例输出结果：
+
+```bash
+1 - 菜鸟教程
+2 - 菜鸟工具
+{'name': 'runoob', 'code': 1, 'site': 'www.runoob.com'}
+dict_keys(['name', 'code', 'site'])
+dict_values(['runoob', 1, 'www.runoob.com'])
+```
+
+构造函数 dict() 可以直接从键值对序列中构建字典如下：
+
+```bash
+>>>dict([('Runoob', 1), ('Google', 2), ('Taobao', 3)])
+{'Taobao': 3, 'Runoob': 1, 'Google': 2}
+
+>>> {x: x**2 for x in (2, 4, 6)}
+{2: 4, 4: 16, 6: 36}
+
+>>> dict(Runoob=1, Google=2, Taobao=3)
+{'Runoob': 1, 'Google': 2, 'Taobao': 3}
+```
+
+另外，字典类型也有一些内置的函数，例如clear()、keys()、values()等。
+
+**注意：**
+
+1. 字典是一种映射类型，它的元素是键值对。
+2. 字典的关键字必须为不可变类型，且不能重复。
+3. 创建空字典使用 { }。
+
+## Python数据类型转换
+
+有时候，我们需要对数据内置的类型进行转换，数据类型的转换，你只需要将数据类型作为函数名即可。
+
+以下几个内置的函数可以执行数据类型之间的转换。这些函数返回一个新的对象，表示转换的值。
+
+函数|    描述
+:-|:-
+int(x [,base])|将x转换为一个整数
+float(x)|将x转换到一个浮点数
+complex(real [,imag])|创建一个复数
+str(x)|将对象 x 转换为字符串
+repr(x)|将对象 x 转换为表达式字符串
+eval(str)|用来计算在字符串中的有效Python表达式,并返回一个对象
+tuple(s)|将序列 s 转换为一个元组
+list(s)|将序列 s 转换为一个列表
+set(s)|转换为可变集合
+dict(d)|创建一个字典。d 必须是一个 (key, value)元组序列。
+frozenset(s)|转换为不可变集合
+chr(x)|将一个整数转换为一个字符
+ord(x)|将一个字符转换为它的整数值
+hex(x)|将一个整数转换为一个十六进制字符串
+oct(x)|将一个整数转换为一个八进制字符串
