@@ -20,12 +20,12 @@ set(value)
 True
 >>> 'crabgrass' in basket
 False
- 
+
 >>> # 下面展示两个集合间的运算.
 ...
 >>> a = set('abracadabra')
 >>> b = set('alacazam')
->>> a                                  
+>>> a
 {'a', 'r', 'b', 'c', 'd'}
 >>> a - b                              # 集合a中包含而集合b中不包含的元素
 {'r', 'd', 'b'}
@@ -121,20 +121,20 @@ s.discard( x )
 我们也可以设置随机删除集合中的一个元素，语法格式如下：
 
 ```bash
-s.pop() 
+s.pop()
 ```
 
 ```bash
 thisset = set(("Google", "Runoob", "Taobao", "Facebook"))
 x = thisset.pop()
- 
+
 print(x)
 ```
 
 输出结果：
 
 ```bash
-$ python3 test.py 
+$ python3 test.py
 Runoob
 ```
 
