@@ -149,4 +149,4 @@ Python元组包含了以下内置函数
 
 序号|	方法及描述|	实例
 :-|:-|:-
-1|len(tuple)\n计算元组元素个数。
+1|len(tuple)<br>计算元组元素个数。|>>> tuple1 = ('Google', 'Runoob', 'Taobao')<br>>>> len(tuple1)<br>3<br>>>> 
