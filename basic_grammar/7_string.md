@@ -265,7 +265,7 @@ Python 的字符串常用内建函数如下：
 27|rfind(str, beg=0,end=len(string))|类似于 find()函数，不过是从右边开始查找.
 28|rindex( str, beg=0, end=len(string))|类似于 index()，不过是从右边开始.
 29|rjust(width,[, fillchar])|返回一个原字符串右对齐,并使用fillchar(默认空格）填充至长度 width 的新字符串
-30|rstrip()|删除字符串字符串末尾的空格.
+30|rstrip()|删除字符串末尾的空格.
 31|split(str="", num=string.count(str))num=string.count(str)) |以 str 为分隔符截取字符串，如果 num 有指定值，则仅截取 num+1 个子字符串
 32|splitlines([keepends])|按照行('\r', '\r\n', \n')分隔，返回一个包含各行作为元素的列表，如果参数 keepends 为 False，不包含换行符，如果为 True，则保留换行符。
 33|startswith(substr, beg=0,end=len(string))|检查字符串是否是以指定子字符串 substr 开头，是则返回 True，否则返回 False。如果beg 和 end 指定值，则在指定范围内检查。
