@@ -30,7 +30,7 @@ Python 中用 elif 代替了 else if，所以if语句的关键字为：if – el
 
 Gif 演示：
 
-![while-if](https://www.runoob.com/wp-content/uploads/2014/05/006faQNTgw1f5wnm0mcxrg30ci07o47l.gif)
+![while-if](images/while-if.gif)
 
 ## 实例
 
