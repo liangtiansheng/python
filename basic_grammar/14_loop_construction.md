@@ -312,3 +312,98 @@ while var > 0:
    print ('当前变量值 :', var)
 print ("Good bye!")
 ```
+
+执行以上脚本输出结果为：
+
+```bash
+当前字母 : R
+当前字母 : u
+当前字母 : n
+当前字母 : b
+当前变量值 : 9
+当前变量值 : 8
+当前变量值 : 7
+当前变量值 : 6
+当前变量值 : 4
+当前变量值 : 3
+当前变量值 : 2
+当前变量值 : 1
+当前变量值 : 0
+Good bye!
+```
+
+循环语句可以有 else 子句，它在穷尽列表(以for循环)或条件变为 false (以while循环)导致循环终止时被执行,但循环被break终止时不执行。
+
+如下实例用于查询质数的循环例子:
+
+```bash
+#!/usr/bin/python3
+
+for n in range(2, 10):
+    for x in range(2, n):
+        if n % x == 0:
+            print(n, '等于', x, '*', n//x)
+            break
+    else:
+        # 循环中没有找到元素
+        print(n, ' 是质数')
+```
+
+执行以上脚本输出结果为：
+
+```bash
+2  是质数
+3  是质数
+4 等于 2 * 2
+5  是质数
+6 等于 2 * 3
+7  是质数
+8 等于 2 * 4
+9 等于 3 * 3
+```
+
+## pass 语句
+
+Python pass是空语句，是为了保持程序结构的完整性。
+
+pass 不做任何事情，一般用做占位语句，如下实例
+
+```bash
+>>>while True:
+...     pass  # 等待键盘中断 (Ctrl+C)
+```
+
+最小的类:
+
+```bash
+>>>class MyEmptyClass:
+...     pass
+```
+
+以下实例在字母为 o 时 执行 pass 语句块:
+
+```bash
+#!/usr/bin/python3
+
+for letter in 'Runoob':
+   if letter == 'o':
+      pass
+      print ('执行 pass 块')
+   print ('当前字母 :', letter)
+
+print ("Good bye!")
+```
+
+执行以上脚本输出结果为：
+
+```bash
+当前字母 : R
+当前字母 : u
+当前字母 : n
+执行 pass 块
+当前字母 : o
+执行 pass 块
+当前字母 : o
+当前字母 : b
+Good bye!
+```
