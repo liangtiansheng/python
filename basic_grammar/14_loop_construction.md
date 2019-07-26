@@ -151,3 +151,164 @@ Perl
 Python
 >>>
 ```
+
+以下 for 实例中使用了 break 语句，break 语句用于跳出当前循环体：
+
+```bash
+#!/usr/bin/python3
+
+sites = ["Baidu", "Google","Runoob","Taobao"]
+for site in sites:
+    if site == "Runoob":
+        print("菜鸟教程!")
+        break
+    print("循环数据 " + site)
+else:
+    print("没有循环数据!")
+print("完成循环!")
+```
+
+执行脚本后，在循环到 "Runoob"时会跳出循环体：
+
+```bash
+循环数据 Baidu
+循环数据 Google
+菜鸟教程!
+完成循环!
+```
+
+## range()函数
+
+如果你需要遍历数字序列，可以使用内置range()函数。它会生成数列，例如:
+
+```bash
+>>>for i in range(5):
+...     print(i)
+...
+0
+1
+2
+3
+4
+```
+
+你也可以使用range指定区间的值：
+
+```bash
+>>>for i in range(5,9) :
+    print(i)
+
+
+5
+6
+7
+8
+>>>
+```
+
+也可以使range以指定数字开始并指定不同的增量(甚至可以是负数，有时这也叫做'步长'):
+
+```bash
+>>>for i in range(0, 10, 3) :
+    print(i)
+
+
+0
+3
+6
+9
+>>>
+```
+
+负数：
+
+```bash
+>>>for i in range(-10, -100, -30) :
+    print(i)
+
+
+-10
+-40
+-70
+>>>
+```
+
+您可以结合range()和len()函数以遍历一个序列的索引,如下所示:
+
+```bash
+>>>a = ['Google', 'Baidu', 'Runoob', 'Taobao', 'QQ']
+>>> for i in range(len(a)):
+...     print(i, a[i])
+...
+0 Google
+1 Baidu
+2 Runoob
+3 Taobao
+4 QQ
+>>>
+```
+
+还可以使用range()函数来创建一个列表：
+
+```bash
+>>>list(range(5))
+[0, 1, 2, 3, 4]
+>>>
+```
+
+## break和continue语句及循环中的else子句
+
+break 语句可以跳出 for 和 while 的循环体。如果你从 for 或 while 循环中终止，任何对应的循环 else 块将不执行。 实例如下：
+
+```bash
+#!/usr/bin/python3
+
+for letter in 'Runoob':     # 第一个实例
+   if letter == 'b':
+      break
+   print ('当前字母为 :', letter)
+  
+var = 10                    # 第二个实例
+while var > 0:
+   print ('当期变量值为 :', var)
+   var = var -1
+   if var == 5:
+      break
+
+print ("Good bye!")
+```
+
+执行以上脚本输出结果为：
+
+```bash
+当前字母为 : R
+当前字母为 : u
+当前字母为 : n
+当前字母为 : o
+当前字母为 : o
+当期变量值为 : 10
+当期变量值为 : 9
+当期变量值为 : 8
+当期变量值为 : 7
+当期变量值为 : 6
+Good bye!
+```
+
+continue语句被用来告诉Python跳过当前循环块中的剩余语句，然后继续进行下一轮循环。
+
+```bash
+#!/usr/bin/python3
+
+for letter in 'Runoob':     # 第一个实例
+   if letter == 'o':        # 字母为 o 时跳过输出
+      continue
+   print ('当前字母 :', letter)
+
+var = 10                    # 第二个实例
+while var > 0:
+   var = var -1
+   if var == 5:             # 变量为 5 时跳过输出
+      continue
+   print ('当前变量值 :', var)
+print ("Good bye!")
+```
