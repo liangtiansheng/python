@@ -31,7 +31,7 @@ socket.socket([family[, type[, proto]]])
 s.bind()|    绑定地址（host,port）到套接字， 在AF_INET下,以元组（host,port）的形式表示地址。
 s.listen()|    开始TCP监听。backlog指定在拒绝连接之前，操作系统可以挂起的最大连接数量。该值至少为1，大部分应用程序设为5就可以了。
 s.accept()|    被动接受TCP客户端连接,(阻塞式)等待连接的到来
-客户端套接字
+<tr> <th rowspan="2">客户端套接字</tr>
 s.connect()|    主动初始化TCP服务器连接，。一般address的格式为元组（hostname,port），如果连接出错，返回socket.error错误。
 s.connect_ex()|    connect()函数的扩展版本,出错时返回出错码,而不是抛出异常
 公共用途的套接字函数
