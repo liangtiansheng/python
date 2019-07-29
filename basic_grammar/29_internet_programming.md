@@ -114,10 +114,10 @@ import socket
 import sys
 
 # 创建 socket 对象
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # 获取本地主机名
-host = socket.gethostname() 
+host = socket.gethostname()
 
 # 设置端口号
 port = 9999
@@ -143,7 +143,7 @@ $
 第二个终端执行 client.py 文件：
 
 ```bash
-$ python3 client.py 
+$ python3 client.py
 欢迎访问菜鸟教程！
 ```
 
@@ -157,13 +157,13 @@ $ python3 client.py
 
 以下列出了 Python 网络编程的一些重要模块：
 
-协议|	功能用处|	端口号|	Python 模块
+协议|    功能用处|    端口号|    Python 模块
 :-|:-|:-|:-
-HTTP|	网页访问|	80|	httplib, urllib, xmlrpclib
-NNTP|	阅读和张贴新闻文章，俗称为"帖子"|	119|	nntplib
-FTP|	文件传输|	20|	ftplib, urllib
-SMTP|	发送邮件|	25|	smtplib
-POP3|	接收邮件|	110|	poplib
-IMAP4|	获取邮件|	143|	imaplib
-Telnet|	命令行|	23|	telnetlib
-Gopher|	信息查找|	70|	gopherlib, urllib
+HTTP|    网页访问|    80|    httplib, urllib, xmlrpclib
+NNTP|    阅读和张贴新闻文章，俗称为"帖子"|    119|    nntplib
+FTP|    文件传输|    20|    ftplib, urllib
+SMTP|    发送邮件|    25|    smtplib
+POP3|    接收邮件|    110|    poplib
+IMAP4|    获取邮件|    143|    imaplib
+Telnet|    命令行|    23|    telnetlib
+Gopher|    信息查找|    70|    gopherlib, urllib
