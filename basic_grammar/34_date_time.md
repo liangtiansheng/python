@@ -360,3 +360,95 @@ print (time.strftime('%X %x %Z'))
 23:25:45 04/06/16 EDT
 13:25:45 04/07/16 AEST
 ```
+
+### time.perf_counter()
+
+返回计时器的精准时间（系统的运行时间），包含整个系统的睡眠时间。由于返回值的基准点是未定义的，所以，只有连续调用的结果之间的差才是有效的。
+
+### time.process_time()
+
+返回当前进程执行 CPU 的时间总和，不包含睡眠时间。由于返回值的基准点是未定义的，所以，只有连续调用的结果之间的差才是有效的。
+
+Time模块包含了以下2个非常重要的属性：
+
+序号|    属性及描述
+:-|:-
+1|    time.timezone<br>属性time.timezone是当地时区（未启动夏令时）距离格林威治的偏移秒数（>0，美洲;<=0大部分欧洲，亚洲，非洲）。
+2|    time.tzname<br>属性time.tzname包含一对根据情况的不同而不同的字符串，分别是带夏令时的本地时区名称，和不带的。
+
+## 日历（Calendar）模块
+
+此模块的函数都是日历相关的，例如打印某月的字符月历。
+
+星期一是默认的每周第一天，星期天是默认的最后一天。更改设置需调用calendar.setfirstweekday()函数。模块包含了以下内置函数：
+
+### calendar.calendar(year,w=2,l=1,c=6)
+
+返回一个多行字符串格式的year年年历，3个月一行，间隔距离为c。 每日宽度间隔为w字符。每行长度为21* W+18+2* C。l是每星期行数。
+
+### calendar.firstweekday( )
+
+返回当前每周起始日期的设置。默认情况下，首次载入caendar模块时返回0，即星期一。
+
+### calendar.isleap(year)
+
+是闰年返回 True，否则为 false。
+
+```bash
+>>> import calendar
+>>> print(calendar.isleap(2000))
+True
+>>> print(calendar.isleap(1900))
+False
+```
+
+### calendar.leapdays(y1,y2)
+
+返回在Y1，Y2两年之间的闰年总数。
+
+### calendar.month(year,month,w=2,l=1)
+
+返回一个多行字符串格式的year年month月日历，两行标题，一周一行。每日宽度间隔为w字符。每行的长度为7* w+6。l是每星期的行数。
+
+### calendar.monthcalendar(year,month)
+
+返回一个整数的单层嵌套列表。每个子列表装载代表一个星期的整数。Year年month月外的日期都设为0;范围内的日子都由该月第几日表示，从1开始。
+
+### calendar.monthrange(year,month)
+
+返回两个整数。第一个是该月的星期几，第二个是该月有几天。星期几是从0（星期一）到 6（星期日）。
+
+```bash
+>>> import calendar
+>>> calendar.monthrange(2014, 11)
+(5, 30)
+```
+
+(5, 30)解释：5 表示 2014 年 11 月份的第一天是周六，30 表示 2014 年 11 月份总共有 30 天。
+
+### calendar.prcal(year,w=2,l=1,c=6)
+
+相当于 print calendar.calendar(year,w,l,c).
+
+### calendar.prmonth(year,month,w=2,l=1)
+
+相当于 print calendar.calendar（year，w，l，c）。
+
+### calendar.setfirstweekday(weekday)
+
+设置每周的起始日期码。0（星期一）到6（星期日）。
+
+### calendar.timegm(tupletime)
+
+和time.gmtime相反：接受一个时间元组形式，返回该时刻的时间戳（1970纪元后经过的浮点秒数）。
+
+### calendar.weekday(year,month,day)
+
+返回给定日期的日期码。0（星期一）到6（星期日）。月份为 1（一月） 到 12（12月）。
+
+## 其他相关模块和函数
+
+在Python中，其他处理日期和时间的模块还有：
+
++ time 模块<https://docs.python.org/3/library/time.html>
++ datetime模块<https://docs.python.org/3/library/datetime.html>
