@@ -397,6 +397,17 @@ TypeError: 'tuple' object does not support item assignment
 ```bash
 tup1 = ()    # 空元组
 tup2 = (20,) # 一个元素，需要在元素后添加逗号
+注意：如果不加逗号，那么tup2 = (20)会被python解释器解释为一个整型，而不是元组
+比如：
+>>> a=(1,2)
+>>> b=(3)
+>>> a+b
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-131-ca730b97bf8a> in <module>
+----> 1 a+b
+
+TypeError: can only concatenate tuple (not "int") to tuple
 ```
 
 **string、list 和 tuple 都属于 sequence（序列）。**
