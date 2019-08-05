@@ -398,6 +398,7 @@ TypeError: 'tuple' object does not support item assignment
 tup1 = ()    # 空元组
 tup2 = (20,) # 一个元素，需要在元素后添加逗号
 注意：如果不加逗号，那么tup2 = (20)会被python解释器解释为一个整型，而不是元组
+
 比如：
 >>> a=(1,2)
 >>> b=(3)
