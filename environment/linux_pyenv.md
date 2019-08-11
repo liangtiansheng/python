@@ -200,7 +200,7 @@ total 2960
 为了方便演示，请用客户端再打开两个会话窗口。 提前安装备用
 
 ```bash
-$ pyenv install 3.6.4
+$ pyenv install 3.6.4 -v
 $
 ```
 
