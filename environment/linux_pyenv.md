@@ -10,6 +10,8 @@
 
 ### git 安装
 
+pyenv 的安装依赖于git 所以首先请确保本地安装了git
+
 > 安装git
 
 ```bash
@@ -33,6 +35,13 @@
 ```bash
 pyenv-installer 是一个shell脚本。
 $ curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+
+默认安装到了当前用户的~/.pyenv 下面
+
+[python@python ~]$ ls .pyenv/
+bin           COMMANDS.md  CONDUCT.md  LICENSE   plugins  README.md  src                  test
+CHANGELOG.md  completions  libexec     Makefile  pyenv.d  shims      terminal_output.png  versions
+[python@python ~]$
 ```
 
 > **注意：**
@@ -117,21 +126,79 @@ For full documentation, see: https://github.com/pyenv/pyenv#readme
 [python@localhost ~]$
 ```
 
-```bash
 列出所有可用版本
+
+```bash
 $ pyenv install --list
+$
+```
 
 在线安装指定版本
-$ pyenv install 3.5.3
-$ pyenv versions
+
+从官网下载对应的版本压缩包到`/tmp/目录`，然后在`/tmp/目录` 执行编译安装，安装到`~/.pyenv/versions/`下面
+
+```bash
+[python@python ~]$ pyenv install 3.5.3
+[python@python ~]$ ls .pyenv/versions/
+3.5.3
+[python@python ~]$
+[python@python ~]$ pyenv versions
+* system (set by /home/python/.pyenv/version)
+  3.5.3
+[python@python ~]$
+```
+
 这样的安装可能较慢，为了提速，可是选用cache方法。
 
-使用缓存方式安装 在~/.pyenv目录下，新建cache目录，放入下载好的待安装版本的文件。 不确定要哪一个文件，把下载的3个文件都放进去。
-$ pyenv install 3.5.3 -v
+正常的安装过程是：
+
++ 从官网下载对应的版本压缩包到`/tmp/目录`
++ 然后在`/tmp/目录` 执行编译安装
++ 最终是安装到`~/.pyenv/versions/`下面
+
+比如：
+
+```bash
+# 利用-v可以显示详细的安装过程
+$ pyenv install 3.4.4 `[-v]`
+Downloading Python-3.4.4.tgz...
+-> https://www.python.org/ftp/python/3.4.4/Python-3.4.4.tgz
+Installing Python-3.4.4...
+Installed Python-3.4.4 to /root/.pyenv/versions/3.4.4
+```
+
+cache:
+
+但是有个问题是有时候从官网下载tgz 包很慢，在不同的主机安装的时候重复操作是个很头疼的问题，这个时候 ./pyenv/cache 目录就能发挥它的作用
+
++ 提前从官网下载需要安装的包
++ copy到 ./pyenv/cache 中
++ 执行 pyenv install version-number -v
+
+上面的version-number就是具体待安装的包的版本号， -v 展示安装过程
+
+如果安装上面的操作执行就会省去下载的过程，直接执行 编译安装 ，会快很多。 其实上面的安装就是采用的这中
+
+cache 不生效：
+
+实际操作中发现，把下载的Python包放到了 cache 目录，但是还是去执行了下载过程
+
+添加 -v 参数安装的时候看到下载的文件名字是 'Python-3.4.4.tgz'，如果把这个文件名copy到 ~/.pyenv/cache/ 下面的是不起作用的，还是会继续重新下载
+
+查找问题后发现，-v 显示的是下载 'Python-3.4.4.tgz'， 但是在/tmp/python-xxxxxx.xxxx/ 目录下面却显示的是 'Python-3.4.4.tar.gz' 文件。
+
+```bash
+$ ls -l /tmp/python-build.20160608161435.16831
+total 2960
+-rw-r--r-- 1 root root 3031040 Jun  8 16:14 Python-3.4.4.tar.gz
+```
+
+所以把下载的 'Python-3.4.4.tgz' 改名为 'Python-3.4.4.tar.gz' 后放到~/.pyenv/cache/ 下面后，然后 pyenv install 3.4.4 -v 就不会重新下载了。
+
+**注意**：不能采用把 Python-3.4.4.tgz 解压之后才压缩成 Python-3.4.4.tar.gz 的方式，因为这样的话会导致源文件的md5值发生变化。而校验失败重新下载
 
 为了方便演示，请用客户端再打开两个会话窗口。 提前安装备用
 $ pyenv install 3.6.4
-```
 
 ## pyenv的python版本控制
 
