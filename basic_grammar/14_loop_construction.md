@@ -442,3 +442,39 @@ while cishu >=0:
     num = num - dayin*(10**cishu)
     cishu -=1
 ```
+
+例4：打印一个边长为n的正方形
+
+```bash
+n = int(input('please input rhomboid side: '))
+for i in range(n-1):
+    Topside = "*\t"*(n-1)+"*"
+    Midside = "*"+"\t"*(n-1)+"*"
+    if i == 0:
+        print(Topside)
+        print("\n")
+    else:
+        print(Midside)
+        print("\n")
+else:
+    print(Topside)
+```
+
+例5：求1到5阶乘之和
+
+```bash
+sum = 0
+jiechen = 1
+for i in range(1,6):
+    for j in range(1,i+1):
+        jiechen *= j
+    sum += jiechen
+    jiechen = 1
+print(sum)
+```
+
+例6：给一个数，判断是否是素数
+
+```bash
+
+```
