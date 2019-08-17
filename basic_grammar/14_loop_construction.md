@@ -489,6 +489,7 @@ print(sum)
 例6：给一个数，判断是否是素数
 
 ```bash
+# 给定一个数n,如果n能不整除，那必然一个数大于等于根号n，另一个数小于等于根号n
 n = int(input('please input one number: '))
 for i in range(2,int(n**0.5)+1):
     if n % i == 0:
