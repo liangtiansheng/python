@@ -476,6 +476,17 @@ for i in range(e,n+e):
 例5：求1到5阶乘之和
 
 ```bash
+方法一：累乘累加
+# 更高效
+a = 1
+sum = 0
+for i in range(1,6):
+    a = i * a
+    sum = sum + a
+print(sum)
+
+方法二：单独阶乘累加
+# 嵌套循环效率低
 sum = 0
 jiechen = 1
 for i in range(1,6):
