@@ -407,3 +407,38 @@ print ("Good bye!")
 当前字母 : b
 Good bye!
 ```
+
+## 举例
+
+例1：打印10以内的偶数
+
+```bash
+for i in range(10):
+    if i & 0x01:
+        continue
+    print(i)
+```
+
+例2：计算1000以内的被7整除的前20个数(for循环)
+
+```bash
+count = 0
+for i in range(0,1000,7):
+    print(i)
+    count += 1
+    if count == 20:
+        break
+```
+
+例3：输入一个整数，用整数处理的方式从高位到低位截取出来
+
+```bash
+num = int(input('please input a number: '))
+weishu = len(str(num))
+cishu = weishu - 1
+while cishu >=0:
+    dayin = num //(10**cishu)
+    print(dayin)
+    num = num - dayin*(10**cishu)
+    cishu -=1
+```
