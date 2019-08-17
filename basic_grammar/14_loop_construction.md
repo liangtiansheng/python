@@ -446,6 +446,7 @@ while cishu >=0:
 例4：打印一个边长为n的正方形
 
 ```bash
+方法1：制作前两行用作模板，后面复制
 n = int(input('please input rhomboid side: '))
 for i in range(n-1):
     Topside = "*\t"*(n-1)+"*"
@@ -458,6 +459,18 @@ for i in range(n-1):
         print("\n")
 else:
     print(Topside)
+
+方法2：利用对称的思想
+# 边长为3，则-1 0 1 => range(-1,2)
+# 边长为4，则-2 -1 0 1 => range(-2,2)
+# 边长为5，则-2 -1 0 1 2 => range(-2,3)
+n = int(input('please input rhomboid side: '))
+e = -n//2
+for i in range(e,n+e):
+    if i == e or i == n+e-1:
+        print("*"*n)
+    else:
+        print("*"+" "*(n-2)+"*")
 ```
 
 例5：求1到5阶乘之和
@@ -476,5 +489,11 @@ print(sum)
 例6：给一个数，判断是否是素数
 
 ```bash
-
+n = int(input('please input one number: '))
+for i in range(2,int(n**0.5)+1):
+    if n % i == 0:
+        print(n,'不是素数')
+        break
+else:
+    print(n,"是素数")
 ```
