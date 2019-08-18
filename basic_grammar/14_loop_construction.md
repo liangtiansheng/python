@@ -537,3 +537,32 @@ for i in range(symmetry_left,symmetry_right):
     else:
         print(" "*i+"*"*(line-2*i))
 ```
+
+例9：求fib数列101项
+
+```bash
+a = 0
+b = 1
+for i in range(100):
+    a, b = b, a+b
+else:
+    print(b)
+```
+
+例10：求10万内的所有素数
+
+```bash
+方法1：
+import datetime
+start = datetime.datetime.now()
+count = 1
+for i in range(3,100000,2):
+    for j in range(2,int(i**0.5)+1):
+        if i % j == 0:
+            break
+    else:
+        count += 1
+print(count)
+delta = (datetime.datetime.now()-start).total_seconds()
+print(delta)
+```
