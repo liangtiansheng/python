@@ -509,3 +509,12 @@ for i in range(2,int(n**0.5)+1):
 else:
     print(n,"是素数")
 ```
+
+例7：99乘法口诀
+
+```bash
+for i in range(1,10):
+    for j in range(1,i+1):
+        print('{} * {} = {:2d}'.format(j,i,i*j),end="   ")
+    print()
+```
