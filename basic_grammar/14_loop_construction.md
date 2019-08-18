@@ -434,13 +434,13 @@ for i in range(0,1000,7):
 
 ```bash
 num = int(input('please input a number: '))
-weishu = len(str(num))
-cishu = weishu - 1
-while cishu >=0:
-    dayin = num //(10**cishu)
-    print(dayin)
-    num = num - dayin*(10**cishu)
-    cishu -=1
+digits = len(str(num))
+times = digits - 1
+while times >=0:
+    output = num //(10**times)
+    print(output)
+    num = num - output*(10**times)
+    times -=1
 ```
 
 例4：打印一个边长为n的正方形
@@ -488,12 +488,12 @@ print(sum)
 方法二：单独阶乘累加
 # 嵌套循环效率低
 sum = 0
-jiechen = 1
+factorial = 1
 for i in range(1,6):
     for j in range(1,i+1):
-        jiechen *= j
-    sum += jiechen
-    jiechen = 1
+        factorial *= j
+    sum += factorial
+    factorial = 1
 print(sum)
 ```
 
@@ -517,4 +517,23 @@ for i in range(1,10):
     for j in range(1,i+1):
         print('{} * {} = {:2d}'.format(j,i,i*j),end="   ")
     print()
+```
+
+例8：打印菱形
+
+```bash
+#!/usr/bin/python3
+import sys
+line = int(input("please input rhomboid lines: "))
+if line < 3 or line % 2 == 0:
+    print("your input number is not proper to construct rhomboid, now exited!")
+    print("please input odd number larger than 2")
+    sys.exit(7)
+symmetry_left = -(line//2)
+symmetry_right = line + symmetry_left
+for i in range(symmetry_left,symmetry_right):
+    if i < 0:
+        print(" "*(-i)+"*"*(line+2*i))
+    else:
+        print(" "*i+"*"*(line-2*i))
 ```
