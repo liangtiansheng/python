@@ -529,7 +529,7 @@ for i in range(1,10):
 例8：打印菱形
 
 ```bash
-#!/usr/bin/python3
+# 打印菱形
 import sys
 line = int(input("please input rhomboid lines: "))
 if line < 3 or line % 2 == 0:
@@ -543,6 +543,23 @@ for i in range(symmetry_left,symmetry_right):
         print(" "*(-i)+"*"*(line+2*i))
     else:
         print(" "*i+"*"*(line-2*i))
+
+# 打印闪电
+import sys
+line = int(input("please input flash lines: "))
+if line < 3 or line % 2 == 0:
+    print("your input number is not proper to construct flash, now exited!")
+    print("please input odd integer larger than 2")
+    sys.exit(7)
+symmetry_left = -(line//2)
+symmetry_right = line + symmetry_left
+for i in range(symmetry_left,symmetry_right):
+    if i < 0:
+        print(" "*(-i)+"*"*(symmetry_right+i))
+    elif i == 0:
+        print("*"*line)
+    else:
+        print(" "*abs(symmetry_left)+"*"*(symmetry_right-i))
 ```
 
 例9：求fib数列101项
