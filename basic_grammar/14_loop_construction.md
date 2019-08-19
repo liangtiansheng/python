@@ -517,6 +517,13 @@ for i in range(1,10):
     for j in range(1,i+1):
         print('{} * {} = {:2d}'.format(j,i,i*j),end="   ")
     print()
+
+s = ""
+for i in range(1,10):
+    for j in range(i,10):
+        s += '{} * {} = {:<5}'.format(i,j,j*i)
+    print('{:>117}'.format(s))
+    s = ""
 ```
 
 例8：打印菱形
