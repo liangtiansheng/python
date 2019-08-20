@@ -521,7 +521,7 @@ for i in range(1,10):
 s = ""
 for i in range(1,10):
     for j in range(i,10):
-        s += '{} * {} = {:<5}'.format(i,j,j*i)
+        s += '{} * {} = {:<{}}'.format(i, j, j*i, 2 if j<4 else 3)
     print('{:>117}'.format(s))
     s = ""
 ```
