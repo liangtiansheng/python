@@ -414,7 +414,7 @@ Good bye!
 
 ```bash
 for i in range(10):
-    if i & 0x01:
+    if i & 1:        # 与运算是最快的，0与1得0，1与1得1，二进制只有0和1
         continue
     print(i)
 ```
@@ -423,7 +423,7 @@ for i in range(10):
 
 ```bash
 count = 0
-for i in range(0,1000,7):
+for i in range(0,1000,7):       # 思路有很多，步长为7最简单高效
     print(i)
     count += 1
     if count == 20:
@@ -433,13 +433,14 @@ for i in range(0,1000,7):
 例3：输入一个整数，用整数处理的方式从高位到低位截取出来
 
 ```bash
+# 迭代思想
 num = int(input('please input a number: '))
-digits = len(str(num))
-times = digits - 1
+digits = len(str(num))                      # 先算位数
+times = digits - 1                          # 循环次数
 while times >=0:
-    output = num //(10**times)
+    output = num //(10**times)              # 截取高位
     print(output)
-    num = num - output*(10**times)
+    num = num - output*(10**times)          # 算出剩余位数用于迭代
     times -=1
 ```
 
@@ -449,8 +450,8 @@ while times >=0:
 方法1：制作前两行用作模板，后面复制
 n = int(input('please input rhomboid side: '))
 for i in range(n-1):
-    Topside = "*\t"*(n-1)+"*"
-    Midside = "*"+"\t"*(n-1)+"*"
+    Topside = "*\t"*(n-1)+"*"       # 制作第一行模板
+    Midside = "*"+"\t"*(n-1)+"*"    # 制作第二行模板
     if i == 0:
         print(Topside)
         print("\n")
@@ -466,7 +467,7 @@ else:
 # 边长为5，则-2 -1 0 1 2 => range(-2,3)
 n = int(input('please input rhomboid side: '))
 e = -n//2
-for i in range(e,n+e):
+for i in range(e,n+e):          # 此处只用作循环次数，真正的意义是用于算法当中进行对称处理
     if i == e or i == n+e-1:
         print("*"*n)
     else:
@@ -481,8 +482,8 @@ for i in range(e,n+e):
 a = 1
 sum = 0
 for i in range(1,6):
-    a = i * a
-    sum = sum + a
+    a = i * a           # 累积乘上去就是每一个数的阶乘
+    sum = sum + a       # 累加上去就是阶乘之和
 print(sum)
 
 方法二：单独阶乘累加
@@ -491,7 +492,7 @@ sum = 0
 factorial = 1
 for i in range(1,6):
     for j in range(1,i+1):
-        factorial *= j
+        factorial *= j      # 两层循环为了将每个数进行阶乘运算，思路清淅，但是效率很低
     sum += factorial
     factorial = 1
 print(sum)
@@ -500,7 +501,7 @@ print(sum)
 例6：给一个数，判断是否是素数
 
 ```bash
-# 给定一个数n,如果n能不整除，那必然一个数大于等于根号n，另一个数小于等于根号n
+# 给定一个数n,若要两个数相乘等于n，那必然一个数大于等于根号n，另一个数小于等于根号n
 n = int(input('please input one number: '))
 for i in range(2,int(n**0.5)+1):
     if n % i == 0:
@@ -515,13 +516,13 @@ else:
 ```bash
 for i in range(1,10):
     for j in range(1,i+1):
-        print('{} * {} = {:2d}'.format(j,i,i*j),end="   ")
+        print('{} * {} = {:2d}'.format(j,i,i*j),end="   ")  # 直接从左向右打印
     print()
 
 s = ""
 for i in range(1,10):
     for j in range(i,10):
-        s += '{} * {} = {:<{}}'.format(i, j, j*i, 2 if j<4 else 3)
+        s += '{} * {} = {:<{}}'.format(i, j, j*i, 2 if j<4 else 3) # 拼接成字符串，为的是右对齐
     print('{:>117}'.format(s))
     s = ""
 ```
@@ -538,9 +539,9 @@ if line < 3 or line % 2 == 0:
     sys.exit(7)
 symmetry_left = -(line//2)
 symmetry_right = line + symmetry_left
-for i in range(symmetry_left,symmetry_right):
+for i in range(symmetry_left,symmetry_right):   # 这里的对称思想用得就巧妙，将对称数用在算法中进行对称处理
     if i < 0:
-        print(" "*(-i)+"*"*(line+2*i))
+        print(" "*(-i)+"*"*(line+2*i))  # 打印菱形重点就在于找出每一行空格和 * 个数的规律
     else:
         print(" "*i+"*"*(line-2*i))
 
@@ -553,9 +554,9 @@ if line < 3 or line % 2 == 0:
     sys.exit(7)
 symmetry_left = -(line//2)
 symmetry_right = line + symmetry_left
-for i in range(symmetry_left,symmetry_right):
+for i in range(symmetry_left,symmetry_right): # 依然利用对称的巧秒思想
     if i < 0:
-        print(" "*(-i)+"*"*(symmetry_right+i))
+        print(" "*(-i)+"*"*(symmetry_right+i)) # 不管打印什么，重点依然是找出每一行空格和 * 个数的规律
     elif i == 0:
         print("*"*line)
     else:
@@ -568,7 +569,7 @@ for i in range(symmetry_left,symmetry_right):
 a = 0
 b = 1
 for i in range(100):
-    a, b = b, a+b
+    a, b = b, a+b       # python 特有的方式，封装与解构
 else:
     print(b)
 ```
@@ -581,7 +582,23 @@ import datetime
 start = datetime.datetime.now()
 count = 1
 for i in range(3,100000,2):
-    for j in range(2,int(i**0.5)+1):
+    for j in range(2,int(i**0.5)+1):    # 若要两个数相乘等于n，那必然一个数大于等于根号n，另一个数小于等于根号n
+        if i % j == 0:
+            break
+    else:
+        count += 1
+print(count)
+delta = (datetime.datetime.now()-start).total_seconds()
+print(delta)
+
+对上面的代码进行优化：
+import datetime
+start = datetime.datetime.now()
+count = 1
+for i in range(3,100000,2):         # 大于2的偶数都能被2整除，排除掉
+    if i > 10 and i % 10 == 5:      # 大于10的个位数为5都可以被5整除，排除掉
+        continue
+    for j in range(3,int(i**0.5)+1,2):  # 奇数都不能被2整除，所以从3开始，步长为2是因为奇数不能被偶数整除
         if i % j == 0:
             break
     else:
