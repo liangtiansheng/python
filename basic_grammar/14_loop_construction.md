@@ -440,7 +440,7 @@ times = digits - 1                          # 循环次数
 while times >=0:
     output = num //(10**times)              # 截取高位
     print(output)
-    num = num - output*(10**times)          # 算出剩余位数用于迭代
+    num = num - output*(10**times)          # 算出剩余数用于迭代
     times -=1
 ```
 
