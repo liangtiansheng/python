@@ -205,3 +205,43 @@ print(y)
 总结：
 
 如果列表里面是复杂类型的值，那这个值很有可能是一个指针引用，修改一个值，会改变其它的值
+
+```bash
+lst0 = list(range(4))
+lst5 = lst0.copy()
+print(lst5 == lst0)
+lst5[2] = 10
+print(lst5 == lst0)
+
+输出：
+True
+False
+```
+
+```bash
+lst0 = [1, [2, 3, 4], 5]
+lst5 = lst0.copy()
+lst5 == lst0
+lst5[2] = 10
+lst5 == lst0
+lst5[2] = 5
+lst5[1][1] = 20
+lst5 == lst0
+
+输出：
+True
+```
+
+```bash
+copy模块提供了deepcopy
+import copy
+lst0 = [1, [2, 3, 4], 5]
+lst5 = copy.deepcopy(lst0)
+lst5[1][1] = 20
+lst5 == lst0
+
+输出：
+False
+```
+
+结论：通过对比，我们要引入一个概念，叫深浅拷贝，上述对比实验就是深浅拷贝，浅拷贝实际上相当于复制了一个指针，实际数据并没有复制，所以改或没改一定要落实到内存中数据本身，追踪内存中最本质的数据，才能运筹帷幄。那么，深拷贝就不言而喻了，指把数据本身也复制一份。
