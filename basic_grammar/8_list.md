@@ -271,3 +271,18 @@ print(count)
 delta = (datetime.datetime.now() - start).total_seconds()
 print(delta)
 ```
+
+例2：杨辉三角，基于“下一行依赖上一行所有元素，是上一行所有元素的两两相加的和，再在两头各加1”。
+
+```bash
+triangle = [[1],[1,1]]
+n = int(input('please input line number: '))
+for i in range(2,n):
+    cur = [1]
+    pre = triangle[i-1]
+    for j in range(len(pre)-1):
+        cur.append(pre[j]+pre[j+1])
+    cur.append(1)
+    triangle.append(cur)
+print(triangle)
+```
