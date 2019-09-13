@@ -245,3 +245,29 @@ False
 ```
 
 结论：通过对比，我们要引入一个概念，叫深浅拷贝，上述对比实验就是深浅拷贝，浅拷贝实际上相当于复制了一个指针，实际数据并没有复制，所以改或没改一定要落实到内存中数据本身，追踪内存中最本质的数据，才能运筹帷幄。那么，深拷贝就不言而喻了，指把数据本身也复制一份。
+
+## 实例
+
+列1：用列表的方式求100000内的素数，基于的原理是“一个合数一定可以分解成几个素数的乘积，也就是说，一个数如果能被一个素数整除就是合数”
+
+```bash
+import datetime
+start = datetime.datetime.now()
+lst = [2]
+count = 1
+for i in range(3,100000,2):
+    up = int(i**0.5 + 1)
+    for j in lst:
+        if i % j == 0:
+            flag = False
+            break
+        if j >= up:
+            flag = True
+            break
+    if flag:
+        lst.append(i)
+        count += 1
+print(count)
+delta = (datetime.datetime.now() - start).total_seconds()
+print(delta)
+```
