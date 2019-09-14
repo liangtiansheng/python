@@ -304,3 +304,54 @@ for i in range(n):
     row.append(1)
 print(triangle)
 ```
+
+方法2：除了第一行以外，每一行每个元素（包括1在内）都由上一行的元素相加得到。如何得到两头的1呢？目标是打印指定的行，所以算出一行就打印一行，不需要用一个大空间存储所有已经算出的行。
+
+```bash
+n = int(input('please input line number: '))
+newline = [1]
+print(newline)
+
+for i in range(1,n):
+    oldline = newline.copy()    # 浅拷贝
+    oldline.append(0)   # 在尾部加一个0，利用正负索引获取该0，算出第一个和最后一个1
+    newline.clear()     # 以newline为容器算出当前行，算前清空
+
+    offset = 0  # 初始化索引计算器
+    while offset <= i:
+        newline.append(oldline[offset-1]+oldline[offset]) # oldline是上一行列表，拼出当前行列表
+        offset += 1
+    print(newline)
+
+输出：
+please input line number: 4
+[1]
+[1, 1]
+[1, 2, 1]
+[1, 3, 3, 1]
+```
+
+方法2变种：除了第一行以外，每一行每个元素（包括1在内）都由上一行的元素相加得到。如何得到两头的1呢？目标是打印指定的行，所以算出一行就打印一行，不需要用一个大空间存储所有已经算出的行。
+
+```bash
+n = 6
+newline = [1]
+print(newline)
+
+for i in range(1,n):
+    oldline = newline.copy()    # 浅拷贝
+    oldline.append(0)   # 在尾部加一个0，利用正负索引获取该0，算出第一个和最后一个1
+    newline.clear()     # 以newline为容器算出当前行，算前清空
+
+    for j in range(i+1):
+        newline.append(oldline[j-1] + oldline[j])   # 当j为0时oldline[-1]索取0这一点比较巧妙；j>0时都是正索引，拼接当前行时好理解
+    print(newline)
+
+输出：
+[1]
+[1, 1]
+[1, 2, 1]
+[1, 3, 3, 1]
+[1, 4, 6, 4, 1]
+[1, 5, 10, 10, 5, 1]
+```
