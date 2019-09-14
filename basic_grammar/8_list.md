@@ -272,17 +272,35 @@ delta = (datetime.datetime.now() - start).total_seconds()
 print(delta)
 ```
 
-例2：杨辉三角，基于“下一行依赖上一行所有元素，是上一行所有元素的两两相加的和，再在两头各加1”。
+例2：杨辉三角
+
+方法1：下一行依赖上一行所有元素，是上一行所有元素的两两相加的和，再在两头各加1
 
 ```bash
 triangle = [[1],[1,1]]
 n = int(input('please input line number: '))
 for i in range(2,n):
-    cur = [1]
-    pre = triangle[i-1]
+    cur = [1] # 当前需要拼接的行
+    pre = triangle[i-1] # 找到上一行
     for j in range(len(pre)-1):
-        cur.append(pre[j]+pre[j+1])
+        cur.append(pre[j]+pre[j+1]) # 相比较下面一种，cur作为临时列表，拼接完成后加入triangle
     cur.append(1)
     triangle.append(cur)
+print(triangle)
+```
+
+方法1变种：下一行依赖上一行所有元素，是上一行所有元素的两两相加的和，再在两头各加1
+
+```bash
+triangle=[]
+n = 6
+for i in range(n):
+    row = [1]
+    triangle.append(row) # 这种方式的精髓就在于row作为一个复杂类型的变量嵌入列表中，row变化，列表随之变化
+    if i==0:
+        continue
+    for j in range(i-1):
+        row.append(triangle[i-1][j]+triangle[i-1][j+1]) # 所以数字追加直接在列表嵌套当中完成
+    row.append(1)
 print(triangle)
 ```
