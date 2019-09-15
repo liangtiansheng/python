@@ -381,3 +381,23 @@ for i in range(n):
             row[-j-1] = val # 对称点赋相同的值
 print(triangle)
 ```
+
+方法4：在方法3的基础上再进一步优化
+
++ 只开辟一个列表实现
+
+```bash
+n = 6
+row = [1]*n
+
+for i in range(n):
+    offset = n - i
+    z = 1
+
+    for j in range(1,i//2+1):
+        val = z + row[j]
+        row[j], z = val, row[j]
+        if i != 2*j:
+            row[-j-offset] = val
+    print(row[:i+1])
+```
