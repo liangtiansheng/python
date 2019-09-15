@@ -424,7 +424,7 @@ for i in range(length):
             nums[j+1] = tmp
             flag = True
             count_swap += 1
-    if not flag:
+    if not flag:    # 目前冒泡排序优化点只能是刚刚好升序或者降序，也就是不发生交换，直接break出去
         break
 print(nums, count_swap, count)
 ```
