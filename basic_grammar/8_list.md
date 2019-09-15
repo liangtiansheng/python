@@ -366,7 +366,7 @@ triangle = []
 n = 6
 for i in range(n):
     row = [1]*(i+1)     # i是从0开始的
-    triangle.append(row)
+    triangle.append(row)    # 精髓就在于row是一个引用类型，row改变，triangle中追加的row也会改变
 # 循环的次数可以在草稿纸上画出来
 # i == 0时，第1行，不需对称，无中点，不循环
 # i == 1时，第2行，不需对称，无中点，不循环
@@ -378,6 +378,6 @@ for i in range(n):
         val = triangle[i-1][j-1] + triangle[i-1][j]
         row[j] = val
         if i != 2*j:    # 根据上面找规律分析，当 i == 2*j 时，正好是中点，中点没有对称点，所以要跳过
-            row[-j-1] = val
+            row[-j-1] = val # 对称点赋相同的值
 print(triangle)
 ```
