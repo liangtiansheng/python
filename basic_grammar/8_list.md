@@ -401,3 +401,30 @@ for i in range(n):
             row[-j-offset] = val
     print(row[:i+1])
 ```
+
+例3：冒泡法排序
+
+```bash
+num_list = [[1,9,8,5,6,7,4,3,2],[1,2,3,4,5,6,7,8,9],[1,2,3,4,5,6,7,9,8],[9,8,7,6,5,4,3,2,1]]
+nums = num_list[2]
+
+print(nums)
+
+length = len(nums)
+count_swap = 0
+count = 0
+
+for i in range(length):
+    flag = False
+    for j in range(length-i-1):
+        count += 1
+        if nums[j] > nums[j+1]:
+            tmp = nums[j]
+            nums[j] = nums[j+1]
+            nums[j+1] = tmp
+            flag = True
+            count_swap += 1
+    if not flag:
+        break
+print(nums, count_swap, count)
+```
