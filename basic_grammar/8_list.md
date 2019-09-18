@@ -388,18 +388,18 @@ print(triangle)
 
 ```bash
 n = 6
-row = [1]*n
+row = [1]*n # 只开辟一次空间
 
 for i in range(n):
-    offset = n - i
-    z = 1
+    offset = n - i  # 对称填充时，从右向左定位用到的偏移量
+    z = 1   # 用临时变量记录将要被覆盖的当前数值
 
-    for j in range(1,i//2+1):
-        val = z + row[j]
-        row[j], z = val, row[j]
-        if i != 2*j:
-            row[-j-offset] = val
-    print(row[:i+1])
+    for j in range(1,i//2+1):   # i = 2时，也就是计算第三行时，才能进来
+        val = z + row[j]    # 算出将要替换j位的数值
+        row[j], z = val, row[j] # 替换j位数值，同时将j位原始的数值赋给z，用作计算下一位的值
+        if i != 2*j:    # 只有奇数行才会出现 i == 2*j，这个位置正好是中间点，而中间点是没有对称点的，所以要跳过
+            row[-j-offset] = val    # 每计算出一个左对称点，就找到右对称点进行对称赋值
+    print(row[:i+1])    # 每一个 i 被 j 循环完，就可以截取 i + 1 个刚拼好的杨辉三角序列
 ```
 
 例3：冒泡法排序
