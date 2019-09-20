@@ -276,3 +276,160 @@ Python 的字符串常用内建函数如下：
 38|upper()|转换字符串中的小写字母为大写
 39|zfill (width)|返回长度为 width 的字符串，原字符串右对齐，前面填充0
 40|isdecimal()|检查字符串是否只包含十进制字符，如果是返回 true，否则返回 false。
+
+## 思考与总结
+
+```bash
+sql = "select * from user where name='tom'"
+sql[4] = 'o'
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-2-9056ec11fda5> in <module>
+      1 sql = "select * from user where name='tom'"
+----> 2 sql[4] = 'o'
+
+TypeError: 'str' object does not support item assignment
+
+注：字符串是不可变类型
+```
+
+```bash
+sql = "select * from user where name='tom'"
+for c in sql[0:2]:
+    print(c)
+    print(type(c))
+
+---------------------------------------------------------------------------
+s
+<class 'str'>
+e
+<class 'str'>
+
+注：在python中只有字符串类型，没有字符类型，区别于其它语言
+```
+
+## 字符串常用函数实践
+
+> join函数
+
+```bash
+help(str.join)
+
+---------------------------------------------------------------------------
+Help on method_descriptor:
+
+join(...)
+    S.join(iterable) -> str
+
+    Return a string which is the concatenation of the strings in the
+    iterable.  The separator between elements is S.
+```
+
+```bash
+lst = ['1','2','3']
+print("\"".join(lst))
+print(" ".join(lst))
+print("\n".join(lst))
+
+---------------------------------------------------------------------------
+1"2"3
+1 2 3
+1
+2
+3
+```
+
+```bash
+lst = ['1',['a','b'],'3']
+print(" ".join(lst))
+
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-12-5af3a8f68369> in <module>
+      1 lst = ['1',['a','b'],'3']
+----> 2 print(" ".join(lst))
+
+TypeError: sequence item 1: expected str instance, list found
+
+注：join的语法要求后面的可迭代对象中的元素必须是字符串
+```
+
+> split函数
+
+```bash
+help(str.split)
+
+---------------------------------------------------------------------------
+Help on method_descriptor:
+
+split(...)
+    S.split(sep=None, maxsplit=-1) -> list of strings
+
+    Return a list of the words in S, using sep as the
+    delimiter string.  If maxsplit is given, at most maxsplit
+    splits are done. If sep is not specified or is None, any
+    whitespace string is a separator and empty strings are
+    removed from the result.
+```
+
+```bash
+s1 = "I am \ta super student."
+print(s1.split())
+print(s1.split(" "))
+
+print(s1.split("s"))
+
+print(s1.split("super"))
+print(s1.split("super "))
+
+print(s1.split(" ",maxsplit=2))
+print(s1.split("\t",maxsplit=2))
+
+---------------------------------------------------------------------------
+['I', 'am', 'a', 'super', 'student.']
+['I', 'am', '\ta', 'super', 'student.']
+['I am \ta ', 'uper ', 'tudent.']
+['I am \ta ', ' student.']
+['I am \ta ', 'student.']
+['I', 'am', '\ta super student.']
+['I am ', 'a super student.']
+```
+
+```bash
+help(str.rsplit)
+
+---------------------------------------------------------------------------
+Help on method_descriptor:
+
+rsplit(...)
+    S.rsplit(sep=None, maxsplit=-1) -> list of strings
+
+    Return a list of the words in S, using sep as the
+    delimiter string, starting at the end of the string and
+    working to the front.  If maxsplit is given, at most maxsplit
+    splits are done. If sep is not specified, any whitespace string
+    is a separator.
+```
+
+```bash
+s1 = "I am \ta super student."
+print(s1.rsplit())
+print(s1.rsplit(" "))
+
+print(s1.rsplit("s"))
+
+print(s1.rsplit("super"))
+print(s1.rsplit("super "))
+
+print(s1.rsplit(" ",maxsplit=2))
+print(s1.rsplit("\t",maxsplit=2))
+
+---------------------------------------------------------------------------
+['I', 'am', 'a', 'super', 'student.']
+['I', 'am', '\ta', 'super', 'student.']
+['I am \ta ', 'uper ', 'tudent.']
+['I am \ta ', ' student.']
+['I am \ta ', 'student.']
+['I am \ta', 'super', 'student.']
+['I am ', 'a super student.']
+```
