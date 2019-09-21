@@ -310,7 +310,7 @@ e
 
 ## 字符串常用函数实践
 
-> join函数
+> 字符串连接
 
 ```bash
 help(str.join)
@@ -354,7 +354,7 @@ TypeError: sequence item 1: expected str instance, list found
 注：join的语法要求后面的可迭代对象中的元素必须是字符串
 ```
 
-> split函数
+> 字符串分割
 
 ```bash
 help(str.split)
@@ -395,8 +395,6 @@ print(s1.split("\t",maxsplit=2))
 ['I am ', 'a super student.']
 ```
 
-> rsplit函数
-
 ```bash
 help(str.rsplit)
 
@@ -436,8 +434,6 @@ print(s1.rsplit("\t",maxsplit=2))
 ['I am ', 'a super student.']
 ```
 
-> splitlines函数
-
 ```bash
 splitlines([keepends]) -> list of strings
     按照行来切分字符串
@@ -468,8 +464,6 @@ You're a super teacher.
 ["I'm a super student.", "You're a super teacher."]
 ["I'm a super student.\n", "You're a super teacher."]
 ```
-
-> partition函数
 
 ```bash
 help(str.partition)
@@ -596,4 +590,80 @@ I am very very very so
     从左开始
 # rstrip([chars]) -> str
     从右开始
+```
+
+> 字符串查找
+
+```bash
+# S.find(sub[, start[, end]]) -> int
+# S.rfind(sub[, start[, end]]) -> int
+s = "I am very very very sorry"
+print(s.find('very'))
+print(s.find('very',5))
+print(s.find('very',6,13))
+print(s.rfind('very',10))
+print(s.rfind('very',10,15))
+print(s.rfind('very',-10,-1))
+
+---------------------------------------------------------------------------
+5
+5
+-1
+15
+10
+15
+```
+
+```bash
+# S.index(sub[, start[, end]]) -> int
+# S.rindex(sub[, start[, end]]) -> int
+s = "I am very very very sorry"
+print(s.index('very'))
+print(s.index('very',5))
+print(s.index('very',6,14))
+print(s.rindex('very',10))
+print(s.rindex('very',10,15))
+print(s.rindex('very',-10,-1))
+---------------------------------------------------------------------------
+5
+5
+10
+15
+10
+15
+```
+
+```bash
+# S.count(sub[, start[, end]]) -> int
+s = "I am very very very sorry"
+print(s.count('very'))
+print(s.count('very',5))
+print(s.count('very',10,14))
+print(s.count('very',10,13))
+---------------------------------------------------------------------------
+3
+3
+1
+0
+```
+
+> **字符串判断**
+
+```bash
+# S.endswith(suffix[, start[, end]]) -> bool
+# S.startswith(prefix[, start[, end]]) -> bool
+s = "I am very very very sorry"
+print(s.startswith('very'))
+print(s.startswith('very',5))
+print(s.startswith('very',5,9))
+print(s.endswith('very',5,9))
+print(s.endswith('sorry',5))
+print(s.endswith('sorry',5,-1))
+---------------------------------------------------------------------------
+False
+True
+True
+True
+True
+False
 ```
