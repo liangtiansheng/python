@@ -395,6 +395,8 @@ print(s1.split("\t",maxsplit=2))
 ['I am ', 'a super student.']
 ```
 
+> rsplit函数
+
 ```bash
 help(str.rsplit)
 
@@ -432,4 +434,102 @@ print(s1.rsplit("\t",maxsplit=2))
 ['I am \ta ', 'student.']
 ['I am \ta', 'super', 'student.']
 ['I am ', 'a super student.']
+```
+
+> splitlines函数
+
+```bash
+splitlines([keepends]) -> list of strings
+    按照行来切分字符串
+    keepends指的是是否保留行分隔符
+    行分隔符包括\n、\r\n、\r等
+```
+
+```bash
+"ab c\n\nde fg\rkl\r\n".splitlines()
+---------------------------------------------------------------------------
+['ab c', '', 'de fg', 'kl']
+
+"ab c\n\nde fg\rkl\r\n".splitlines(True)
+---------------------------------------------------------------------------
+['ab c\n', '\n', 'de fg\r', 'kl\r\n']
+```
+
+```bash
+s1 = """I'm a super student.
+You're a super teacher."""
+print(s1)
+print(s1.splitlines())
+print(s1.splitlines(True))
+
+---------------------------------------------------------------------------
+I'm a super student.
+You're a super teacher.
+["I'm a super student.", "You're a super teacher."]
+["I'm a super student.\n", "You're a super teacher."]
+```
+
+> partition函数
+
+```bash
+help(str.partition)
+
+---------------------------------------------------------------------------
+Help on method_descriptor:
+
+partition(...)
+    S.partition(sep) -> (head, sep, tail)
+
+    Search for the separator sep in S, and return the part before it,
+    the separator itself, and the part after it.  If the separator is not
+    found, return S and two empty strings.
+```
+
+```bash
+s1 = "I'm a super student."
+print(s1.partition('s'))
+print(s1.partition('stu'))
+print(s1.partition(" "))
+print(s1.partition('abc'))
+
+---------------------------------------------------------------------------
+("I'm a ", 's', 'uper student.')
+("I'm a super ", 'stu', 'dent.')
+("I'm", ' ', 'a super student.')
+("I'm a super student.", '', '')
+```
+
+> 字符串排版
+
+```bash
+"abc def".title()
+---------------------------------------------------------------------------
+'Abc Def'
+
+"abc def".capitalize()
+---------------------------------------------------------------------------
+'Abc def'
+```
+
+```bash
+n = int(input("please input integer: "))
+for i in range(-n//2,n-n//2):
+    if i < 0:
+        star = "*"*(2*i+n)
+        print(star.center(n))
+    elif i ==0 :
+        print("*"*n)
+    else:
+        star = "*"*(n-2*i)
+        print(star.center(n))
+---------------------------------------------------------------------------
+please input integer: 7
+
+   *
+  ***  
+ *****
+*******
+ *****
+  ***
+   *
 ```
