@@ -502,9 +502,13 @@ print(s1.partition('abc'))
 > 字符串排版
 
 ```bash
+# title() -> str
+
 "abc def".title()
 ---------------------------------------------------------------------------
 'Abc Def'
+
+# capitalize() -> str
 
 "abc def".capitalize()
 ---------------------------------------------------------------------------
@@ -512,6 +516,8 @@ print(s1.partition('abc'))
 ```
 
 ```bash
+# center(width[,fillchar]) -> str
+
 n = int(input("please input integer: "))
 for i in range(-n//2,n-n//2):
     if i < 0:
@@ -532,4 +538,62 @@ please input integer: 7
  *****
   ***
    *
+```
+
+```bash
+# zfill(width) -> str
+
+"abc".zfill(6)
+---------------------------------------------------------------------------
+'000abc'
+
+# ljust(width[,fillchar]) -> str
+
+"abc".ljust(10,"S")
+---------------------------------------------------------------------------
+'abcSSSSSSS'
+
+# rjust(width[,fillchar]) -> str
+
+"abc".rjust(10,"S")
+---------------------------------------------------------------------------
+'SSSSSSSabc'
+```
+
+> 字符串修改
+
+```bash
+# replace(old,new[,count]) -> str
+
+print("www.google.com".replace('w','p'))
+print("www.google.com".replace('w','p',2))
+print("www.google.com".replace('w','p',3))
+print("www.google.com".replace('ww','p',2))
+print("www.google.com".replace('www','python',2))
+---------------------------------------------------------------------------
+ppp.google.com
+ppw.google.com
+ppp.google.com
+pw.google.com
+python.google.com
+
+# strip([chars]) -> str
+    从字符串两端去除指定的字符集chars中的所有字符
+    如果chars没有指定，去除两端的空白字符
+
+s = "\r \n \t Hello Python \n \t"
+print(s.strip())
+
+s = " I am very very very sorry "
+print(s.strip('slry'))
+print(s.strip('slry '))
+---------------------------------------------------------------------------
+Hello Python
+ I am very very very sorry 
+I am very very very so
+
+# lstrip([chars]) -> str
+    从左开始
+# rstrip([chars]) -> str
+    从右开始
 ```
