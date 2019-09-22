@@ -791,3 +791,6 @@ for i in reversed(n):
 ```
 
 方法3相比方法1方法2来说，算法是最好的，时间复杂度为O(n)，空间利用率也是最高的
+
+# bytes、bytearray
+
