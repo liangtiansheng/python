@@ -737,3 +737,54 @@ True
 True
 False
 ```
+
+## 实例
+
+用户输入一个数字，判断是几位数？打印每一位数字及其重复的次数？依次打印每一位数字，顺序是个、十、百、千、万.....位？
+
+方法1：
+
+```bash
+n = input("please input integer: ")
+lst = []
+for i in n:
+    if i not in lst:
+        times = n.count(i)
+        print("{} occurs {} times".format(i,times))
+    lst.append(i)
+for i in reversed(n):
+    print(i)
+
+```
+
+方法1的时间复杂度为O(n^2)，因为count函数的时间复杂度就是O(n)，再加for循环，就达到了O(n^2)；空间利用率也不高，下面作一些优化
+
+方法2：
+
+```bash
+n = input("please input one integer: ")
+for i in range(10):
+    times = n.count(str(i))
+    if times:
+        print("{} occurs {} times".format(i,times))
+
+for i in reversed(n):
+    print(i,end="  ")
+```
+
+方法2的时间复杂度为O(n*10)，空间利用率也比方法1的算法好
+
+方法3：
+
+```bash
+n = input("please input one integer: ")
+lst = [0]*10
+for i in n:
+    lst[int(i)] += 1
+
+for i in range(10):
+    if lst[i]:
+        print("{} occurs {} times".format(i,lst[i]))
+```
+
+方法3相比方法1方法2来说，算法是最好的，时间复杂度为O(n)，空间利用率也是最高的
