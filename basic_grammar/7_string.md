@@ -300,6 +300,167 @@ prid INTEGER)
 
 在Python3中，所有的字符串都是Unicode字符串。
 
+## bytes、bytearray
+
+> Python3 引入两个新类型
+
++ bytes **不可变**字节序列
++ bytearray **可变**字节数组
+
+> 字符串与bytes
+
++ 字符串是字符组成的有序序列，字符可以使用编码来理解
++ bytes是字节组成的有序的**不可变**序列
++ bytearray是字节组成的有序的**可变**序列
+
+> 编码与解码
+
++ 字符串按照不同的字符集编码encode返回字节序列bytes
++ encode(encoding='utf-8',errors='strict') -> bytes
+
+```bash
+"中".encode()
+---------------------------------------------------------------------------
+b'\xe4\xb8\xad'
+
+"abcd".encode()
+---------------------------------------------------------------------------
+b'abcd'
+```
+
++ 字节序列按照不同的字符集解码decode返回字符串
++ bytes.decode(encoding="utf-8", errors="strict") -> str
++ bytearray.decode(encoding="utf-8", errors="strict") -> str
+
+```bash
+b'\xe4\xb8\xad'.decode()
+---------------------------------------------------------------------------
+'中'
+
+b'abcd'.decode()
+---------------------------------------------------------------------------
+'abcd'
+
+bytearray(b"abcde").decode()
+---------------------------------------------------------------------------
+'abcde'
+```
+
+> bytes定义
+
++ bytes()空bytes
++ bytes(int)指定字节的bytes，被0填充
++ bytes(iterable_of_ints) -> bytes[0,255]的int组成的可迭代对象
++ bytes(string, encoding[, errors]) -> bytes 等价于string.encode()
++ bytes(bytes_or_buffer) -> immutable copy of bytes_or_buffer 从一个字节序列或者buffer复制出一个新的不可变的bytes对象
++ 使用b前缀定义
++ 只允许基本ASCII使用字符形式b'abc9'
++ 使用16进制表示b"\x41\x61"
+
+> bytes操作
+
+```bash
+#  和str类型类似，都是不可变类型，所以方法很多都一样。只不过bytes的方法，输入是bytes，输出是bytes
+b'abcdef'.replace(b'f',b'k')
+---------------------------------------------------------------------------
+b'abcdek'
+
+b'abc'.find(b'b')
+---------------------------------------------------------------------------
+1
+```
+
+```bash
+# 类方法 bytes.fromhex(string)
+# string必须是2个字符的16进制的形式，'6162 6a 6b'，空格将被忽略
+bytes.fromhex('6162096a 6b00')
+---------------------------------------------------------------------------
+b'ab\tjk\x00'
+```
+
+```bash
+#  hex()，返回16进制表示的字符串
+'abc'.encode().hex()
+---------------------------------------------------------------------------
+'616263'
+```
+
+```bash
+# 索引，返回该字节对应的数，int类型
+b'abcdef'[2]
+---------------------------------------------------------------------------
+99
+```
+
+> bytearray定义
+
++ bytearray() 空bytearray
++ bytearray(int) 指定字节的bytearray，被0填充
++ bytearray(iterable_of_ints) -> bytearray [0,255]的int组成的可迭代对象
++ bytearray(string, encoding[, errors]) -> bytearray 近似string.encode()，不过返回可变对象
++ bytearray(bytes_or_buffer) 从一个字节序列或者buffer复制出一个新的可变的bytearray对象
+
+**注意：**b前缀定义的类型是bytes类型
+
+> bytearray操作
+
+```bash
+# 和bytes类型的方法相同
+bytearray(b'abcdef').replace(b'f',b'k')
+---------------------------------------------------------------------------
+bytearray(b'abcdek')
+
+bytearray(b'abc').find(b'b')
+---------------------------------------------------------------------------
+1
+```
+
+```bash
+# 类方法 bytearray.fromhex(string)
+# string必须是2个字符的16进制的形式，'6162 6a 6b'，空格将被忽略
+bytearray.fromhex('6162 09 6a 6b00')
+---------------------------------------------------------------------------
+bytearray(b'ab\tjk\x00')
+```
+
+```bash
+# hex()，返回16进制表示的字符串
+bytearray('abc'.encode()).hex()
+---------------------------------------------------------------------------
+'616263'
+```
+
+```bash
+# 索引，返回该字节对应的数，int类型
+bytearray(b'abcdef')[2]
+---------------------------------------------------------------------------
+99
+```
+
+> bytearray跟bytes最大的区别就是bytearray是可变类型，所以bytearray自然拥有可变序列常用的操作方法
+
++ append(int) 尾部追加一个元素
++ insert(index, int) 在指定索引位置插入元素
++ extend(iterable_of_ints) 将一个可迭代的整数集合追加到当前bytearray
++ pop(index=-1) 从指定索引上移除元素，默认从尾部移除
++ remove(value) 找到第一个value移除，找不到抛ValueError异常
++ clear() 清空bytearray
++ reverse() 翻转bytearray，就地修改
+
+**注意：**上述方法若需要使用int类型，值在[0, 255]
+
+```bash
+b = bytearray()
+b.append(97)
+b.append(99)
+b.insert(1,98)
+b.extend([65,66,67])
+b.remove(66)
+b.pop()
+b.reverse()
+b.clear()
+```
+
 ## Python 的字符串内建函数
 
 Python 的字符串常用内建函数如下：
@@ -791,6 +952,3 @@ for i in reversed(n):
 ```
 
 方法3相比方法1方法2来说，算法是最好的，时间复杂度为O(n)，空间利用率也是最高的
-
-# bytes、bytearray
-
