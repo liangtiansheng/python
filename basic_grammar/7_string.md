@@ -753,7 +753,7 @@ for i in n:
         print("{} occurs {} times".format(i,times))
     lst.append(i)
 for i in reversed(n):
-    print(i)
+    print(i,end="  ")
 
 ```
 
@@ -785,6 +785,9 @@ for i in n:
 for i in range(10):
     if lst[i]:
         print("{} occurs {} times".format(i,lst[i]))
+
+for i in reversed(n):
+    print(i,end="  ")
 ```
 
 方法3相比方法1方法2来说，算法是最好的，时间复杂度为O(n)，空间利用率也是最高的
