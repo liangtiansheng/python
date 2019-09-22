@@ -179,9 +179,9 @@ Python2.6 开始，新增了一种格式化字符串的函数 str.format()，它
 
 > format函数格式字符串语法——Python鼓励使用
 
-1.sdfs dfs fdsfd sdf 
-    1.sdfs dfsd fsd 
-    2.sdf sdf 
+1.sdfs dfs fdsfd sdf  
+    1.sdfs dfsd fsd  
+    2.sdf sdf  
 
 ## Python三引号
 
