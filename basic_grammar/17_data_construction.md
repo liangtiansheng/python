@@ -389,3 +389,77 @@ banana
 orange
 pear
 ```
+
+## 数据结构共性
+
+> 线性结构
+
++ 可迭代(for...in)
++ len()可以获取长度
++ 通过下标可以访问
++ 可以切片
+
+> 学过的线性结构
+
++ 列表
++ 元组
++ 字符串
++ bytes
++ bytearray
+
+> 切片
+
++ 通过索引区间访问线性结构的一段数据
++ sequence[start:stop] 表示返回[start, stop)区间的子序列
++ 支持负索引
++ start为0，可以省略
++ stop为末尾，可以省略
++ 超过上界（右边界），就取到末尾；超过下界（左边界），取到开头
++ start一定要在stop的左边
++ [:] 表示从头至尾，全部元素被取出，等效于copy()方法
+
+```bash
+print('www.magedu.com'[4:10])
+print('www.magedu.com'[:10])
+print('www.magedu.com'[4:])
+print('www.magedu.com'[:])
+print('www.magedu.com'[:-1])
+print('www.magedu.com'[4:-4])
+print('www.magedu.com'[4:50])
+print(b'www.magedu.com'[-40:10])
+print(bytearray(b'www.magedu.com')[-4:10])
+print(tuple('www.magedu.com')[-10:10])
+print(list('www.magedu.com')[-10:-4])
+---------------------------------------------------------------------------
+magedu
+www.magedu
+magedu.com
+www.magedu.com
+www.magedu.co
+magedu
+magedu.com
+b'www.magedu'
+bytearray(b'')
+('m', 'a', 'g', 'e', 'd', 'u')
+['m', 'a', 'g', 'e', 'd', 'u']
+```
+
+> 步长切片
+
++ [start:stop:step]
++ step为步长，可以正、负整数，默认是1
++ step要和start:stop同向，否则返回空序列
+
+```bash
+print('www.magedu.com'[4:10:2])
+print(list('www.magedu.com')[4:10:-2])
+print(tuple('www.magedu.com')[-10:-4:2])
+print(b'www.magedu.com'[-4:-10:2])
+print(bytearray(b'www.magedu.com')[-4:-10:-2])
+---------------------------------------------------------------------------
+mgd
+[]
+('m', 'g', 'd')
+b''
+bytearray(b'.dg')
+```
