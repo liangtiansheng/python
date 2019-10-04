@@ -686,3 +686,16 @@ print(val)
 
 +  环境变量JAVA_HOME=/usr/bin，返回环境变量名和路径
 
+```bash
+key,_,val = "JAVA_HOME = /usr/bin".partition('=')
+print(key)
+print(val)
+---------------------------------------------------------------------------
+JAVA_HOME 
+ /usr/bin
+```
+
+> 总结
+
++  解构，是Python提供的很好的功能，可以方便的提取复杂数据结构的值
++   配合 _ 的使用，会更加便利
