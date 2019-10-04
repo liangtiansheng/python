@@ -128,14 +128,52 @@ KeyError: 7
 + 从set中移除一个元素
 + 元素不存在，什么都不做
 
+```bash
+s = set([1,2,3,4])
+print(s)
+s.discard(7)
+---------------------------------------------------------------------------
+{1, 2, 3, 4}
+```
+
 > pop() -> item
 
 + 移除并返回任意的元素。为什么是任意元素？
 + 空集返回KeyError异常
 
+```bash
+s = set([1,2,3,4])
+print(s.pop())
+print(s.pop())
+print(s.pop())
+print(s.pop())
+print(s.pop())
+---------------------------------------------------------------------------
+1
+2
+3
+4
+---------------------------------------------------------------------------
+KeyError                                  Traceback (most recent call last)
+<ipython-input-114-29aa55ccdae7> in <module>
+      4 print(s.pop())
+      5 print(s.pop())
+----> 6 print(s.pop())
+
+KeyError: 'pop from an empty set'
+```
+
 > clear()
 
 + 移除所有元素
+
+```bash
+s = set([1,2,3,4])
+s.clear()
+print(s)
+---------------------------------------------------------------------------
+set()
+```
 
 ## set修改、查询
 
@@ -156,6 +194,89 @@ KeyError: 7
 
 + in 和 not in 判断元素是否在set中
 + 效率呢？
+
+```bash
+%%timeit lst1 = list(range(100))
+a = -1 in lst1
+---------------------------------------------------------------------------
+1.16 µs ± 2.09 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+
+%%timeit lst1 = list(range(1000000))
+a = -1 in lst1
+---------------------------------------------------------------------------
+11.5 ms ± 74.5 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+
+%%timeit set1 = set(range(100))
+a = -1 in set1
+---------------------------------------------------------------------------
+32.7 ns ± 0.272 ns per loop (mean ± std. dev. of 7 runs, 10000000 loops each)
+
+%%timeit set1 = set(range(1000000))
+a = -1 in set1
+---------------------------------------------------------------------------
+34.1 ns ± 1.5 ns per loop (mean ± std. dev. of 7 runs, 10000000 loops each)
+
+%timeit set1 = set(range(100))
+---------------------------------------------------------------------------
+2.44 µs ± 28.8 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+
+%timeit set1 = set(range(1000000))
+---------------------------------------------------------------------------
+103 ms ± 2.45 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+
+%timeit lst1 = list(range(100))
+---------------------------------------------------------------------------
+1.11 µs ± 39.2 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+
+%timeit lst1 = list(range(1000000))
+---------------------------------------------------------------------------
+41.5 ms ± 227 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+```
+
+## set和线性结构
+
++ 线性结构的查询时间复杂度是O(n)，即随着数据规模的增大而增加耗时
++ set、dict等结构，内部使用hash值作为key，时间复杂度可以做到O(1)，查询时间和数据规模无关
++ set的元素必须是可hash的
+
+> 可hash
+
++ 数值型int、float、complex
++ 布尔型True、False
++ 字符串string、bytes
++ tuple
++ None
++ 以上都是不可变类型，成为可哈希类型，hashable
+
+## 集合基本概念
+
+> 全集
+
++ 所有元素的集合。例如实数集，所有实数组成的集合就是全集
+
+> 子集subset和超集superset
+
++ 一个集合A所有元素都在另一个集合B内，A是B的子集，B是A的超集
+
+> 真子集和真超集
+
++ A是B的子集，且A不等于B，A就是B的真子集，B是A的真超集
+
+> 并集
+
++ 多个集合合并的结果
+
+> 交集
+
++ 多个集合的公共部分
+
+> 差集
+
++ 集合中除去和其他集合公共部分
+
+## 集合运算
+
+
 
 ## 集合内置方法完整列表
 
