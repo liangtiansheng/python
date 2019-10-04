@@ -1,207 +1,161 @@
 # Python3 集合
 
-集合（set）是一个无序的不重复元素序列。
+set 翻译为集合，是一个**无序的**、**可变的**、**不重复的**元素序列。
+
+collection 翻译为集合类型，是一个大概念
 
 可以使用大括号 { } 或者 set() 函数创建集合，注意：创建一个空集合必须用 set() 而不是 { }，因为 { } 是用来创建一个空字典。
 
-创建格式：
+## set定义
+
++ set() -> new empty set object
++ set(iterable) -> new set object
 
 ```bash
-parame = {value01,value02,...}
-或者
-set(value)
+s1 = set()
+type(s1)
+---------------------------------------------------------------------------
+set
+
+s2 = set(range(5))
+print(s2)
+---------------------------------------------------------------------------
+{0, 1, 2, 3, 4}
+
+s3 = set(list(range(10)))
+print(s3)
+---------------------------------------------------------------------------
+{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+s4 = {}
+type(s4
+---------------------------------------------------------------------------
+dict
+
+s5 = {1,2,3,4}
+type(s5)
+---------------------------------------------------------------------------
+set
+
+s6 = {(1,2),3,'a'}
+print(s6)
+---------------------------------------------------------------------------
+{(1, 2), 'a', 3}
+
+s7 = {[1],(1,),1}
+print(s7)
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-85-3bcf3ef8dc67> in <module>
+----> 1 s7 = {[1],(1,),1}
+      2 print(s7)
+
+TypeError: unhashable type: 'list'
 ```
+
+## set的元素
+
++  set的元素要求必须可以hash
++  目前学过的不可hash的类型有list、set
++  元素不可以索引
++  set可以迭代
+
+## set增加
+
+> add(elem)
+
++ 增加一个元素到set中
++ 如果元素存在，什么都不做
 
 ```bash
->>>basket = {'apple', 'orange', 'apple', 'pear', 'orange', 'banana'}
->>> print(basket)                      # 这里演示的是去重功能
-{'orange', 'banana', 'pear', 'apple'}
->>> 'orange' in basket                 # 快速判断元素是否在集合内
-True
->>> 'crabgrass' in basket
-False
-
->>> # 下面展示两个集合间的运算.
-...
->>> a = set('abracadabra')
->>> b = set('alacazam')
->>> a
-{'a', 'r', 'b', 'c', 'd'}
->>> a - b                              # 集合a中包含而集合b中不包含的元素
-{'r', 'd', 'b'}
->>> a | b                              # 集合a或b中包含的所有元素
-{'a', 'c', 'r', 'd', 'b', 'm', 'z', 'l'}
->>> a & b                              # 集合a和b中都包含了的元素
-{'a', 'c'}
->>> a ^ b                              # 不同时包含于a和b的元素
-{'r', 'd', 'b', 'm', 'z', 'l'}
+s = set([1,2,3,4])
+print(s)
+s.add('abc')
+print(s)
+s.add(1)
+print(s)
+---------------------------------------------------------------------------
+{1, 2, 3, 4}
+{1, 2, 3, 4, 'abc'}
+{1, 2, 3, 4, 'abc'}
 ```
 
-类似列表推导式，同样集合支持集合推导式(Set comprehension):
+> update(*others)
+
++ 合并其他元素到set集合中来
++ 参数others必须是**可迭代对象**
++ 就地修改
 
 ```bash
->>>a = {x for x in 'abracadabra' if x not in 'abc'}
->>> a
-{'r', 'd'}
+s = set([1,2,3,4])
+s.update(('a','b','c'))
+print(s)
+s.update(['o','p','q'])
+print(s)
+s.update({"x":50,"y":60,"z":70})
+print(s)
+---------------------------------------------------------------------------
+{1, 2, 3, 4, 'b', 'c', 'a'}
+{1, 2, 3, 4, 'b', 'c', 'o', 'q', 'p', 'a'}
+{1, 2, 3, 4, 'b', 'c', 'o', 'z', 'q', 'p', 'a', 'x', 'y'}
 ```
 
-## 集合的基本操作
+## set删除
 
-### 添加元素
+> remove(elem)
 
-语法格式如下：
++ 从set中移除一个元素
++ 元素不存在，抛出KeyError异常。为什么是KeyError？
 
 ```bash
-s.add( x )
+s = set([1,2,3,4])
+print(s)
+s.remove(7)
+---------------------------------------------------------------------------
+{1, 2, 3, 4}
+---------------------------------------------------------------------------
+KeyError                                  Traceback (most recent call last)
+<ipython-input-99-7d9c0c061566> in <module>
+      1 s = set([1,2,3,4])
+      2 print(s)
+----> 3 s.remove(7)
+
+KeyError: 7
 ```
 
-将元素 x 添加到集合 s 中，如果元素已存在，则不进行任何操作。
+> discard(elem)
 
-```bash
->>>thisset = set(("Google", "Runoob", "Taobao"))
->>> thisset.add("Facebook")
->>> print(thisset)
-{'Taobao', 'Facebook', 'Google', 'Runoob'}
-```
++ 从set中移除一个元素
++ 元素不存在，什么都不做
 
-还有一个方法，也可以添加元素，且参数可以是列表，元组，字典等，语法格式如下：
+> pop() -> item
 
-```bash
-s.update( x )
-```
++ 移除并返回任意的元素。为什么是任意元素？
++ 空集返回KeyError异常
 
-x 可以有多个，用逗号分开。
+> clear()
 
-```bash
->>>thisset = set(("Google", "Runoob", "Taobao"))
->>> thisset.update({1,3})
->>> print(thisset)
-{1, 3, 'Google', 'Taobao', 'Runoob'}
->>> thisset.update([1,4],[5,6])  
->>> print(thisset)
-{1, 3, 4, 5, 6, 'Google', 'Taobao', 'Runoob'}
->>>
-```
++ 移除所有元素
 
-### 移除元素
+## set修改、查询
 
-语法格式如下：
+> 修改
 
-```bash
-s.remove( x )
-```
++ 要么删除，要么加入新的元素
++ 为什么没有修改？
 
-将元素 x 从集合 s 中移除，如果元素不存在，则会发生错误。
+> 查询
 
-```bash
->>>thisset = set(("Google", "Runoob", "Taobao"))
->>> thisset.remove("Taobao")
->>> print(thisset)
-{'Google', 'Runoob'}
->>> thisset.remove("Facebook")   # 不存在会发生错误
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-KeyError: 'Facebook'
->>>
-```
++ 非线性结构，无法索引
 
-此外还有一个方法也是移除集合中的元素，且如果元素不存在，不会发生错误。格式如下所示：
+> 遍历
 
-```bash
-s.discard( x )
-```
++ 可以迭代所有元素
 
-```bash
->>>thisset = set(("Google", "Runoob", "Taobao"))
->>> thisset.discard("Facebook")  # 不存在不会发生错误
->>> print(thisset)
-{'Taobao', 'Google', 'Runoob'}
-```
+> 成员运算符
 
-我们也可以设置随机删除集合中的一个元素，语法格式如下：
-
-```bash
-s.pop()
-```
-
-```bash
-thisset = set(("Google", "Runoob", "Taobao", "Facebook"))
-x = thisset.pop()
-
-print(x)
-```
-
-输出结果：
-
-```bash
-$ python3 test.py
-Runoob
-```
-
-多次执行测试结果都不一样。
-
-然而在交互模式，pop 是删除集合的第一个元素（排序后的集合的第一个元素）。
-
-```bash
->>>thisset = set(("Google", "Runoob", "Taobao", "Facebook"))
->>> thisset.pop()
-'Facebook'
->>> print(thisset)
-{'Google', 'Taobao', 'Runoob'}
->>>
-```
-
-### 计算集合元素个数
-
-语法格式如下：
-
-```bash
-len(s)
-```
-
-计算集合 s 元素个数。
-
-```bash
->>>thisset = set(("Google", "Runoob", "Taobao"))
->>> len(thisset)
-3
-```
-
-### 清空集合
-
-语法格式如下：
-
-```bash
-s.clear()
-```
-
-清空集合 s。
-
-```bash
->>>thisset = set(("Google", "Runoob", "Taobao"))
->>> thisset.clear()
->>> print(thisset)
-set()
-```
-
-### 判断元素是否在集合中存在
-
-语法格式如下：
-
-```bash
-x in s
-```
-
-判断元素 x 是否在集合 s 中，存在返回 True，不存在返回 False。
-
-```bash
->>>thisset = set(("Google", "Runoob", "Taobao"))
->>> "Runoob" in thisset
-True
->>> "Facebook" in thisset
-False
->>>
-```
++ in 和 not in 判断元素是否在set中
++ 效率呢？
 
 ## 集合内置方法完整列表
 
