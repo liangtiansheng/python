@@ -55,10 +55,10 @@ TypeError: unhashable type: 'list'
 
 ## set的元素
 
-+  set的元素要求必须可以hash
-+  目前学过的不可hash的类型有list、set
-+  元素不可以索引
-+  set可以迭代
++ set的元素要求必须可以hash
++ 目前学过的不可hash的类型有list、set
++ 元素不可以索引
++ set可以迭代
 
 ## set增加
 
@@ -275,6 +275,25 @@ a = -1 in set1
 + 集合中除去和其他集合公共部分
 
 ## 集合运算
+
+> 并集
+
++ 将两个集合A和B的所有的元素合并到一起，组成的集合称作集合A与集合B的并集
++ union(*others), 返回和多个集合合并后的新的集合
++ | 运算符重载, 等同union
++ update(*others), 和多个集合合并，就地修改
++ |=, 等同update
+
+![union](images/union.png)
+
+> 交集
+
++ 集合A和B，由所有属于A且属于B的元素组成的集合
++ intersection(*others)，返回和多个集合的交集
++ &，等同intersection
++ intersection_update(*others)，获取和多个集合的交集，并就地修改
++ &=，等同intersection_update
+
 
 
 
