@@ -294,8 +294,48 @@ a = -1 in set1
 + intersection_update(*others)，获取和多个集合的交集，并就地修改
 + &=，等同intersection_update
 
+![交集](images/交集.jpg)
 
+> 差集
 
++ 集合A和B，由所有属于A且不属于B的元素组成的集合
++ difference(*others), 返回和多个集合的差集
++ -, 等同difference
++ difference_update(*others), 获取和多个集合的差集并就地修改
++ -=, 等同difference_update
+
+![差集](images/差集.png)
+
+> 对称差集
+
++ 集合A和B，由所有不属于A和B的交集元素组成的集合，记作（A-B）∪（B-A）
++ symmetric_differece(other), 返回和另一个集合的差集
++ ^, 等同symmetric_differece
++ symmetric_differece_update(other), 获取和另一个集合的差集并就地修改
++ ^=, 等同symmetric_differece_update
+
+![对称差集](images/对称差集.png)
+
+> issubset(other)、<=
+
++ 判断当前集合是否是另一个集合的子集
+
+> set1 < set2
+
++ 判断set1是否是set2的真子集
+
+> issuperset(other)、>=
+
++ 判断当前集合是否是other的超集
+
+> set1 > set2
+
++ 判断set1是否是set的真超集
+
+> isdisjoint(other)
+
++ 当前集合和另一个集合没有交集
++ 没有交集，返回True
 
 ## 集合内置方法完整列表
 
