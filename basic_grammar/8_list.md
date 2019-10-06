@@ -430,6 +430,37 @@ print("---------")
 测试效率：371 µs ± 8.43 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
 ```
 
+方法2：根据杨辉三角的定理：第n行的m个数(m > 0 且 n > 0)可表示为C(n-1,m-1)，即为从n-1个不同元素中取m-1个元素的组合数。
+
+```bash
+# 组合数公式：有m个不同元素，任意取n(n <= m)个元素，记作C(m,n)，组合数公式为：C(m,n) = m!/(n!(m-n)!)
+
+# m 行 k 列的值，C(m-1,k-1)组合数
+m = 9
+k = 5
+n = m - 1
+r = k - 1
+d = n - r
+# C(m-1,k-1) = n!/(r!d!)
+targets = []
+factorial = 1
+for i in range(1,n+1):
+    factorial *= i
+    if i == r:
+        targets.append(factorial)
+    if i == d:
+        targets.append(factorial)
+    if i == n:
+        targets.append(factorial)
+# print(targets)
+print(targets[2]//(targets[0]*targets[1]))
+
+测试效率：88 µs ± 2.57 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+
+注：i == r、 i==n、 i==d 这三个条件不要写在一起，因为他们有可能两两相等。
+算法说明：一趟到 n 的阶乘算出所有阶乘值。
+```
+
 例4：冒泡法排序
 
 ```bash
