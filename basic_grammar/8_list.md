@@ -488,7 +488,7 @@ for i in range(length):
 print(nums, count_swap, count)
 ```
 
-例5：转置矩阵
+例5：转置矩阵方阵
 
 有一个方阵，左边方阵，求其转置矩阵
 
@@ -521,4 +521,71 @@ print(count)
 [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 [[1, 4, 7], [2, 5, 8], [3, 6, 9]]
 3
+```
+
+方法2：
+
+```bash
+matrix = [[1,2,3],[4,5,6],[7,8,9]]
+length = len(matrix)
+count = 0
+for i in range(length):
+    for j in range(i): # 这个循环很关键，正好通过边界控制取对角线以下的值，不包括对角线值
+        matrix[i][j],matrix[j][i] = matrix[j][i],matrix[i][j]
+        count +=1
+print(matrix)
+print(count)
+----------------------------------------------------
+[[1, 4, 7], [2, 5, 8], [3, 6, 9]]
+3
+```
+
+例6：转置矩阵非方阵
+
+```bash
+1 2 3          1 4
+4 5 6   <==>   2 5
+               3 6
+```
+
+方法1：扫描matrix第一行，在tm的第一列从上至下附加，然后再第二列附加，举例，扫描第一行1，2，3，加入到tm第一列，扫描第二行4，5，6，追加到tm第二列
+
+```bash
+# 定义一个矩阵，不考虑稀疏矩阵
+matrix = [[1,2,3],[4,5,6]]
+tm = []
+count = 0
+for row in matrix:
+    for i,col in enumerate(row):
+        if len(tm) < i + 1:
+            tm.append([])
+        tm[i].append(col)
+        count += 1
+print(matrix)
+print(tm)
+print(count)
+-----------------------------------------------
+[[1, 2, 3], [4, 5, 6]]
+[[1, 4], [2, 5], [3, 6]]
+6
+```
+
+方法2：能否一次性开辟目标矩阵的内存空间？如果可以，原矩阵的元素直接移动到转置矩阵的对称坐标就行了
+
+```bash
+matrix = [[1,2,3],[4,5,6]]
+tm = [[0 for col in range(len(matrix))] for row in range(len(matrix[0]))]
+count = 0
+
+for i,row in enumerate(tm):
+    for j,col in enumerate(row):
+        tm[i][j] = matrix[j][i]
+        count += 1
+print(matrix)
+print(tm)
+print(count)
+----------------------------------------------
+[[1, 2, 3], [4, 5, 6]]
+[[1, 4], [2, 5], [3, 6]]
+6
 ```
