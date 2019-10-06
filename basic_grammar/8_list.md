@@ -579,7 +579,7 @@ count = 0
 
 for i,row in enumerate(tm):
     for j,col in enumerate(row):
-        tm[i][j] = matrix[j][i]
+        tm[i][j] = matrix[j][i] # 将matrix的所有元素搬到tm中
         count += 1
 print(matrix)
 print(tm)
