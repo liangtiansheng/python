@@ -589,3 +589,58 @@ print(count)
 [[1, 4], [2, 5], [3, 6]]
 6
 ```
+
+例7：数字统计
+
+随机产生10个数字  
+要求：  
+每个数字取值范围[1,20]  
+统计重复的数字有几个？分别是什么？  
+统计不重复的数字有几个？分别是什么？  
+举例：11，7，5，11，6，7，4，其中2个数字7和11重复了，3个数字4、5、6没有重复过  
+
+思路：  
+对于一个排序的序列，相等的数字会挨在一起。但是如果先排序，还是要花时间，能否不排序解决？  
+例如11，7，5，11，6，7，4，先拿出11，依次从第二个数字开始比较，发现11就把对应索引标记，这样一趟比较就知道11是否重复，哪些地方重复。第二趟使用7和其后数字依次比较，发现7就标记，当遇到以前比较过的11的位置的时候，其索引已经被标记为1，直接跳过。  
+
+```bash
+import random
+
+nums = []
+for _ in range(10):
+    nums.append(random.randrange(21))
+
+print("Origin numbers = {}".format(nums))
+print()
+
+length = len(nums)
+samenums = []
+diffnums = []
+states = [0] * length # 记录不同的索引异同状态
+
+for i in range(length):
+    flag = False
+    if states[i] == 1:
+        continue
+    for j in range(i+1,length):
+        if states[j] == 1:
+            continue
+        if nums[i] == nums[j]:
+            flag = True
+            states[j] = 1
+    if flag:
+        samenums.append(nums[i])
+        states[i] = 1
+    else:
+        diffnums.append(nums[i])
+
+print("Same numbers = {1}, Counter = {0}".format(len(samenums),samenums))
+print("Different numbers = {1}, Counter = {0}".format(len(diffnums),diffnums))
+print(list(zip(states,nums)))
+------------------------------------------------------------------------------------
+Origin numbers = [8, 16, 14, 6, 15, 16, 20, 15, 9, 15]
+
+Same numbers = [16, 15], Counter = 2
+Different numbers = [8, 14, 6, 20, 9], Counter = 5
+[(0, 8), (1, 16), (0, 14), (0, 6), (1, 15), (1, 16), (0, 20), (1, 15), (0, 9), (1, 15)]
+```
