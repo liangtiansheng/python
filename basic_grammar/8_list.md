@@ -402,7 +402,35 @@ for i in range(n):
     print(row[:i+1])    # 每一个 i 被 j 循环完，就可以截取 i + 1 个刚拼好的杨辉三角序列
 ```
 
-例3：冒泡法排序
+例3：求杨辉三角第n行第k列的值
+
+方法1：计算到m行，打印出k项
+
+```bash
+# 求m行k个元素
+# m行元素有m个，所以k不能大于m
+# 这个需求需要保存m行的数据，那么可以使用一个嵌套机构[[],[],[]]
+m = 5
+k = 4
+triangle = []
+for i in range(m):
+    # 所有行都需要1开头
+    row = [1]
+    triangle.append(row)
+    if i == 0:
+        continue
+    for j in range(1,i):
+        row.append(triangle[i-1][j-1] + triangle[i-1][j])
+    row.append(1)
+print(triangle)
+print("---------")
+print(triangle[m-1][k-1])
+print("---------")
+
+测试效率：371 µs ± 8.43 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+```
+
+例4：冒泡法排序
 
 ```bash
 num_list = [[1,9,8,5,6,7,4,3,2],[1,2,3,4,5,6,7,8,9],[1,2,3,4,5,6,7,9,8],[9,8,7,6,5,4,3,2,1]]
