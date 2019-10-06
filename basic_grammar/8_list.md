@@ -499,3 +499,26 @@ print(nums, count_swap, count)
 
 规律：对角线不动，a[i][j] <=> a[j][i]，而且到了对角线，就停止，去做下一行，对角线上的元素不动。
 ```
+
+```bash
+# 定义一个方阵
+# 1 2 3       1 4 7
+# 4 5 6 ==>   2 5 8
+# 7 8 9       3 6 9
+matrix = [[1,2,3],[4,5,6],[7,8,9]]
+print(matrix)
+count = 0
+for i, row in enumerate(matrix):
+    for j, col in enumerate(row):
+        if i < j: # 这个条件是问题的关键所在，为什么是 i < j，可以手稿分析一下
+            temp = matrix[i][j]
+            matrix[i][j] = matrix[j][i]
+            matrix[j][i] = temp
+            count += 1
+print(matrix)
+print(count)
+--------------------------------------------------
+[[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+[[1, 4, 7], [2, 5, 8], [3, 6, 9]]
+3
+```
