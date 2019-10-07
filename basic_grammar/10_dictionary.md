@@ -277,3 +277,105 @@ for _ ,v in d.items():
   + Dictionary view对象
   + 字典的entry的动态的视图，字典变化，视图将反映出这些变化
 + Python2中，上面的方法会返回一个新的列表，占据新的内存空间。所以Python2建议使用iterkeys、itervalues、iteritems版本，返回一个迭代器，而不是一个copy
+
+## 字典遍历和移除
+
+> 如何在遍历的时候移除元素
+
+```bash
+# 错误的做法
+d = dict(a=1, b=2, c='abc')
+for k,v in d.items():
+    d.pop(k) # 异常
+---------------------------------------------------------------------------
+RuntimeError                              Traceback (most recent call last)
+<ipython-input-12-0f05b4388341> in <module>
+      1 d = dict(a=1, b=2, c='abc')
+----> 2 for k,v in d.items():
+      3     d.pop(k) # 异常
+
+RuntimeError: dictionary changed size during iteration
+
+while len(d): # 相当于清空，不如直接clear()
+    print(d.popitem())
+```
+
+```bash
+# 正确的做法
+d = dict(a=1, b=2, c='abc')
+keys = []
+for k,v in d.items():
+    if isinstance(v, str):
+        keys.append(k)
+
+for k in keys:
+    d.pop(k)
+print(d)
+```
+
+## 字典的key
+
+> key的要求和set的元素要求一致
+
++ set的元素可以就是看做key，set可以看做dict的简化版
++ hashable 可哈希才可以作为key，可以使用hash()测试
++ d = {1 : 0, 2.0 : 3, "abc" : None, ('hello', 'world', 'python') : "string", b'abc' : '135'}
+
+## defaultdict
+
++ collections.defaultdict([default_factory[, ...]])
+  + 第一个参数是default_factory，缺省是None，它提供一个初始化函数。当key不存在的时候，会调用这个工厂函数来生成key对应的value
+
+```bash
+import random
+d1 = {}
+for k in 'abcdef':
+    for i in range(random.randint(1,5)):
+        if k not in d1.keys():
+            d1[k] = []
+        d1[k].append(i)
+print(d1)
+
+对比：
+
+from collections import defaultdict
+import random
+
+d1 = defaultdict(list)
+for k in 'abcdef':
+    for i in range(random.randint(1,5)):
+        d1[k].append(i)
+print(d1)
+```
+
+## OrderedDict
+
++ collections.OrderedDict([items])
+  + key并不是按照加入的顺序排列，可以使用OrderedDict记录顺序
+
+```bash
+from collections import OrderedDict
+import random
+d = {'banana':3,'apple':4,'pear':1,'orange':2}
+print(d)
+keys = list(d.keys())
+random.shuffle(keys)
+print(keys)
+od = OrderedDict()
+for key in keys:
+    od[key] = d[key]
+print(od)
+print(od.keys())
+----------------------------------------------------------------
+{'banana': 3, 'apple': 4, 'pear': 1, 'orange': 2}
+['apple', 'pear', 'banana', 'orange']
+OrderedDict([('apple', 4), ('pear', 1), ('banana', 3), ('orange', 2)])
+odict_keys(['apple', 'pear', 'banana', 'orange'])
+```
+
++ 有序字典可以记录元素插入的顺序，打印的时候也是按照这个顺序输出打印
++ 3.6版本的Python的字典就是记录key插入的顺序（IPython不一定有效果）
++ 应用场景：
+  + 假如使用字典记录了N个产品，这些产品使用ID由小到大加入到字典中
+  + 除了使用字典检索的遍历，有时候需要取出ID，但是希望是按照输入的顺序，因为输入顺序是有序的
+  + 否则还需要重新把遍历到的值排序
