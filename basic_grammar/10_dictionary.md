@@ -229,3 +229,51 @@ print(c)
 
 ## 字典遍历
 
+> 遍历key
+
+```bash
+for k in d:
+    print(k)
+
+for k in d.keys():
+    print(k)
+```
+
+> 遍历value
+
+```bash
+for k in d:
+    print(d[k])
+
+for k in d.keys():
+    print(d.get(k))
+
+for v in d.values():
+    print(v)
+```
+
+> 遍历item，即kv对
+
+```bash
+for item in d.items():
+    print(item)
+
+for item in d.items():
+    print(item[0], item[1])
+
+for k,v in d.items():
+    print(k, v)
+
+for k, _ in d.items():
+    print(k)
+
+for _ ,v in d.items():
+    print(v)
+```
+
+> 总结
+
++ Python3中，keys、values、items方法返回一个类似一个生成器的可迭代对象，不会把函数的返回结果复制到内存中  
+  + Dictionary view对象
+  + 字典的entry的动态的视图，字典变化，视图将反映出这些变化
++ Python2中，上面的方法会返回一个新的列表，占据新的内存空间。所以Python2建议使用iterkeys、itervalues、iteritems版本，返回一个迭代器，而不是一个copy
