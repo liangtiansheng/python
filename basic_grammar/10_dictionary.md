@@ -180,9 +180,52 @@ KeyError: 'd'
 + 字典为empty，抛出KeyError异常
 
 ```bash
+d = {'a':1,'b':2,'c':3}
+print(d.popitem())
+print(d.popitem())
+print(d.popitem())
+print(d.popitem())
+------------------------------------------------------
+('c', 3)
+('b', 2)
+('a', 1)
+---------------------------------------------------------------------------
+KeyError                                  Traceback (most recent call last)
+<ipython-input-84-755869381dc0> in <module>
+      3 print(d.popitem())
+      4 print(d.popitem())
+----> 5 print(d.popitem())
 
+KeyError: 'popitem(): dictionary is empty'
 ```
 
 > clear()
 
 + 清空字典
+
+> del语句
+
+```bash
+d = {'a': 1, 'b': 2, 'c': 3, 'd': 'substitude', 'red': 3}
+c = d
+print(c)
+print(d)
+
+del(d['a'])
+print(c)
+print(d)
+
+del(d)
+print(c)
+-----------------------------------------------------------
+{'red': 3, 'd': 'substitude', 'c': 3, 'b': 2, 'a': 1}
+{'red': 3, 'd': 'substitude', 'c': 3, 'b': 2, 'a': 1}
+{'red': 3, 'd': 'substitude', 'c': 3, 'b': 2}
+{'red': 3, 'd': 'substitude', 'c': 3, 'b': 2}
+{'red': 3, 'd': 'substitude', 'c': 3, 'b': 2}
+
+注：del a['c'] 看着像删除了一个对象，本质上减少了一个对象的引用，del 实际上删除的是名称，而不是对象，对象由GC处理，另外一定要熟悉内存中深浅拷贝的本质。
+```
+
+## 字典遍历
+
