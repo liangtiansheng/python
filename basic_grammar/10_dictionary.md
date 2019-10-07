@@ -137,3 +137,52 @@ substitude
 + key不存在，就添加
 + key存在，覆盖已经存在的key对应的值
 + 就地修改
+
+```bash
+print(d)
+d.update(red=1)
+d.update((('red',2),))
+d.update({'red':3})
+print(d)
+-------------------------------------------------
+{'d': 'substitude', 'c': 3, 'b': 2, 'a': 1}
+{'d': 'substitude', 'red': 3, 'a': 1, 'c': 3, 'b': 2}
+```
+
+## 字典删除
+
+> pop(key[, default])
+
++ key存在，移除它，并返回它的value
++ key不存在，返回给定的default
++ default未设置，key不存在则抛出KeyError异常
+
+```bash
+d = {'a':1,'b':2,'c':3}
+print(d.pop('d','nothing'))
+print(d.pop('d'))
+--------------------------------------
+nothing
+---------------------------------------------------------------------------
+KeyError                                  Traceback (most recent call last)
+<ipython-input-80-2e770a681a96> in <module>
+      1 d = {'a':1,'b':2,'c':3}
+      2 print(d.pop('d','nothing'))
+----> 3 print(d.pop('d'))
+
+KeyError: 'd'
+
+```
+
+> popitem()
+
++ 移除并返回一个任意的键值对
++ 字典为empty，抛出KeyError异常
+
+```bash
+
+```
+
+> clear()
+
++ 清空字典
