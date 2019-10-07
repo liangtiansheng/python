@@ -493,6 +493,29 @@ print(nums, count_swap, count)
 > 选择排序
 
 ```bash
+m_list = [[1,9,8,5,6,7,4,3,2],[1,2,3,4,5,6,7,8,9],[1,2,3,4,5,6,7,9,8],[9,8,7,6,5,4,3,2,1]]
+nums = m_list[1]
+length = len(nums)
+print(nums)
+
+count_swap = 0
+count_iter = 0
+
+for i in range(length):
+    maxindex = i
+    for j in range(i+1,length):
+        count_iter += 1
+        if nums[maxindex] < nums[j]:
+            maxindex = j
+    if i != maxindex:
+        nums[i],nums[maxindex] = nums[maxindex],nums[i]
+        count_swap += 1
+print(nums, count_swap, count_iter)
+```
+
+优化：
+
+```bash
 
 ```
 
