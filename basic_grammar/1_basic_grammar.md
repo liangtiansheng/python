@@ -157,7 +157,7 @@ total = item_one + \
         item_three
 ```
 
-在 [], {}, 或 () 中的多行语句，不需要使用反斜杠(\)，例如：
+在 [], {}, 或 () 中的多行语句，不需要使用反斜杠(\\)，例如：
 
 ```bash
 total = ['item_one', 'item_two', 'item_three',
