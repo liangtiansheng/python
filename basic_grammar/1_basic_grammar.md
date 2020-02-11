@@ -149,7 +149,7 @@ IndentationError: unindent does not match any outer indentation level
 
 ## 多行语句
 
-Python 通常是一行写完一条语句，但如果语句很长，我们可以使用反斜杠(\)来实现多行语句，例如：
+Python 通常是一行写完一条语句，但如果语句很长，我们可以使用反斜杠(\\)来实现多行语句，例如：
 
 ```bash
 total = item_one + \
