@@ -229,10 +229,10 @@ print("{0}*{1} = {2:>04}".format(3,2,2*3))
 print("{:^30}".format('centered'))
 print("{:*^30}".format('centered'))
 ---------------------------------------------------------------------------
-3*2 = 6 
+3*2 = 6
 3*2 = 6000
 3*2 = 0006
-           centered           
+           centered
 ***********centered***********
 
 # 进制
@@ -814,7 +814,7 @@ print(s.strip('slry'))
 print(s.strip('slry '))
 ---------------------------------------------------------------------------
 Hello Python
- I am very very very sorry 
+ I am very very very sorry
 I am very very very so
 
 # lstrip([chars]) -> str
