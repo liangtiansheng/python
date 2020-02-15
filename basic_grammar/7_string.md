@@ -848,6 +848,14 @@ print(s.rfind('very',-10,-1))
 ```
 
 ```bash
+help(str.index)
+Help on method_descriptor:
+
+index(...)
+    S.index(sub[, start[, end]]) -> int
+
+    Like S.find() but raise ValueError when the substring is not found.
+
 # S.index(sub[, start[, end]]) -> int
 # S.rindex(sub[, start[, end]]) -> int
 s = "I am very very very sorry"
