@@ -744,14 +744,16 @@ print(s1.partition('abc'))
 # center(width[,fillchar]) -> str
 
 n = int(input("please input integer: "))
-for i in range(-n//2,n-n//2):
+d_index = -(n//2)
+u_index = n - (n//2)
+for i in range(d_index,u_index):
     if i < 0:
-        star = "*"*(2*i+n)
+        star = "*" * (2*i+n)
         print(star.center(n))
     elif i ==0 :
-        print("*"*n)
+        print("*" * n)
     else:
-        star = "*"*(n-2*i)
+        star = "*" * (n-2*i)
         print(star.center(n))
 ---------------------------------------------------------------------------
 please input integer: 7
