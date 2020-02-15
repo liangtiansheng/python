@@ -805,7 +805,7 @@ pw.google.com
 python.google.com
 
 # strip([chars]) -> str
-    从字符串两端去除指定的字符集chars中的所有字符
+    从字符串"两端"去除指定的字符集chars中的所有字符
     如果chars没有指定，去除两端的空白字符
 
 s = "\r \n \t Hello Python \n \t"
