@@ -400,7 +400,7 @@ b'abcdef'[2]
 + bytearray(string, encoding[, errors]) -> bytearray 近似string.encode()，不过返回可变对象
 + bytearray(bytes_or_buffer) 从一个字节序列或者buffer复制出一个新的可变的bytearray对象
 
-**注意：**b前缀定义的类型是bytes类型
+**注意**: b前缀定义的类型是bytes类型
 
 > bytearray操作
 
