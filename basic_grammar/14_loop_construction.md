@@ -74,7 +74,7 @@ print ("Good bye!")
 
 ### while 循环使用 else 语句
 
-在 while … else 在条件语句为 false 时执行 else 的语句块：
+while … else 在条件语句为 false 时执行 else 的语句块：
 
 ```bash
 #!/usr/bin/python3
