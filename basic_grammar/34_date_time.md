@@ -446,9 +446,6 @@ False
 
 返回给定日期的日期码。0（星期一）到6（星期日）。月份为 1（一月） 到 12（12月）。
 
-## 其他相关模块和函数
+## datetime模块
 
-在Python中，其他处理日期和时间的模块还有：
-
-+ time 模块<https://docs.python.org/3/library/time.html>
-+ datetime模块<https://docs.python.org/3/library/datetime.html>
+对日期、时间、时间戳的处理
