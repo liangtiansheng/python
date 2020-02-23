@@ -183,7 +183,7 @@ Mo Tu We Th Fr Sa Su
 
 Time 模块包含了以下内置函数，既有时间处理的，也有转换时间格式的：
 
-### time.altzone
+> time.altzone
 
 返回格林威治西部的夏令时地区的偏移秒数。如果该地区在格林威治东部会返回负值（如西欧，包括英国）。对夏令时启用地区才能使用。
 
@@ -193,7 +193,7 @@ Time 模块包含了以下内置函数，既有时间处理的，也有转换时
 time.altzone -28800
 ```
 
-### time.asctime([tupletime])
+> time.asctime([tupletime])
 
 接受时间元组并返回一个可读的形式为"Tue Dec 11 18:07:14 2008"（2008年12月11日 周二18时07分14秒）的24个字符的字符串。
 
@@ -204,7 +204,8 @@ time.altzone -28800
 time.asctime(t): Thu Apr  7 10:36:20 2016
 ```
 
-### time.clock()
+> time.clock()
+>
 
 用以浮点数计算的秒数返回当前的CPU时间。用来衡量不同程序的耗时，比time.time()更有用。
 
@@ -215,7 +216,8 @@ time.perf_counter()  # 返回系统运行时间
 time.process_time()  # 返回进程运行时间
 ```
 
-### time.ctime([secs])
+> time.ctime([secs])
+>
 
 作用相当于asctime(localtime(secs))，未给参数相当于asctime()
 
@@ -225,7 +227,8 @@ time.process_time()  # 返回进程运行时间
 time.ctime() : Thu Apr  7 10:51:58 2016
 ```
 
-### time.gmtime([secs])
+> time.gmtime([secs])
+>
 
 接收时间戳（1970纪元后经过的浮点秒数）并返回格林威治天文时间下的时间元组t。注：t.tm_isdst始终为0
 
@@ -235,7 +238,8 @@ time.ctime() : Thu Apr  7 10:51:58 2016
 gmtime : time.struct_time(tm_year=2016, tm_mon=2, tm_mday=15, tm_hour=3, tm_min=56, tm_sec=49, tm_wday=0, tm_yday=46, tm_isdst=0)
 ```
 
-### time.localtime([secs]
+> time.localtime([secs]
+>
 
 接收时间戳（1970纪元后经过的浮点秒数）并返回当地时间下的时间元组t（t.tm_isdst可取0或1，取决于当地当时是不是夏令时）。
 
@@ -245,7 +249,8 @@ gmtime : time.struct_time(tm_year=2016, tm_mon=2, tm_mday=15, tm_hour=3, tm_min=
 localtime():  time.struct_time(tm_year=2016, tm_mon=2, tm_mday=15, tm_hour=11, tm_min=56, tm_sec=49, tm_wday=0, tm_yday=46, tm_isdst=0)
 ```
 
-### time.mktime(tupletime)
+> time.mktime(tupletime)
+>
 
 接受时间元组并返回时间戳（1970纪元后经过的浮点秒数）。
 
@@ -266,7 +271,8 @@ time.mktime(t) : 1455699818.000000
 asctime(localtime(secs)): Wed Feb 17 17:03:38 2016
 ```
 
-### time.sleep(secs)
+> time.sleep(secs)
+>
 
 推迟调用线程的运行，secs指秒数。
 
@@ -279,7 +285,8 @@ time.sleep( 5 )
 print ("End : %s" % time.ctime())
 ```
 
-### time.strftime(fmt[,tupletime])
+> time.strftime(fmt[,tupletime])
+>
 
 接收以时间元组，并返回以可读字符串表示的当地时间，格式由fmt决定。
 
@@ -289,7 +296,8 @@ print ("End : %s" % time.ctime())
 2016-04-07 11:18:05
 ```
 
-### time.strptime(str,fmt='%a %b %d %H:%M:%S %Y')
+> time.strptime(str,fmt='%a %b %d %H:%M:%S %Y')
+>
 
 根据fmt的格式把一个时间字符串解析为时间元组。
 
@@ -300,7 +308,8 @@ print ("End : %s" % time.ctime())
 返回元组:  time.struct_time(tm_year=2000, tm_mon=11, tm_mday=30, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=3, tm_yday=335, tm_isdst=-1)
 ```
 
-### time.time( )
+> time.time( )
+>
 
 返回当前时间的时间戳（1970纪元后经过的浮点秒数）。
 
@@ -310,7 +319,8 @@ print ("End : %s" % time.ctime())
 1459999336.1963577
 ```
 
-### time.tzset()
+> time.tzset()
+>
 
 根据环境变量TZ重新初始化时间相关设置。
 
@@ -361,11 +371,13 @@ print (time.strftime('%X %x %Z'))
 13:25:45 04/07/16 AEST
 ```
 
-### time.perf_counter()
+> time.perf_counter()
+>
 
 返回计时器的精准时间（系统的运行时间），包含整个系统的睡眠时间。由于返回值的基准点是未定义的，所以，只有连续调用的结果之间的差才是有效的。
 
-### time.process_time()
+> time.process_time()
+>
 
 返回当前进程执行 CPU 的时间总和，不包含睡眠时间。由于返回值的基准点是未定义的，所以，只有连续调用的结果之间的差才是有效的。
 
@@ -382,15 +394,18 @@ Time模块包含了以下2个非常重要的属性：
 
 星期一是默认的每周第一天，星期天是默认的最后一天。更改设置需调用calendar.setfirstweekday()函数。模块包含了以下内置函数：
 
-### calendar.calendar(year,w=2,l=1,c=6)
+> calendar.calendar(year,w=2,l=1,c=6)
+>
 
 返回一个多行字符串格式的year年年历，3个月一行，间隔距离为c。 每日宽度间隔为w字符。每行长度为21* W+18+2* C。l是每星期行数。
 
-### calendar.firstweekday( )
+> calendar.firstweekday( )
+>
 
 返回当前每周起始日期的设置。默认情况下，首次载入caendar模块时返回0，即星期一。
 
-### calendar.isleap(year)
+> calendar.isleap(year)
+>
 
 是闰年返回 True，否则为 false。
 
@@ -402,19 +417,23 @@ True
 False
 ```
 
-### calendar.leapdays(y1,y2)
+> calendar.leapdays(y1,y2)
+>
 
 返回在Y1，Y2两年之间的闰年总数。
 
-### calendar.month(year,month,w=2,l=1)
+> calendar.month(year,month,w=2,l=1)
+>
 
 返回一个多行字符串格式的year年month月日历，两行标题，一周一行。每日宽度间隔为w字符。每行的长度为7* w+6。l是每星期的行数。
 
-### calendar.monthcalendar(year,month)
+> calendar.monthcalendar(year,month)
+>
 
 返回一个整数的单层嵌套列表。每个子列表装载代表一个星期的整数。Year年month月外的日期都设为0;范围内的日子都由该月第几日表示，从1开始。
 
-### calendar.monthrange(year,month)
+> calendar.monthrange(year,month)
+>
 
 返回两个整数。第一个是该月的星期几，第二个是该月有几天。星期几是从0（星期一）到 6（星期日）。
 
@@ -426,26 +445,132 @@ False
 
 (5, 30)解释：5 表示 2014 年 11 月份的第一天是周六，30 表示 2014 年 11 月份总共有 30 天。
 
-### calendar.prcal(year,w=2,l=1,c=6)
+> calendar.prcal(year,w=2,l=1,c=6)
+>
 
 相当于 print calendar.calendar(year,w,l,c).
 
-### calendar.prmonth(year,month,w=2,l=1)
+> calendar.prmonth(year,month,w=2,l=1)
+>
 
 相当于 print calendar.calendar（year，w，l，c）。
 
-### calendar.setfirstweekday(weekday)
+> calendar.setfirstweekday(weekday)
+>
 
 设置每周的起始日期码。0（星期一）到6（星期日）。
 
-### calendar.timegm(tupletime)
+> calendar.timegm(tupletime)
+>
 
 和time.gmtime相反：接受一个时间元组形式，返回该时刻的时间戳（1970纪元后经过的浮点秒数）。
 
-### calendar.weekday(year,month,day)
+> calendar.weekday(year,month,day)
+>
 
 返回给定日期的日期码。0（星期一）到6（星期日）。月份为 1（一月） 到 12（12月）。
 
 ## datetime模块
 
-对日期、时间、时间戳的处理
+> 对日期、时间、时间戳的处理，注意 datetime模块.datetime类.now()函数 返回的是 datetime 时间对象
+
+```bash
+import datetime
+datetime.datetime.today()
+--------------------------------------------------
+datetime.datetime(2020, 2, 22, 22, 22, 19, 948953)
+```
+
++ 返回本地时区当前时间的datetime对象
+
+```bash
+import datetime
+datetime.datetime.now()
+--------------------------------------------------
+datetime.datetime(2020, 2, 22, 22, 25, 41, 424027)
+```
+
++ 返回当前时间的datetime对象，时间到微秒，如果tz为None，返回和today()一样
+
+```bash
+import datetime
+datetime.datetime.utcnow()
+--------------------------------------------------
+datetime.datetime(2020, 2, 22, 14, 27, 47, 648049)
+```
+
++ 没有时区的当前时间
+
+```bash
+import datetime
+datetime.datetime.fromtimestamp(40,tz=None)
+--------------------------------------------------
+datetime.datetime(1970, 1, 1, 8, 0, 40)
+```
+
+### datetime 对象
+
+datetime.datetime(2020, 2, 23, 9, 46, 49, 315251) 可以构造出 datetime 对象
+
+```bash
+import datetime
+datetime.datetime(2020, 2, 23, 9, 46, 49, 315251).timestamp()
+-------------------------------------------------------------
+1582422409.315251
+```
+
++ 时间戳：格林威治时间1970年1月1日0点到现在的秒数
+
+```bash
+import datetime
+print(datetime.datetime(2020, 2, 23, 9, 46, 49, 315251).isoweekday())
+print(datetime.datetime(2020, 2, 23, 9, 46, 49, 315251).weekday())
+print(datetime.datetime(2020, 2, 23, 9, 46, 49, 315251).date())
+print(datetime.datetime(2020, 2, 23, 9, 46, 49, 315251).time())
+print(datetime.datetime(2020, 2, 23, 9, 46, 49, 315251).isocalendar())
+----------------------------------------------------------------------
+7
+6
+2020-02-23
+09:46:49.315251
+(2020, 8, 7)
+```
+
+日期格式化
+
++ 类方法 strptime(date_string,format)，返回 datetime 对象
++ 对象方法 strftime(format)，返回字符串
++ 字符串 format 函数格式化
+
+```bash
+import datetime
+dt = datetime.datetime.strptime("21/11/06 16:30","%d/%m/%y %H:%M")
+print(dt.strftime("%Y-%m-%d %H:%M:%S"))
+print("{0:%Y}/{0:%m}/{0:%d} {0:%H}:{0:%M}:{0:%S}".format(dt))
+----------------------------------------------------------------------
+2006-11-21 16:30:00
+2006/11/21 16:30:00
+```
+
+### timedelta 对象
+
+构造方法
+
+```bash
+import datetime
+year = datetime.timedelta(days=365,seconds=0,microseconds=0,milliseconds=0,minutes=0,hours=0,weeks=0)
+print(year.total_seconds())
+----------------------------------------------------------------------
+31536000.0
+```
+
+```bash
+import datetime,time
+time1 = datetime.datetime.now()
+time.sleep(4)
+time2 = datetime.datetime.now()
+timedelta = time2 - time1
+print(timedelta.total_seconds())
+----------------------------------------------------------------------
+4.008426
+```
