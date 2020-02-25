@@ -778,13 +778,13 @@ fn(3,5,a=1,b='python') #出错
 fn(7,9,y=5,x=3,a=1,b='python')
 ```
 
-+ 只有 fn(7,9,y=5,x=3,a=1,b='python') 是可以正常运行的
++ 只有 fn(7,9,y=5,x=3,a=1,b='python') 是可以正常运行的，x 和 y 必须用关键字参数了，而且给 x 和 y 赋值先满足 x 和 y，而不是被 \*\*kwargs 捕获
 + 前三个报错"TypeError: fn() missing 2 required keyword-only arguments: 'x' and 'y'"
 + 这种表达方式引入了一个新的概念 keyword-only 参数
 
 **keyword-only** 参数(Python3加入)
 
-+  如果在一个星号参数后，或者一个位置可变参数后，出现的普通参数，实际上已经不是普通的参数了，而是keyword-only参数
+如果在一个星号参数后，或者一个位置可变参数后，出现的普通参数，实际上已经不是普通的参数了，而是keyword-only参数
 
 ```bash
 def fn(*args,x):
@@ -803,3 +803,33 @@ def fn(**kwargs,x):
 
 + 直接报语法错误
 + 可以理解为kwargs会截获所有的关键字参数，就算你写了x=5，x也永远得不到这个值，所以语法错误
+
+```bash
+def fn(*,x,y):
+    print(x,y)
+fn(x=5,y=6)
+```
+
++ \*号之后，普通形参都变成了必须给出的 keyword-only 参数
+
+> 参数规则
+
++ 参数列表参数一般顺序是，普通参数、缺省参数、可变位置参数、keyword-only参数(可带缺省值)、可变关键字参数
+
+```bash
+def fn(x,y,z=3,*args,m=4,n,**kwargs):
+    print(x,y,z,m,n)
+    print(args)
+    print(kwargs)
+fn(4,5,7,14,15,17,m=24,n=25,a=1,b=2)
+-------------------------------------
+4 5 7 24 25
+(14, 15, 17)
+{'a': 1, 'b': 2}
+```
+
+> 注意
+
++ 代码应该易读易懂，而不是为难别人
++ 请按照书写习惯定义函数参数
+
