@@ -200,7 +200,7 @@ TypeError: printme() missing 1 required positional argument: 'str'
 
 ### 关键字参数
 
-关键字参数和函数调用关系紧密，函数调用使用关键字参数来确定传入的参数值。
+关键字参数和函数调用关系紧密，使用形参的名字来传入实参。
 
 使用关键字参数允许函数调用时参数的顺序与声明时不一致，因为 Python 解释器能够用参数名匹配参数值。
 
@@ -289,7 +289,7 @@ def functionname([formal_args,] *var_args_tuple ):
    return [expression]
 ```
 
-加了星号 * 的参数会以元组(tuple)的形式导入，存放所有未命名的变量参数。
+加了星号 * 的参数会以**元组(tuple)**的形式导入，存放所有未命名的变量参数。
 
 ```bash
 #!/usr/bin/python3
@@ -313,7 +313,7 @@ printinfo( 70, 60, 50 )
 (60, 50)
 ```
 
-如果在函数调用时没有指定参数，它就是一个空元组。我们也可以不向函数传递未命名的变量。如下实例：
+如果在函数调用时没有指定参数，它就是一个**空元组**。我们也可以不向函数传递未命名的变量。如下实例：
 
 ```bash
 #!/usr/bin/python3
@@ -352,7 +352,7 @@ def functionname([formal_args,] **var_args_dict ):
    return [expression]
 ```
 
-加了两个星号 ** 的参数会以字典的形式导入。
+加了两个星号 \*\* 的参数会以**字典**的形式导入。
 
 ```bash
 #!/usr/bin/python3
@@ -640,3 +640,166 @@ test(a)
 ```bash
 11
 ```
+
+## 思考
+
+上面描述了很多有关函数的根本概念，接下来，思考一些不一样的场景
+
+```bash
+def f(x,y,z):
+	pass
+
+f(z=None,y=10,x=[1])
+f((1,),z=6,y=4.1)
+f(y=5,z=6,2)
+```
+
++ f(y=5,z=6,2) 这种表达方式会报错，要求位置参数必须在关键字参数之前传入，位置参数是按位置对应的
+
+```bash
+def add(x=4,y=5):
+    return x+y
+    
+print(add(6,10))
+print(add(6,y=7))
+print(add(x=5))
+print(add())
+print(add(y=7))
+print(add(x=5,y=6))
+print(add(y=5,x=6))
+---------------------
+16
+13
+10
+9
+11
+11
+11
+```
+
++ 参数的默认值可以在未传入足够的实参的时候，对没有给定的参数赋值为默认值
++ 参数非常多的时候，并不需要每次都输入所有的参数，简化函数调用
+
+```bash
+def add(x=4,y=5):
+    return x+y
+    
+print(add(x=5,6))
+print(add(y=8,4))
+---------------------
+ File "<ipython-input-9-01c6d3f4eebe>", line 1
+    print(add(x=5,6))
+                 ^
+SyntaxError: positional argument follows keyword argument
+```
+
++ 异常中已经说的很清楚，有位置参数，必须要放在关键字参数前面
+
+```bash
+def add (nums):
+    sum = 0
+    for x in nums:
+        sum += x
+    return sum
+    
+print(add([1,2,3,4]))
+print(add((2,4,6)))
+print(add("abcd"))
+```
+
++ print(add("abcd")) 会报错
++ 虽然传入的参数都是可迭代对象，但是函数内部的变量类型与传入参数的变量类型可能不一致
+
+```bash
+def showconfig(username,password,**kwargs):
+    pass
+def showconfig(username,*args,**kwargs):
+    pass
+-----------------------------------------------------
+def showconfig(username,password,**kwargs,*args):
+    pass
+  File "<ipython-input-23-888fb4d83337>", line 1
+    def showconfig(username,password,**kwargs,*args):
+                                             ^
+SyntaxError: invalid syntax
+```
+
++ 上面两个是正确的定义方式，最后一个报错了，对比就可以看出来，要遵守语法规范。
+
+**小结**：可变参数混合使用的时候，可以参考下面的规范总结
+
++ 有位置可变参数和关键字可变参数
++  位置可变参数在形参前使用一个星号*
++  关键字可变参数在形参前使用两个星号**
++ 位置可变参数和关键字可变参数都可以收集若干个实参，位置可变参数收集形成一个tuple，关键字可变参数收集形成一个dict
++  混合使用参数的时候，可变参数要放到参数列表的最后，普通参数需要放到参数列表前面，位置可变参数需要在关键字可变参数之前
+
+```bash
+def fn(x, y, *args, **kwargs):
+    print(x)
+    print(y)
+    print(args)
+    print(kwargs)
+    
+fn(3,5,7,9,10,a=1,b='python')
+fn(3,5)
+fn(3,5,7)
+fn(3,5,a=1,b='python')
+fn(7,9,y=5,x=3,a=1,b='python') # 错误，7和9分别赋给了x，y，又y=5、x=3，重复了
+```
+
+```bash
+def fn(*args):
+    print(args)
+    
+fn(a=1,b=2)
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-29-7640750972b9> in <module>
+      2     print(args)
+      3 
+----> 4 fn(a=1,b=2)
+
+TypeError: fn() got an unexpected keyword argument 'a'
+```
+
++ 传入关键字参数，要么与参数列表中的形参对应，要么归于\*\*kwargs，不能归于\*args
+
+```bash
+def fn(*args,x,y,**kwargs):
+    print(x)
+    print(y)
+    print(args)
+    print(kwargs)
+    
+fn(3,5) #出错
+fn(3,5,7) #出错
+fn(3,5,a=1,b='python') #出错
+fn(7,9,y=5,x=3,a=1,b='python')
+```
+
++ 只有 fn(7,9,y=5,x=3,a=1,b='python') 是可以正常运行的
++ 前三个报错"TypeError: fn() missing 2 required keyword-only arguments: 'x' and 'y'"
++ 这种表达方式引入了一个新的概念 keyword-only 参数
+
+**keyword-only** 参数(Python3加入)
+
++  如果在一个星号参数后，或者一个位置可变参数后，出现的普通参数，实际上已经不是普通的参数了，而是keyword-only参数
+
+```bash
+def fn(*args,x):
+    print(x)
+    print(args)
+fn(3,5,x=7)
+```
+
++ args可以看做已经截获了所有的位置参数，x不使用关键字参数就不可能拿到实参
+
+```bash
+def fn(**kwargs,x):
+    print(x)
+    print(kwargs)
+```
+
++ 直接报语法错误
++ 可以理解为kwargs会截获所有的关键字参数，就算你写了x=5，x也永远得不到这个值，所以语法错误
