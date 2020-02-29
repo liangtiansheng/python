@@ -398,6 +398,47 @@ TypeError: f() takes 2 positional arguments but 3 were given
 >>>
 ```
 
+### 参数解构
+
+参数解构和可变参数
+
++ 给函数提供实参的时候，可以在集合类型前使用\*或者\*\*，把集合类型的结构解开，提取出所有元素作为函数的实参
++ 非字典类型使用\*解构成位置参数
++ 字典类型使用\*\*解构成关键字参数
++ 提取出的元素数目要和参数的要求匹配，也要和参数的类型匹配
+
+```bash
+def add(x,*y):
+    print(x,y,sep=",")
+    
+t = (4,5)
+add(t[0],t[1])
+add(*t)
+add(*(4,5))
+add(*{4,6,7,8,9,2})
+add(*range(1,3))
+--------------------------
+4,(5,)
+4,(5,)
+4,(5,)
+2,(4, 6, 7, 8, 9)
+1,(2,)
+```
+
++ 通过对比可以透析参数解构的用法
++ add(*{4,6,7,8,9,2}) 这个参数解构比较特殊，集合解构无序
+
+```bash
+def add(x,y):
+    print(x,y,sep=",")
+    
+add(**{'x':5,'y':6}) # 解构成 x=5,y=6 作为关键字参数传递，正常运行
+add(**{'a':5,'b':6}) # 解构成 a=5,b=6 作为关键字参数传递，不匹配形参，异常
+add(*{'a':5,'b':6}) # 解构成 a,b 作为位置参数传递，正常运行
+```
+
+
+
 ## 匿名函数
 
 python 使用 lambda 来创建匿名函数。
@@ -462,6 +503,36 @@ print ("函数外 : ", total)
 函数内 :  30
 函数外 :  30
 ```
+
+```bash
+def fn(x):
+    for i in range(x):
+        if i > 3:
+            return i
+    else:
+        print("{} is not greater than 3".format(x))
+print(fn(6))
+print(fn(3))
+---------------------------------------------------
+4
+3 is not greater than 3
+None
+```
+
++ 结合 for...else 的概念很容易理解，return 语句执行后，函数立即结束
+
+> 函数返回值小结
+
++ Python 函数使用 return 语句返回“返回值”
++ 所有函数都有返回值，如果没有 return 语句，隐式调用 return None
++  return 语句并不一定是函数的语句块的最后一条语句
++  一个函数可以存在多个 return 语句，但是只有一条可以被执行。如果没有一条 return 语句被执行到，隐式调用 return None
++  如果有必要，可以显示调用 return None，可以简写为 return
++  如果函数执行了 return 语句，函数就会返回，当前被执行的 return 语句之后的其它语句就不会被执行了
++  作用：结束函数调用、返回值
++  函数不能同时返回多个值
++  return [1, 3, 5] 是指明返回一个列表，是一个列表对象
++  return 1, 3, 5 看似返回多个值，隐式的被 python 封装成了一个元组，用 x, y, z = showlist() 解构提取更为方便
 
 ## 变量作用域
 
@@ -548,98 +619,338 @@ print ("函数外是全局变量 : ", total)
 函数外是全局变量 :  0
 ```
 
+> 嵌套函数结构变量分析
+
+```bash
+def outer1():
+    o = 65
+    def inner():
+        print("inner{}".format(o),chr(o),sep="   ")
+    print("outer{}".format(o))
+    inner()
+outer1()
+输出：
+outer65
+inner65   A
+====================================================
+def outer2():
+    o = 65
+    def inner():
+        o = 97
+        print("inner{}".format(o),chr(o),sep="   ")
+    print("outer{}".format(o))
+    inner()
+outer2()
+输出：
+outer65
+inner97   a
+```
+
++  外层变量作用域在内层作用域可见
++  内层作用域inner中，如果定义了o=97，相当于当前作用域中重新定义了一个新的变量o，但是这个o并没有覆盖外层作用域outer中的o
+
+```bash
+x = 5
+def foo():
+    y = x + 1 # 报错吗
+    x += 1 # 报错，报什么错？为什么？换成x=1还有错吗？
+    print(x) # 为什么它不报错
+foo()
+```
+
++  x += 1 其实是 x = x + 1
++  一旦出现 x=，相当于在foo内部定义一个局部变量x，那么foo内部所有x都是这个局部变量x了
++ 但是这个 x 还没有完成赋值，就被右边拿来做加 1 操作了
++ 如何解决这个问题？引入下面的 global 和 nonlocal 概念
+
 ### global 和 nonlocal关键字
 
 当内部作用域想修改外部作用域的变量时，就要用到global和nonlocal关键字了。
 
-以下实例修改全局变量 num：
-
 ```bash
-#!/usr/bin/python3
-
-num = 1
-def fun1():
-    global num  # 需要使用 global 关键字声明
-    print(num)
-    num = 123
-    print(num)
-fun1()
-print(num)
+x = 5
+def foo():
+    global x
+    x += 1
+print(x)
+foo()
+print(x)
+输出：
+5
+6
 ```
 
-以上实例输出结果：
++ 使用 global 关键字的变量，将 foo 内的 x 声明为使用外部的全局作用域中定义的 x
++ 全局作用域中必须有 x 的定义
++ 如果全局作用域中没有x定义会怎样？
 
 ```bash
-1
-123
-123
+# x = 5
+def foo():
+    global x
+    x = 10
+    x += 1 # 不会出错
+    print(x) 
+# print(x)	# 会报错
+foo()
+print(x)	# 不会报错
 ```
 
-如果要修改嵌套作用域（enclosing 作用域，外层非全局作用域）中的变量则需要 nonlocal 关键字了，如下实例：
++  使用 global 关键字的变量，将 foo 内的 x 声明为使用外部的全局作用域中定义的 x
++ 但是，x = 10 赋值即定义，在内部作用域为一个外部作用域的变量 x 赋值，**不是在内部作用域定义一个新变量**，所以 x+=1 不会报错。注意，这里 x 的作用域还是全局的
+
+> global 总结
+
++ x+=1这种是特殊形式产生的错误的原因？
+  + 先引用后赋值，而 python 动态语言是赋值才算定义，才能被引用。解决办法，在这条语句前增加 x=0 之类的赋值语句，或者使用 global 告诉内部作用域，去全局作用域查找变量定义
+  + 内部作用域使用x = 5之类的赋值语句会重新定义局部作用域使用的变量x，但是，一旦这个作用域中使用global声明x为全局的，那么x=5相当于在为全局作用域的变量x赋值
++ global使用原则
+  + 外部作用域变量会内部作用域可见，但也不要在这个内部的局部作用域中直接使用，因为函数的目的就是为了封装，尽量与外界隔离
+  +  如果函数需要使用外部全局变量，请使用**函数的形参传参**解决
+  +  一句话：**不用global**。学习它就是为了深入理解变量作用域
+
+**闭包**的两个概念
+
++ 自由变量：未在本地作用域中定义的变量。例如定义在内层函数外的外层函数的作用域中的变量
++ 闭包：就是一个概念，出现在嵌套函数中，指的是内层函数引用到了外层函数的自由变量，就形成了闭包。很多语言都有这个概念，最熟悉就是JavaScript
 
 ```bash
-#!/usr/bin/python3
-
-def outer():
-    num = 10
-    def inner():
-        nonlocal num   # nonlocal关键字声明
-        num = 100
-        print(num)
-    inner()
-    print(num)
-outer()
+def counter():
+    c = [0]
+    def inc():
+        c[0] += 1 # 报错吗？为什么？
+        return c[0]
+    return inc
+foo = counter()
+print(foo(),foo())
+c = 100
+print(foo())
+输出：
+1 2
+3
 ```
 
-以上实例输出结果：
++ 第 4 行会报错吗？为什么？
+  + 不会报错，c 已经在 counter 函数中定义过了。而且 inc 中的使用方式是为 c 的元素修改值，而不是重新定义变量
++ 第 8 行打印什么结果？
+  + 打印 1 2
++ 第 10 行打印什么结果？
+  + 打印 3
+  + 第 9 行的 c 和 counter 中的 c 不一样，而 inc 引用的是自由变量正是 counter 的变量 c
++ 这是 python2 中实现闭包的方式， python3 还可以使用 nonlocal 关键字
 
 ```bash
-100
-100
+def counter():
+    count = 0
+    def inc():
+        count += 1
+        return count
+    return inc
+foo = counter()
+foo()
+foo()
 ```
 
-另外有一种特殊情况，假设下面这段代码被运行：
++ 第 4 行会报错吗？怎么解决？
+  +  使用global可以解决，但是这使用的是全局变量，而不是闭包
+  +  如果要对普通变量闭包，Python3中可以使用nonlocal
+  + 使用了nonlocal关键字，将变量标记为不在本地作用域定义，而在**上级的某一级**局部作用域中定义，但**不能是全局作用域**中定义
 
 ```bash
-#!/usr/bin/python3
-
-a = 10
-def test():
-    a = a + 1
+代码1：
+def counter():
+    count = 0
+    def inc():
+        nonlocal count
+        count += 1
+        return count
+    return inc
+foo = counter()
+foo()
+foo()
+===========================
+代码2：
+a = 50
+def counter():
+    nonlocal a
+    a += 1
     print(a)
-test()
+    counter = 0
+    def inc():
+        nonlocal count
+        count += 1
+        return count
+    return inc
+
+foo = counter()
+foo()
+foo()
 ```
 
-以上程序执行，报错信息如下：
++  count 是外层函数的局部变量，被内部函数引用
++ 内部函数使用nonlocal关键字声明count变量在上级作用域而非本地作用域中定义
++  代码 1 可以正常使用，且形成闭包
++  代码 2 不能正常运行，变量 a 不能在全局作用域中
+
+### 默认值的作用域
+
+默认值举例
 
 ```bash
-Traceback (most recent call last):
-  File "test.py", line 7, in <module>
-    test()
-  File "test.py", line 5, in test
-    a = a + 1
-UnboundLocalError: local variable 'a' referenced before assignment
+def foo(xyz=[]):
+    xyz.append(1)
+    print(xyz)
+foo() # [1]
+foo() # [1,1]
+print(xyz) # NameError，当前作用域没有 xyz 变量
 ```
 
-错误信息为局部作用域引用错误，因为 test 函数中的 a 使用的是局部，未定义，无法修改。
++  为什么第二次调用foo函数打印的是[1,1]？
+  +  因为**函数**也是**对象**，python把函数的默认值放在了属性中，这个属性就伴随着这个函数对象的整个生命周期
+  +  查看 foo.\_\_defaults\_\_ 属性
 
-修改 a 为全局变量，通过函数参数传递，可以正常执行输出结果为：
+引用类型举例
 
 ```bash
-#!/usr/bin/python3
-
-a = 10
-def test(a):
-    a = a + 1
-    print(a)
-test(a)
+def foo(xyz=[],u="abc",z=123):
+    xyz.append(1)
+    return xyz
+print(foo(),id(foo))
+print(foo.__defaults__)
+print(foo(),id(foo))
+print(foo.__defaults__)
+输出：
+[1] 1830991902512
+([1], 'abc', 123)
+[1, 1] 1830991902512
+([1, 1], 'abc', 123)
 ```
 
-执行输出结果为：
++  函数地址并没有变，就是说函数这个对象的没有变，调用它，它的属性\_\_defaults\_\_中使用元组保存默认值
++  xyz默认值是引用类型，引用类型的元素变动，并不是元组的变化
+
+非引用类型举例
 
 ```bash
-11
+def foo(w,u="abc",z=123):
+    u = "xyz"
+    z = 789
+    print(w,u,z)
+print(foo.__defaults__)
+foo('greatwall')
+print(foo.__defaults__)
+输出：
+('abc', 123)
+greatwall xyz 789
+('abc', 123)
 ```
+
++  属性\_\_defaults\_\_中使用元组保存所有位置参数默认值，它不会因为在函数体内使用了它而发生改变
+
+混合参数类型举例
+
+```bash
+def foo(w,u="abc",*,z=123,zz=[456]):
+    u = "xyz"
+    z = 789
+    zz.append(1)
+    print(w,u,z,zz)
+print(foo.__defaults__)
+foo("greatwall")
+print(foo.__kwdefaults__)
+输出：
+('abc',)
+greatwall xyz 789 [456, 1]
+{'zz': [456, 1], 'z': 123}
+```
+
++ 属性\_\_defaults\_\_中使用元组保存所有位置参数默认值
++  属性\_\_kwdefaults\_\_中使用字典保存所有keyword-only参数的默认值
+
+默认值作用域说明
+
++ 使用可变类型作为默认值，就可能修改这个默认值
++ 有时候这个特性是好的，有的时候这种特性是不好的，有副作用
++ 如何做到按需改变呢？看下面的2种方法
+
+```bash
+def foo(xyz=[],u="abc",z=123):
+    xyz = xyz[:] # 影子拷贝
+    xyz.append(1)
+    print(xyz)
+foo()
+print(foo.__defaults__)
+foo()
+print(foo.__defaults__)
+foo([10])
+print(foo.__defaults__)
+foo([10,5])
+print(foo.__defaults__)
+输出：
+[1]
+([], 'abc', 123)
+[1]
+([], 'abc', 123)
+[10, 1]
+([], 'abc', 123)
+[10, 5, 1]
+([], 'abc', 123)
+```
+
++ 函数体内，不改变默认值
+  + xyz都是传入参数或者默认参数的副本，如果就想修改原参数，无能为力
+
+```bash
+def foo(xyz=None,u="abc",z=132):
+    if xyz is None:
+        xyz = []
+    xyz.append(1)
+    print(xyz)
+foo()
+print(foo.__defaults__)
+foo()
+print(foo.__defaults__)
+foo([10])
+print(foo.__defaults__)
+foo([10,5])
+print(foo.__defaults__)
+输出：
+[1]
+(None, 'abc', 132)
+[1]
+(None, 'abc', 132)
+[10, 1]
+(None, 'abc', 132)
+[10, 5, 1]
+(None, 'abc', 132)
+```
+
++ 使用不可变类型默认值
+  +  如果使用缺省值None就创建一个列表
+  +  如果传入一个列表，就修改这个列表
+
+> 小结
+
++  第一种方法
+  + 使用影子拷贝创建一个新的对象，永远不能改变传入的参数
++ 第二种方法
+  +  通过值的判断就可以灵活的选择创建或者修改传入对象
+  +  这种方式灵活，应用广泛
+  +  很多函数的定义，都可以看到使用None这个不可变的值作为默认参数，可以说这是一种惯用法
+
+## 函数的销毁
+
+全局函数销毁
+
++ 重新定义同名函数
++  del 语句删除函数对象
++  程序结束时
+
+ 局部函数销毁
+
++ 重新在上级作用域定义同名函数
++  del 语句删除函数名称，函数对象的引用计数减1
++ 上级作用域销毁时
 
 ## 思考
 
@@ -832,4 +1143,43 @@ fn(4,5,7,14,15,17,m=24,n=25,a=1,b=2)
 
 + 代码应该易读易懂，而不是为难别人
 + 请按照书写习惯定义函数参数
+
+## 举列
+
+编写一个函数，能够至少接受 2 个参数，返回最大值和最不值
+
+```bash
+import random
+def double_values(*nums):
+    print(nums)
+    return max(nums),min(nums)
+print(*double_values(*[random.randint(10,20) for _ in range(10)]))
+------------------------------------------------------------------
+(16, 20, 10, 16, 20, 17, 17, 17, 13, 14)
+20 10
+```
+
+编写一个函数，接受一个参数 n，n 为正整数，左右两种打印方式
+
+![数阵](D:\github\python\basic_grammar\images\数阵.png)
+
+```bash
+def show(n):
+    tail = " ".join([str(i) for i in range(n,0,-1)])
+    length = len(tail)
+    for i in range(1,n):
+        print("{:>{}}".format(" ".join([str(j) for j in range(i,0,-1)]),length))
+    print(tail)
+show(12)
+```
+
+```bash
+def show(n):
+    tail = " ".join([str(i) for i in range(n,0,-1)])
+    length = len(tail)
+    print(tail)
+    for i in range(n-1,0,-1):
+        print("{:>{}}".format(" ".join([str(j) for j in range(i,0,-1)]),length))
+show(12)
+```
 
