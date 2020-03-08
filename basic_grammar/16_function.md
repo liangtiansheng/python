@@ -449,34 +449,63 @@ python 使用 lambda 来创建匿名函数。
 + lambda的主体是一个表达式，而不是一个代码块。仅仅能在lambda表达式中封装有限的逻辑进去。
 + lambda 函数拥有自己的命名空间，且不能访问自己参数列表之外或全局命名空间里的参数。
 + 虽然lambda函数看起来只能写一行，却不等同于C或C++的内联函数，后者的目的是调用小函数时不占用栈内存从而增加运行效率。
++ 不需要使用return，表达式的值，就是匿名函数返回值
 
 **语法:**
 
-lambda 函数的语法只包含一个语句，如下：
+lambda 函数的语法只包含一个语句
+
+格式
 
 ```bash
+lambda 参数列表：表达式
 lambda [arg1 [,arg2,.....argn]]:expression
 ```
 
-如下实例：
+定义一个匿名函数
 
 ```bash
-#!/usr/bin/python3
-
-# 可写函数说明
-sum = lambda arg1, arg2: arg1 + arg2
-
-# 调用sum函数
-print ("相加后的值为 : ", sum( 10, 20 ))
-print ("相加后的值为 : ", sum( 20, 20 ))
+lambda x:x**2
 ```
 
-以上实例输出结果：
+调用
 
 ```bash
-相加后的值为 :  30
-相加后的值为 :  40
+(lambda x:x**2)(4)
 ```
+
++ 不推荐 foo = lambda x,y:(x+y)**2，foo(4,5)；如果这样写还不如 def foo(x,y)，匿名函数就优秀在匿名二字
+
+实例分析：
+
+```bash
+print(1,"-->",(lambda :0)())
+print(2,"-->",(lambda x,y=3:x+y)(5))
+print(3,"-->",(lambda x,y=3:x+y)(5,6))
+print(4,"-->",(lambda x,*,y=30:x+y)(5))
+print(5,"-->",(lambda x,*,y=30:x+y)(5,y=10))
+print(6,"-->",(lambda *args:(x for x in args))(*range(5)))
+print(7,"-->",(lambda *args:[x+1 for x in args])(*range(5)))
+print(8,"-->",(lambda *args:{x+2 for x in args})(*range(5)))
+------------------------------------------------------------
+1 --> 0
+2 --> 8
+3 --> 11
+4 --> 35
+5 --> 15
+6 --> <generator object <lambda>.<locals>.<genexpr> at 0x000001D06D19ABA0>
+7 --> [1, 2, 3, 4, 5]
+8 --> {2, 3, 4, 5, 6}
+```
+
++ 注意第6行的返回值是一个生成器对象
+
+```bash
+[x for x in (lambda *args:map(lambda x:x+1,args))(*range(5))]
+[x for x in (lambda *args:map(lambda x:(x+1,args),args))(*range(5))]
+```
+
++ lambda 在高阶函数中应用得非常广泛，第一个 lambda 获取 (*range(5)) 参数，第二个 lambda 作为 map 函数的 func，来修改第一个 lambda 获取到的参数
 
 ## return语句
 
