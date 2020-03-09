@@ -291,7 +291,7 @@ while True:
 + 但是生成器本身并没有返回任何值，只返回了一个生成器对象
 +  列表解析式构造并返回了一个新的列表
 
-### 习题
+### 习题分析
 
 ```bash
 it = (print("{}".format(i+1)) for i in range(2))
@@ -315,9 +315,53 @@ val = first + second
 + val 的值是什么？
 
   + val 的值是 1 + 3 = 4
-
 + val = first + second 语句之后能否再次 next(it)？
 
   + 当然可以，因为这个生成器跟上面那个不同，first 和 second 没用 print() 函数，所以有返回值
 
-  
+```bash
+def inc():
+    for i in range(5):
+        yield i
+print(1,"-->",type(inc))
+print(2,"-->",type(inc()))
+x = inc()
+print(3,"-->",type(x))
+print(4,"-->",next(x))
+for m in x:
+    print(5,"-->",m,"*")
+for m in x:
+    print(6,"-->",m,"**")
+------------------------------
+1 --> <class 'function'>
+2 --> <class 'generator'>
+3 --> <class 'generator'>
+4 --> 0
+5 --> 1 *
+5 --> 2 *
+5 --> 3 *
+5 --> 4 *
+
+===============================
+
+y = (i for i in range(5))
+print(type(y))
+print(next(y))
+print(next(y))
+-------------------------------
+<class 'generator'>
+0
+1
+```
+
++ 普通函数调用后立即执行完毕，但是生成器函数可以使用 next 函数多次执行
++ 生成器函数等价于生成器表达式，只不过生成器函数可以更加复杂
+
+
+
+
+
+
+
+
+
