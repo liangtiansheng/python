@@ -165,12 +165,12 @@ print ("函数外取值: ", mylist)
 
 以下是调用函数时可使用的正式参数类型：
 
-+ 必需参数
++ 必需(位置)参数
 + 关键字参数
 + 默认参数
 + 不定长参数
 
-### 必需参数
+### 必需(位置)参数
 
 必需参数须以正确的顺序传入函数。调用时的数量必须和声明时的一样。
 
@@ -210,13 +210,13 @@ TypeError: printme() missing 1 required positional argument: 'str'
 #!/usr/bin/python3
 
 #可写函数说明
-def printme( str ):
+def printme( str ):		# 位置参数
    "打印任何传入的字符串"
    print (str)
    return
 
 #调用printme函数
-printme( str = "菜鸟教程")
+printme( str = "菜鸟教程")	# 关键字的方式传入
 ```
 
 以上实例输出结果：
@@ -231,14 +231,14 @@ printme( str = "菜鸟教程")
 #!/usr/bin/python3
 
 #可写函数说明
-def printinfo( name, age ):
+def printinfo( name, age ):		# 位置参数
    "打印任何传入的字符串"
    print ("名字: ", name)
    print ("年龄: ", age)
    return
 
 #调用printinfo函数
-printinfo( age=50, name="runoob" )
+printinfo( age=50, name="runoob" )	# 关键字方式传入
 ```
 
 以上实例输出结果：
@@ -247,6 +247,8 @@ printinfo( age=50, name="runoob" )
 名字:  runoob
 年龄:  50
 ```
+
+通过以上描述，很明显，**位置参数**并没有在 python 中**专门实现**，因为位置参数也可以用**关键字传入**
 
 ### 默认参数
 

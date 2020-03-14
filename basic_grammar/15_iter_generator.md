@@ -357,7 +357,210 @@ print(next(y))
 + 普通函数调用后立即执行完毕，但是生成器函数可以使用 next 函数多次执行
 + 生成器函数等价于生成器表达式，只不过生成器函数可以更加复杂
 
+```bash
+def gen():
+    print("line 1")
+    yield 1
+    print("line 2")
+    yield 2
+    print("line 3")
+    return 3
+print(1,"-->",next(gen()))
+print(2,"-->",next(gen()))
+print(3,"-->",next(gen()))
+print()
+g = gen()
+print(4,"-->",next(g))
+print(5,"-->",next(g))
+print(6,"-->",next(g))
+print(7,"-->",next(g,"End"))
+-----------------------------------------
+line 1
+1 --> 1
+line 1
+2 --> 1
+line 1
+3 --> 1
 
+line 1
+4 --> 1
+line 2
+5 --> 2
+line 3
+---------------------------------------------------------------------------
+StopIteration                             Traceback (most recent call last)
+<ipython-input-5-7a4c4921825b> in <module>
+     13 print(4,"-->",next(g))
+     14 print(5,"-->",next(g))
+---> 15 print(6,"-->",next(g))
+     16 print(7,"-->",next(g,"End"))
+
+StopIteration: 3
+```
+
++ 其中 1-3 都是使用 next(gen())，实际上 3 次调用函数生成了 3 个生成器，而并不是 3 次拨动同一个生成器
++ 其中 4-7 是 g=gen() 后，g 就是一个生成器，多次 next(g) 实际上是拨动同一个生成器，直到耗尽
++ 6 抛出异常，是因为被 return 语句打断，无法继续获取下一个值，抛出 StopIteration 异常
++ 如果注释 6 让 7 执行，则 7 不会抛出异常，因为 7 的 next 有默认值 "End"，生成器耗尽后就会输出默认值
++ 在生成器函数中，使用多个 yield 语句，执行一次后会暂停执行，把 yield 表达式的值返回
++ 再次执行会执行到下一个 yield 语句
++ return 语句依然可以终止函数运行，但 return 语句的返回值不能被获取到
++ return 会导致无法继续获取下一个值，抛出 StopIteration 异常
++ 如果函数没有显示的 return 语句，如果生成器函数执行到结尾，一样会抛出 StopIteration 异常
+
+生成器函数应用也是极为广泛
+
++ 包含 yield 语句的生成器函数生成**生成器对象**的时候，**生成器函数的函数体不会立即执行**
++ next(generator) 会从函数的当前位置向后执行到之后碰到的第一个 yield 语句，会弹出值，并暂停函数执行
++ 再次调用 next 函数，和上一条一样的处理过程
++ 没有多余的 yield 语句能被执行，继续调用 next 函数，会抛出 StopIteration 异常
+
+生成器的一些简单应用
+
+下面实现一个计数器
+
+```bash
+def counter():
+    i = 0
+    while True:
+        i += 1
+        yield i
+def inc(c):
+    return next(c)
+
+c = counter()
+
+print(inc(c),end=" ")
+print(inc(c),end=" ")
+print(inc(c),end=" ")
+print(inc(c),end=" ")
+--------------------------------
+1 2 3 4 
+
+================================
+def counter():
+    i = 0
+    while True:
+        i += 1
+        yield i
+def inc():
+    c = counter()
+    return next(c)
+print(inc(),end=" ")
+print(inc(),end=" ")
+print(inc(),end=" ")
+print(inc(),end=" ")
+--------------------------------
+1 1 1 1
+```
+
++ 两个例子对比，前一个例子相当于多次拨动同一个生成器，后一个例子相当于每一次都是重新生成一个生成器
+
+```bash
+def inc():
+    def couter():
+        i = 0
+        while True:
+            i += 1
+            yield i
+    c = couter()
+    return lambda:next(c)
+foo = inc()
+print(foo(),end=" ")
+print(foo(),end=" ")
+print(foo(),end=" ")
+print(foo(),end=" ")
+--------------------------------
+1 2 3 4 
+
+================================
+def inc():
+    def counter():
+        i = 0
+        while True:
+            i += 1
+            yield i
+    c = counter()
+    
+    def _inc():
+        return next(c)
+    return _inc
+foo = inc()
+print(foo(),end=" ")
+print(foo(),end=" ")
+print(foo(),end=" ")
+print(foo(),end=" ")
+--------------------------------
+1 2 3 4
+```
+
++ 两个例子是等效的，借用 lambda 表达式更高级
+
+下面实现处理递归问题
+
+```bash
+def fib():
+    x = 0
+    y = 1
+    while True:
+        yield y
+        x,y=y,x+y
+foo = fib()
+for _ in range(5):
+    print(next(foo),end=" ")
+---------------------------------
+1 1 2 3 5 
+
+=================================
+pre = 0
+cur = 1
+print(pre,cur,end=" ")
+def fib(n,pre=0,cur=1):
+    pre,cur = cur,pre+cur
+    print(cur,end=" ")
+    if n == 2:
+        return
+    fib(n-1,pre,cur)
+fib(5)
+----------------------------------
+0 1 1 2 3 5
+```
+
++ 两个例子等价
+
+生成器与协程 coroutine 
+
++ 生成器的高级用法
++ 比进程、线程轻量级
++ 是在用户空间调度函数的一种实现
++ Python3 asyncio 就是协程实现，已经加入到标准库
++ Python3.5 使用 async、await 关键字直接原生支持协程
++ 协程调度器实现思路
+  + 有 2 个生成器 A、B
+  + next(A) 后，A 执行到 yield 语句暂停，然后去执行 next(B)，B执行到 yield 语句也暂停，然后再次调用 next(A)，再调用 next(B)，周而复始，就实现了调度的效果
+  + 可以引入调度的策略来实现切换的方式
++ 协程是一种非抢占式调度
+
+yield from 可以简化代码
+
+```bash
+def inc():
+    for x in range(1000):
+        yield x
+foo = inc()
+print(next(foo))
+print(next(foo))
+===============================
+def inc():
+    yield from range(1000)
+foo = inc()
+print(next(foo))
+print(next(foo))
+```
+
++ 上面表达方式等效
++ yield from 是 Python3.3 出现的新的语法
++ yield from iterable 是 for item in iterable：yield item 形式的语法糖
 
 
 
