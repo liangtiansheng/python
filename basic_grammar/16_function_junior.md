@@ -1132,3 +1132,95 @@ foo(5)
 ```
 
 + 这个段码片段不太好理解的部分是 "保留原函数及参数"，一开始是从装饰器的角度来理解，但它并不是装饰器，当 partial 打造了一个函数之后，就会进入 newfunc 片段，这个片段是要接受新的参数，问题是 partial 固定的那一部分参数怎么办呢，按理说必须跟 newfunc 接受的新参数合并才行，所以必须要把 partial 固定的函数及参数保留下来，便于合并 
+
+ @functools.lru_cache(maxsize=128, typed=False)
+
++ Least-recently-used 装饰器，lru 最近最少使用，cache 缓存
++ 如果 maxsize 设置为 None，则禁用 LRU 功能，并且缓存可以无限制增长，当maxsize是二的幂时，LRU功能执行得最好
++  如果typed设置为True，则不同类型的函数参数将单独缓存。例如，f(3)和f(3.0)将被视为具有不同结果的不同调用
+
+```bash
+import functools
+import time
+@functools.lru_cache()
+def add(x, y, z=3):
+    time.sleep(z)
+    return x + y
+print(1,"-->",add(4, 5)) # 等 5 秒
+print(2,"-->",add(4.0, 5)) # 立即返回
+print(3,"-->",add(4, 6)) # 等 5 秒
+print(4,"-->",add(4, 6, 3)) # 等 5 秒
+print(5,"-->",add(6, 4)) # 等 5 秒
+print(6,"-->",add(4, y=6)) # 等 5 秒
+print(7,"-->",add(x=4, y=6)) # 等 6 秒
+print(8,"-->",add(y=6, x=4)) # 立即返回
+```
+
++ 缓存的机制，根据一个引索，查看其值是否有缓存，很明显使用 kv 对实现是最方便的，所以用字典数据结构来实现缓存最便捷，lru 源码的实现也正是利用字典。根据这个例子的效果分析，如果 key 是一样的，那取缓存值就很快了，问题是 key 是如何确定的，这就引出了下面的 \_make\_key 函数
+
+\_make\_key 函数
+
+```bash
+print(1,"-->",functools._make_key((4,6),{'z':3},False))
+print(2,"-->",functools._make_key((4,6,3),{},False))
+print(3,"-->",functools._make_key(tuple(),{'z':3,'x':4,'y':6},False))
+print(4,"-->",functools._make_key(tuple(),{'z':3,'x':4,'y':6}, True))
+---------------------------------------------------------------------
+1 --> [4, 6, <object object at 0x000002AD0E8E0090>, 'z', 3]
+2 --> [4, 6, 3]
+3 --> [<object object at 0x000002AD0E8E0090>, 'x', 4, 'y', 6, 'z', 3]
+4 --> [<object object at 0x000002AD0E8E0090>, 'x', 4, 'y', 6, 'z', 3, <class 'int'>, <class 'int'>, <class 'int'>]
+```
+
+\_make\_key 源码
+
+```bash
+def _make_key(args, kwds, typed,
+             kwd_mark = (object(),), # 默认值是一个空对象元组
+             fasttypes = {int, str, frozenset, type(None)},
+             sorted=sorted, tuple=tuple, type=type, len=len): # 会用到的函数作为默认值传参进来
+    key = args # 首先将位置参数元组赋值给 key
+    if kwds:
+        sorted_items = sorted(kwds.items()) # 关键字参数排序后立即返回一个排好序的二元组列表
+        key += kwd_mark # 这一步结果类似 (4,6,<object object at 0x000002AD0E8E0090>)
+        for item in sorted_items: # 二元组也是元组，元素直接加到 key 里面
+            key += item # 这一步结果类似 (4,6,<object object at 0x000002AD0E8E0090>,'z', 3)
+    if typed:
+        key += tuple(type(v) for v in args) # 如果 type 为 True，3.0 和 3 这两个数是不一样的，key 自然要加以区分
+        if kwds:
+            key += tuple(type(v) for k, v in sorted_items)
+    elif len(key) == 1 and type(key[0]) in fasttypes:
+        return key[0]
+    return _HashedSeq(key) # key 做出来后，一定要 hash 一下，不然如果传的参是 y=[2]，这就没法作为字典的 key 了
+```
+
+lru_cache 装饰器加速一下 fibonacci 数列
+
+```bash
+import functools
+@functools.lru_cache() # maxsize=None
+def fib(n):
+    if n < 3:
+        return n
+    return fib(n-1) + fib(n-2)
+print([fib(x) for x in range(35)])
+```
+
++ 这个学习的过程中，有一个同学提出如果 maxsize=5，fib(500)，速度还会快吗，针对上面的 fibonacci 数列，依然很快，fib(500) fib(499) ... fib(3) 都是一路问下来，缓存中 fib(1) fib(2) ... fib(499) 一路缓存上去，发生的计算很少，所以照样很快
+
+lru_cache装饰器应用
+使用前提
+
+1. 同样的函数参数一定得到同样的结果
+2. 函数执行时间很长，且要多次执行
+3. 本质是函数调用的参数=>返回值
+
+缺点
+
+1. 不支持缓存过期，key无法过期、失效
+2. 不支持清除操作
+3. 不支持分布式，是一个单机的缓存
+4. 适用场景，单机上需要空间换时间的地方，可以用缓存来将计算变成快速的查询
+
+
+
