@@ -1214,13 +1214,399 @@ lru_cache装饰器应用
 1. 同样的函数参数一定得到同样的结果
 2. 函数执行时间很长，且要多次执行
 3. 本质是函数调用的参数=>返回值
+4. 适用场景，单机上需要空间换时间的地方，可以用缓存来将计算变成快速的查询
 
 缺点
 
 1. 不支持缓存过期，key无法过期、失效
 2. 不支持清除操作
 3. 不支持分布式，是一个单机的缓存
-4. 适用场景，单机上需要空间换时间的地方，可以用缓存来将计算变成快速的查询
 
+#### 举例
 
+##### 实现一个 cache 装饰器
+
+简化设计，函数的形参定义不包含可变位置参数，可变关键词参数和 keyword-only 参数
+
+可以不考虑缓存满了之后的换出问题
+
+> 数据类型的选择
+
+缓存的应用场景，是有数据需要频繁查询，且每次查询都需要大量计算或者等待时间之后才能返回结果的情况。使用缓存来提高查询速度，用空间换取时间
+
+> cache 应该选用什么数据结构
+
+通过输入某些参数，获得另外一个值，这就是查询的原型，查询用到的数据结构应该就是字典，输入 key，获得 value 值。难点在 key 的设计上面，
+
+> key 的存储
+
+key 必须是可 hashable
+
+key 能接受位置参数和关键字参数
+
+位置参数被收集在 tuple 中，本身就有序；关键字参数被收集在字典中，本身无序
+
+让关键字参数有序：1. OrderDict 记录顺序，2. 用一个 tuple 保存排过序的字典的 item 的 kv 对
+
+> key 的设计分析
+
+假设 add(x,y) 是一个加法函数，接受的参数方式可能有以下几种
+
+1. add(4,5)
+2. add(4,y=5)
+3. add(y=4,x=5)
+4. add(x=5,y=4)
+
+可以有两种理解：第一种是 3 和 4 相同，而1、2 和 3 都不同；第二种是全部相同。
+
+lru_cache 实现了第一种，可以看出单独的处理了位置参数和关键字参数
+
+如果函数定义为 def add(4,y=5)，使用了默认值，如何理解 add(4,5) 和 add(4) 是否一样呢？
+
+如果认为一样，那么 lru_cache 无能为力，需要使用 inspect 来自己实现算法
+
+> key 的算法设计
+
+inspect 模块获取函数签名后，取 parameters，这是一个有序字典，会保存所有参数的信息。
+
+构建一个字典 params_dict，按照位置顺序从 args 中依次对应参数名和传入的实参，组成 kv 对，存入 params_dict 中。
+
+kwargs 所有值 update 到 params_dict 中。
+
+如果使用了缺省值的参数，不会出现在实参 params_dict 中，会出现在签名的取 parameters 中，缺省值也在定义中。
+
+> 调用的方式
+
+普通的函数调用可以，但是过于明显，最好类似 lru_cache 的方式，让调用者无察觉的使用缓存，构建装饰器函数。
+
+目标：下面几种都等价，也就是 key 一样，这样都可以缓存。
+
+```bash
+def add(x,z,y=6):
+    return x + y + z
+add(4,5)
+add(4,z=5)
+add(4,y=6,z=5)
+add(y=6,z=5,x=4)
+add(4,5,6)
+```
+
+代码框架如下
+
+```bash
+from functools import wraps
+import inspect
+
+def ly_cache(fn):
+    local_cache = {} # 设计不同函数名对应不同的 cache
+    @wraps(fn)
+    def wrapper(*args,**kwargs): # 接收各种参数
+        ret = fn(*args,**kwargs)
+        return ret
+    return wrapper
+@ly_cache
+def add(x,y,z=6):
+    return x + y + z
+```
+
+完成 key 的生成，这里使用普通的字典 params_dict，先把位置参数的对应好，再填充关键字参数，最后补充缺省值，然后再**排序**生成 key
+
+```bash
+from functools import wraps
+import inspect
+import time
+
+def ly_cache(fn):
+    local_cache = {} # 设计不同函数名对应不同的 cache
+    @wraps(fn)
+    def wrapper(*args,**kwargs): # 接收各种参数
+        sig = inspect.signature(fn) # 签名可以辅助构建 key，重点还可以记录默认值
+        params = sig.parameters # 只读有序字典
+        
+        param_names = [key for key in params.keys()] # list(params.keys())
+        params_dict = {}
+        
+        for i,v in enumerate(args):
+            k = param_names[i]
+            params_dict[k] = v
+            
+        params_dict.update(kwargs) # 这是优化的结果，最开始 params_dict 用的是元组，改成字典的好处
+        
+        for k,v in params.items(): # 缺省值处理
+            if k not in params_dict.keys():
+                params_dict[k] = v.default
+                
+        key = tuple(sorted(params_dict.items()))
+        
+        if key not in local_cache.keys(): # 判断是否需要缓存
+            local_cache[key] = fn(*args,**kwargs)
+        
+        return key, local_cache[key]
+    
+    return wrapper
+
+@ly_cache
+def add(x,y,z=6):
+    time.sleep(3)
+    return x + y + z
+
+print(add(4,5))
+print(add(y=5,x=4))
+print(add(4,5,6))
+----------------------------------------------------------------------------------------
+((('x', 4), ('y', 5), ('z', 6)), 15)
+((('x', 4), ('y', 5), ('z', 6)), 15)
+((('x', 4), ('y', 5), ('z', 6)), 15)
+```
+
+增加 logger 装饰器查看执行时间
+
+```bash
+from functools import wraps
+import inspect,time,datetime
+
+def logger(fn):
+    @wraps(fn)
+    def wrapper(*args,**kwargs):
+        start = datetime.datetime.now()
+        ret = fn(*args,**kwargs)
+        delta = (datetime.datetime.now() - start).total_seconds()
+        print(fn.__name__,delta)
+        return ret
+    return wrapper
+
+def ly_cache(fn):
+    local_cache = {} # 设计不同函数名对应不同的 cache
+    @wraps(fn)
+    def wrapper(*args,**kwargs): # 接收各种参数
+        sig = inspect.signature(fn) # 签名可以辅助构建 key，重点还可以记录默认值
+        params = sig.parameters # 只读有序字典
+        
+        param_names = [key for key in params.keys()] # list(params.keys())
+        params_dict = {}
+        
+        for i,v in enumerate(args):
+            k = param_names[i]
+            params_dict[k] = v
+            
+        params_dict.update(kwargs) # 这是优化的结果，最开始 params_dict 用的是元组，改成字典的好处
+        
+        for k,v in params.items(): # 缺省值处理
+            if k not in params_dict.keys():
+                params_dict[k] = v.default
+                
+        key = tuple(sorted(params_dict.items()))
+        
+        if key not in local_cache.keys(): # 判断是否需要缓存
+            local_cache[key] = fn(*args,**kwargs)
+        
+        return key, local_cache[key]
+    
+    return wrapper
+@logger # 等价 add = logger(add)
+@ly_cache # 等价 add = ly_cache(add)
+def add(x,y,z=6):
+    time.sleep(3)
+    return x + y + z
+
+print(add(4,5))
+print(add(y=5,x=4))
+print(add(4,5,6))
+-----------------------------------------------------------------------------------------
+add 3.00635
+((('x', 4), ('y', 5), ('z', 6)), 15)
+add 0.0
+((('x', 4), ('y', 5), ('z', 6)), 15)
+add 0.0
+((('x', 4), ('y', 5), ('z', 6)), 15)
+```
+
+##### cache 过期功能
+
+一般缓存系统都有过期功能
+
+过期指的是某一个 key 过期，可以对每一个 key 单独设置过期时间，也可以对这些 key 统一设定过期时间
+
+本次设计简单点，统一设定 key 的过期时间，当 key 生存周期超过了这个时间，就自动被清除
+
+这里并没有考虑多线程问题，而且这种过期机制，每一次都有遍历所有数据，大量数据的时候，有效率问题
+
+> 清除时机，何时清除过期 key ?
+
+1. 用到某个 key 之前，先判断是否过期，如果过期重新调用函数生成新的 key 对应 value 值
+2. 一个线程负责清除过期的 key，这个以后实现，本次在创建 key 之前，清除所有过期的 key
+
+> value 的设计
+
+1. key => (v,createtimestamp)，适合 key 过期时间都是统一的设定
+2. key => (v,createtimestamp,duration)，duration 是过期时间，这样每一个 key 就可以单独控制过期时间，在这种设计中，-1 可以表示永不过期，0 可以表示立即过期，正整数表示持续一段时间过期
+
+本次采用第一种实现
+
+```bash
+from functools import wraps
+import inspect,time,datetime
+
+def logger(fn):
+    @wraps(fn)
+    def wrapper(*args,**kwargs):
+        start = datetime.datetime.now()
+        ret = fn(*args,**kwargs)
+        delta = (datetime.datetime.now() - start).total_seconds()
+        print(fn.__name__,delta)
+        return ret
+    return wrapper
+
+def ck_cache(duration):
+    def _cache(fn):
+        local_cache = {} # 设计不同函数名对应不同的 cache
+        
+        @wraps(fn)
+        def wrapper(*args,**kwargs): # 接收各种参数
+            expire_keys = []  # 清除过期的key
+            for k,(_,stamp) in local_cache.items():
+                now = datetime.datetime.now().timestamp()
+                if now - stamp > duration:
+                    expire_keys.append(k)
+            for k in expire_keys:
+                local_cache.pop(k)            
+            
+            
+            sig = inspect.signature(fn) # 签名可以辅助构建 key，重点还可以记录默认值
+            params = sig.parameters # 只读有序字典
+
+            param_names = [key for key in params.keys()] # list(params.keys())
+            params_dict = {}
+
+            for i,v in enumerate(args):
+                k = param_names[i]
+                params_dict[k] = v
+
+            params_dict.update(kwargs) # 这是优化的结果，最开始 params_dict 用的是元组，改成字典的好处
+
+            for k,v in params.items(): # 缺省值处理
+                if k not in params_dict.keys():
+                    params_dict[k] = v.default
+
+            key = tuple(sorted(params_dict.items()))
+
+            if key not in local_cache.keys(): # 判断是否需要缓存
+                local_cache[key] = (fn(*args,**kwargs),datetime.datetime.now().timestamp())
+
+            return key, local_cache[key]
+
+        return wrapper
+    return _cache
+
+@logger # 等价 add = logger(add)
+@ck_cache(6) # 等价 add = ly_cache(add)
+def add(x,y,z=6):
+    time.sleep(3)
+    return x + y + z
+
+print(add(4,5))
+print(add(y=5,x=4))
+print(add(4,5,6))
+time.sleep(7)
+print(">>>>>>>>>>>>>>>>>>>>>>>")
+print(add(4,5,6))
+----------------------------------------------------------------------------------------
+add 3.004313
+((('x', 4), ('y', 5), ('z', 6)), (15, 1586068635.485182))
+add 0.0
+((('x', 4), ('y', 5), ('z', 6)), (15, 1586068635.485182))
+add 0.0
+((('x', 4), ('y', 5), ('z', 6)), (15, 1586068635.485182))
+>>>>>>>>>>>>>>>>>>>>>>>
+add 3.014408
+((('x', 4), ('y', 5), ('z', 6)), (15, 1586068645.502859))
+```
+
++ 可以进一步美化一下代码，把过期删除代码块抽象成函数 clear_expire()，把制作 key 的代码块抽象成函数 make_key()
+
+抽象函数美化代码
+
+```bash
+from functools import wraps
+import inspect,time,datetime
+
+def logger(fn):
+    @wraps(fn)
+    def wrapper(*args,**kwargs):
+        start = datetime.datetime.now()
+        ret = fn(*args,**kwargs)
+        delta = (datetime.datetime.now() - start).total_seconds()
+        print(fn.__name__,delta)
+        return ret
+    return wrapper
+
+def ck_cache(duration):
+    def _cache(fn):
+        local_cache = {} # 设计不同函数名对应不同的 cache
+        
+        @wraps(fn)
+        def wrapper(*args,**kwargs): # 接收各种参数
+            def clear_expire(cache):
+                expire_keys = []  # 清除过期的key
+                for k,(_,stamp) in cache.items():
+                    now = datetime.datetime.now().timestamp()
+                    if now - stamp > duration:
+                        expire_keys.append(k)
+                for k in expire_keys:
+                    cache.pop(k)
+            
+            clear_expire(local_cache)            
+            
+            def make_key():
+                sig = inspect.signature(fn) # 签名可以辅助构建 key，重点还可以记录默认值
+                params = sig.parameters # 只读有序字典
+
+                param_names = [key for key in params.keys()] # list(params.keys())
+                params_dict = {}
+
+                for i,v in enumerate(args):
+                    k = param_names[i]
+                    params_dict[k] = v
+
+                params_dict.update(kwargs) # 这是优化的结果，最开始 params_dict 用的是元组，改成字典的好处
+
+                for k,v in params.items(): # 缺省值处理
+                    if k not in params_dict.keys():
+                        params_dict[k] = v.default
+
+                return tuple(sorted(params_dict.items()))
+            
+            key = make_key()
+
+            if key not in local_cache.keys(): # 判断是否需要缓存
+                local_cache[key] = (fn(*args,**kwargs),datetime.datetime.now().timestamp())
+
+            return key, local_cache[key]
+
+        return wrapper
+    return _cache
+
+@logger # 等价 add = logger(add)
+@ck_cache(6) # 等价 add = ly_cache(add)
+def add(x,y,z=6):
+    time.sleep(3)
+    return x + y + z
+
+print(add(4,5))
+print(add(y=5,x=4))
+print(add(4,5,6))
+time.sleep(7)
+print(">>>>>>>>>>>>>>>>>>>>>>>")
+print(add(4,5,6))
+-----------------------------------------------------------------------------------------
+add 3.000478
+((('x', 4), ('y', 5), ('z', 6)), (15, 1586069416.768573))
+add 0.001008
+((('x', 4), ('y', 5), ('z', 6)), (15, 1586069416.768573))
+add 0.0
+((('x', 4), ('y', 5), ('z', 6)), (15, 1586069416.768573))
+>>>>>>>>>>>>>>>>>>>>>>>
+add 3.00155
+((('x', 4), ('y', 5), ('z', 6)), (15, 1586069426.772568))
+```
 
