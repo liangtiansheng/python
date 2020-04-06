@@ -648,7 +648,7 @@ TypeError: unhashable type: 'list'
 
 层序遍历图解
 
-![](D:\github\python\basic_grammar\images\层序遍历.png)
+![层序遍历](D:\github\python\basic_grammar\images\层序遍历.png)
 
 深度优先遍历
 
@@ -658,11 +658,11 @@ TypeError: unhashable type: 'list'
 2. 中序遍历，也叫中根遍历，LDR
 3. 后序遍历，也叫后根遍历，LRD
 
-![](D:\github\python\basic_grammar\images\前序遍历 DLR.png)
+![前序遍历](D:\github\python\basic_grammar\images\前序遍历 DLR.png)
 
-![](D:\github\python\basic_grammar\images\中序遍历.png)
+![中序遍历](D:\github\python\basic_grammar\images\中序遍历.png)
 
-![](D:\github\python\basic_grammar\images\后序遍历LRD.png)
+![后序遍历](D:\github\python\basic_grammar\images\后序遍历LRD.png)
 
 ## 堆排序 Heap Sort
 
@@ -673,9 +673,9 @@ TypeError: unhashable type: 'list'
 + 每个非叶子结点都要小于或者等于其左右孩子结点的值称为小顶堆
 + 根结点一定是大顶堆中最大值，小顶堆中最小值
 
-![](D:\github\python\basic_grammar\images\大顶堆.png)
+![大顶堆](D:\github\python\basic_grammar\images\大顶堆.png)
 
-![](D:\github\python\basic_grammar\images\小顶堆.png)
+![小顶堆](D:\github\python\basic_grammar\images\小顶堆.png)
 
 > 构建完全二叉树
 
@@ -683,7 +683,7 @@ TypeError: unhashable type: 'list'
 2. 构建一个完全二叉树存放数据，并根据性质 5 对元素编号，放入顺序的数据结构中
 3. 构造一个列表为[0,30,20,80,40,50,10,60,70,90]
 
-![](D:\github\python\basic_grammar\images\构建完全二叉树.png)
+![构建完全二叉树](D:\github\python\basic_grammar\images\构建完全二叉树.png)
 
 > 构建大顶堆——核心算法
 
@@ -705,9 +705,9 @@ TypeError: unhashable type: 'list'
 + 将大顶堆根结点这个最大值和最后一个叶子结点交换，那么最后一个叶子结点就是最大值，将这个叶子结点排除在待排序结点之外
 + 从根结点开始（新的根结点），**重新调整为大顶堆**后，重复上一步
 
-![](D:\github\python\basic_grammar\images\堆排序.png)
+![堆排序](D:\github\python\basic_grammar\images\堆排序.png)
 
-![](D:\github\python\basic_grammar\images\重构大顶堆.png)
+![重构大顶堆](D:\github\python\basic_grammar\images\重构大顶堆.png)
 
 ### 堆排序代码实现
 
@@ -718,8 +718,6 @@ origin = [30,20,80,40,50,10,60,70,90] # 数据存在列表中，打印如下的�
 
 
 ```
-
-
 
 ## 数据结构共性
 
@@ -1055,9 +1053,9 @@ lst = [1,4,9,16,2,5,10,15]
 ```bash
 [print("{} * {} = {:<2}{}".format(j,i,i*j,"\n"if i == j else " "),end="") for i in range(1,10) for j in range(1,i+1)]
 -----------------------------------------------------------------------------------------
-1 * 1 = 1 
-1 * 2 = 2  2 * 2 = 4 
-1 * 3 = 3  2 * 3 = 6  3 * 3 = 9 
+1 * 1 = 1
+1 * 2 = 2  2 * 2 = 4
+1 * 3 = 3  2 * 3 = 6  3 * 3 = 9
 1 * 4 = 4  2 * 4 = 8  3 * 4 = 12 4 * 4 = 16
 1 * 5 = 5  2 * 5 = 10 3 * 5 = 15 4 * 5 = 20 5 * 5 = 25
 1 * 6 = 6  2 * 6 = 12 3 * 6 = 18 4 * 6 = 24 5 * 6 = 30 6 * 6 = 36
@@ -1065,4 +1063,3 @@ lst = [1,4,9,16,2,5,10,15]
 1 * 8 = 8  2 * 8 = 16 3 * 8 = 24 4 * 8 = 32 5 * 8 = 40 6 * 8 = 48 7 * 8 = 56 8 * 8 = 64
 1 * 9 = 9  2 * 9 = 18 3 * 9 = 27 4 * 9 = 36 5 * 9 = 45 6 * 9 = 54 7 * 9 = 63 8 * 9 = 72 9 * 9 = 81
 ```
-
