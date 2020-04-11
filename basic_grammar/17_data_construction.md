@@ -313,15 +313,15 @@ False
 
 语法
 
-+  {返回值 for 元素 in 可迭代对象 if 条件}
-+  列表解析式的中括号换成大括号{}就行了
++ {返回值 for 元素 in 可迭代对象 if 条件}
++ 列表解析式的中括号换成大括号{}就行了
 + 立即返回一个集合
 
 用法
 
-+  {(x,x+1) for x in range(10)}
++ {(x,x+1) for x in range(10)}
   + 立即返回 {(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (9, 10)}
-+  {[x] for x in range(10)}
++ {[x] for x in range(10)}
   + 会抛出异常，因为列表不可 hash
   + 集合元素和字典 key 都必须可 hash
 
@@ -449,7 +449,7 @@ pear
 + {返回值 for 元素 in 可迭代对象 if 条件}
 + 列表解析式的中括号换成大括号{}就行了
 + 返回值使用 key : value 形式
-+  立即返回一个字典
++ 立即返回一个字典
 
 用法
 
@@ -457,7 +457,7 @@ pear
 print({x:(x,x+1) for x in range(10)})
 print({x:[x,x+1] for x in range(10)})
 print({(x,):[x,x+1] for x in range(10)})
-print({chr(0x41+x):x**2 for x in range(10)}) 
+print({chr(0x41+x):x**2 for x in range(10)})
 ```
 
 + 都可以正常输出值
@@ -500,7 +500,7 @@ TypeError: unhashable type: 'list'
   + 有且只有一个特殊元素根，剩余元素都可以被划分为 m 个互不相交的集合 T1、T2、T3、......、Tm，而每一个集合都是树，称为 T 的子树 Subtree
   + 子树也有自己的根
 
-![树](D:\github\python\basic_grammar\images\树1.png)
+![树](./images/树1.png)
 
 树的相关定义
 
@@ -517,7 +517,7 @@ TypeError: unhashable type: 'list'
 + 祖先结点：从根结点到该结点所经分支上所有的结点，如上图，A B D 都是 G 的祖先结点
 + 子孙结点：结点的所有子树上的结点都称为该结点的子孙，如上图，B 的子孙是 D G H I
 + 结点的层次(Level)：根结点为第一层，根的孩子为第二层，以此类推，记作 L(v)
-+ 树的深度或高度(Depth)：树的层次的最大值，上图树的深度为 4 
++ 树的深度或高度(Depth)：树的层次的最大值，上图树的深度为 4
 + 堂兄弟：双亲在同一层的结点
 + 有序树：结点的子树是有顺序的(兄弟有大小，有先后次序)，不能交换
 + 无序树：结点的子树是无序的，可以交换
@@ -532,7 +532,7 @@ TypeError: unhashable type: 'list'
 + 子树不相交
 + 除了根以外，每个元素只能有一个前驱，可以有零个或多个后继
 + 根结点没有双亲结点，叶子结点没有孩子结点
-+ vi 是 vj 的双亲，则 L(vi) = L(vj) - 1，也就是说双亲比孩子结点的层次小 1 
++ vi 是 vj 的双亲，则 L(vi) = L(vj) - 1，也就是说双亲比孩子结点的层次小 1
 + 堂兄弟的双亲是兄弟关系吗？
   + 根据堂兄弟的定义，"双亲在同一层的结点"，可知堂兄弟的双亲也有可能是堂兄弟
 
@@ -555,7 +555,7 @@ TypeError: unhashable type: 'list'
 
 ### 斜树
 
-![左右斜树](D:\github\python\basic_grammar\images\左右斜树.png)
+![左右斜树](./images/左右斜树.png)
 
 ### 满二叉树
 
@@ -566,7 +566,7 @@ TypeError: unhashable type: 'list'
 + k 为深度(1 <= k <= n)，则结点总数为 2^k-1
 + 如下图，一个深度为4的15个结点的满二叉树
 
-![满二叉树](D:\github\python\basic_grammar\images\满二叉树.png)
+![满二叉树](./images/满二叉树.png)
 
 ### 完全二叉树(Complete Binary Tree)
 
@@ -577,7 +577,7 @@ TypeError: unhashable type: 'list'
 + 满二叉树一定是完全二叉树，但完全二叉树不一定是满二叉树
 + k 为深度(1<=k<=n)，则结点总数最大值为2^k-1，当达到最大值的时候就是满二叉树
 
-![是否完全二叉树](D:\github\python\basic_grammar\images\是否完全二叉树.png)
+![是否完全二叉树](./images/是否完全二叉树.png)
 
 ### 二叉树性质
 
@@ -628,7 +628,7 @@ TypeError: unhashable type: 'list'
 + 如果 2i>n，则结点 i 无左孩子，即结点 i 为叶子结点；否则其左孩子结点存在编号为 2i
 + 如果 2i + 1>n，则结点 i 无右孩子，注意这里并不能说明结点 i 没有左孩子；否则右孩子结点存在编号为 2i+1
 
-![编号树](D:\github\python\basic_grammar\images\编号树.png)
+![编号树](./images/编号树.png)
 
 ### 二叉树的遍历
 
@@ -648,7 +648,7 @@ TypeError: unhashable type: 'list'
 
 层序遍历图解
 
-![层序遍历](D:\github\python\basic_grammar\images\层序遍历.png)
+![层序遍历](./images/层序遍历.png)
 
 深度优先遍历
 
@@ -658,11 +658,11 @@ TypeError: unhashable type: 'list'
 2. 中序遍历，也叫中根遍历，LDR
 3. 后序遍历，也叫后根遍历，LRD
 
-![前序遍历](D:\github\python\basic_grammar\images\前序遍历 DLR.png)
+![前序遍历](./images/前序遍历 DLR.png)
 
-![中序遍历](D:\github\python\basic_grammar\images\中序遍历.png)
+![中序遍历](./images/中序遍历.png)
 
-![后序遍历](D:\github\python\basic_grammar\images\后序遍历LRD.png)
+![后序遍历](./images/后序遍历LRD.png)
 
 ## 堆排序 Heap Sort
 
@@ -673,9 +673,9 @@ TypeError: unhashable type: 'list'
 + 每个非叶子结点都要小于或者等于其左右孩子结点的值称为小顶堆
 + 根结点一定是大顶堆中最大值，小顶堆中最小值
 
-![大顶堆](D:\github\python\basic_grammar\images\大顶堆.png)
+![大顶堆](./images/大顶堆.png)
 
-![小顶堆](D:\github\python\basic_grammar\images\小顶堆.png)
+![小顶堆](./images/小顶堆.png)
 
 > 构建完全二叉树
 
@@ -683,7 +683,7 @@ TypeError: unhashable type: 'list'
 2. 构建一个完全二叉树存放数据，并根据性质 5 对元素编号，放入顺序的数据结构中
 3. 构造一个列表为[0,30,20,80,40,50,10,60,70,90]
 
-![构建完全二叉树](D:\github\python\basic_grammar\images\构建完全二叉树.png)
+![构建完全二叉树](./images/构建完全二叉树.png)
 
 > 构建大顶堆——核心算法
 
@@ -705,9 +705,9 @@ TypeError: unhashable type: 'list'
 + 将大顶堆根结点这个最大值和最后一个叶子结点交换，那么最后一个叶子结点就是最大值，将这个叶子结点排除在待排序结点之外
 + 从根结点开始（新的根结点），**重新调整为大顶堆**后，重复上一步
 
-![堆排序](D:\github\python\basic_grammar\images\堆排序.png)
+![堆排序](./images/堆排序.png)
 
-![重构大顶堆](D:\github\python\basic_grammar\images\重构大顶堆.png)
+![重构大顶堆](./images/重构大顶堆.png)
 
 ### 堆排序代码实现
 
@@ -715,9 +715,9 @@ TypeError: unhashable type: 'list'
 
 ```bash
 origin = [30,20,80,40,50,10,60,70,90] # 数据存在列表中，打印如下的样子，严格对齐，就像二叉树一样
-              30                
-      20              80        
-  40      50      10      60    
+              30
+      20              80
+  40      50      10      60
 70  90
 ```
 
@@ -730,30 +730,28 @@ import math
 def print_tree(array,unit_width=2):
     length = len(array)
     depth = math.ceil(math.log2(length + 1)) # 4
-    
+
     index = 0
-    
+
     width = 2 ** depth - 1 # 行宽，最深的行 15
     for i in range(depth): # 0 1 2 3
         for j in range(2 ** i): # 0:0 1:0,1 2:0,1,2,3 3:0-7
             # 居中打印，后面追加一个空格
             print("{:^{}}".format(array[index],width * unit_width),end=" " * unit_width)
-            
+
             index += 1
             if index >= length:
                 break
         width = width // 2 # 居中打印宽度减半
         print()
-        
+
 print_tree([x+1 for x in range(9)])
 ----------------------------------------------------------------------------------------
-              1                 
-      2               3         
-  4       5       6       7     
-8   9 
+              1
+      2               3
+  4       5       6       7
+8   9
 ```
-
-
 
 ## 数据结构共性
 
