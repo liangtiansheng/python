@@ -830,6 +830,166 @@ print_tree(origin[1:])
 70  40
 ```
 
+到目前为止也只是解决了**单个结点的调整**，下面要使用循环来依次解决比起始结点编号小的结点
+
+构建大顶堆起点的选择
+
++ 从最下层最右边叶子结点的父结点开始
++ 由于构造了一个前置的 0，所以编号和列表的索引正好重合，但是，元素个数等于长度减 1
++ 下一个结点，按照二叉树性质 5 编号的结点，从起点开始找编号逐个递减的结点，直到编号 1
+
+```bash
+import math
+
+# 居中对齐方案
+def print_tree(array,unit_width=2):
+    length = len(array)
+    depth = math.ceil(math.log2(length + 1)) # 4
+
+    index = 0
+
+    width = 2 ** depth - 1 # 行宽，最深的行 15
+    for i in range(depth): # 0 1 2 3
+        for j in range(2 ** i): # 0:0 1:0,1 2:0,1,2,3 3:0-7
+            # 居中打印，后面追加一个空格
+            print("{:^{}}".format(array[index],width * unit_width),end=" " * unit_width)
+
+            index += 1
+            if index >= length:
+                break
+        width = width // 2 # 居中打印宽度减半
+        print()
+
+
+origin = [0,30,20,80,40,50,10,60,70,90] # 加一个 0 让索引从 1 开始
+
+total = len(origin) - 1
+print_tree(origin[1:])
+
+def heap_adjust(n,i,array: list):
+    """
+    调整当前结点(核心算法)
+
+    调整的结点的起点在 n//2，保证所有调整的结点都有孩子结点
+    :param n：待比较数个数
+    :param i：当前结点的下标
+    :param array：待排序数据
+    :return：None
+    """
+
+    while 2 * i <= n:
+        # 孩子结点判断 2i 为左孩子，2i+1 为右孩子
+        lchild_index = 2 * i
+        # 先假定左孩子大，如果存在右孩子且大则最大孩子索引就是右孩子
+        max_child_index = lchild_index # n=2i
+        if n > lchild_index and array[lchild_index + 1] > array[lchild_index]: # n > 2i 说明还有右孩子
+            max_child_index = lchild_index + 1 # n=2i+1
+
+        # 和子树的根结点比较
+        if array[max_child_index] > array[i]:
+            array[i],array[max_child_index] = array[max_child_index],array[i]
+            i = max_child_index
+        else:
+            break
+def max_heap(total,array:list):
+    for i in range(total//2,0,-1):
+        heap_adjust(total,i,array)
+    return array
+print_tree(max_heap(total,origin)[1:])
+-------------------------------------------------------------------------------------------------------
+              30
+      20              80
+  40      50      10      60
+70  90  
+              90
+      70              80
+  40      50      10      60
+20  30
+```
+
+小结一下实现的大顶堆的一些特点
+
++ 最大的值一定在第一层，第二层一定有一个次大的
++ 按照以上算法一定可以调整出大顶堆，但不一定是一模一样的大顶堆，位置可能存在差别
+
+排序思路
+
+1. 每次都要让堆顶的元素和最后一个结点交换，然后排除最后一个元素，形成一个新的被破坏的堆
+2. 让它重新调整，调整后，堆顶一定是最大的元素
+3. 再次重复1、2步直至剩余一个元素
+
+```bash
+import math
+
+# 居中对齐方案
+def print_tree(array,unit_width=2):
+    length = len(array)
+    depth = math.ceil(math.log2(length + 1)) # 4
+
+    index = 0
+
+    width = 2 ** depth - 1 # 行宽，最深的行 15
+    for i in range(depth): # 0 1 2 3
+        for j in range(2 ** i): # 0:0 1:0,1 2:0,1,2,3 3:0-7
+            # 居中打印，后面追加一个空格
+            print("{:^{}}".format(array[index],width * unit_width),end=" " * unit_width)
+
+            index += 1
+            if index >= length:
+                break
+        width = width // 2 # 居中打印宽度减半
+        print()
+
+origin = [0,30,20,80,40,50,10,60,70,90] # 加一个 0 让索引从 1 开始
+
+total = len(origin) - 1
+print_tree(origin[1:])
+
+def heap_adjust(n,i,array: list):
+    """
+    调整当前结点(核心算法)
+
+    调整的结点的起点在 n//2，保证所有调整的结点都有孩子结点
+    :param n：待比较数个数
+    :param i：当前结点的下标
+    :param array：待排序数据
+    :return：None
+    """
+
+    while 2 * i <= n:
+        # 孩子结点判断 2i 为左孩子，2i+1 为右孩子
+        lchild_index = 2 * i
+        # 先假定左孩子大，如果存在右孩子且大则最大孩子索引就是右孩子
+        max_child_index = lchild_index # n=2i
+        if n > lchild_index and array[lchild_index + 1] > array[lchild_index]: # n > 2i 说明还有右孩子
+            max_child_index = lchild_index + 1 # n=2i+1
+
+        # 和子树的根结点比较
+        if array[max_child_index] > array[i]:
+            array[i],array[max_child_index] = array[max_child_index],array[i]
+            i = max_child_index
+        else:
+            break
+
+def max_heap(total,array:list):
+    for i in range(total//2,0,-1):
+        heap_adjust(total,i,array)
+    return array
+print_tree(max_heap(total,origin)[1:])
+
+def sort(total,array:list):
+    while total > 1:
+        array[1],array[total] = array[total],array[1]
+        total -= 1
+
+        heap_adjust(total,1,array)
+
+    return array
+
+print_tree(sort(total,origin)[1:])
+
+```
+
 ## 数据结构共性
 
 > 线性结构
