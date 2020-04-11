@@ -289,7 +289,7 @@ while True:
 
 + 单看计算时间看，生成器表达式耗时非常短，列表解析式耗时长
 + 但是生成器本身并没有返回任何值，只返回了一个生成器对象
-+  列表解析式构造并返回了一个新的列表
++ 列表解析式构造并返回了一个新的列表
 
 ### 习题分析
 
@@ -435,7 +435,7 @@ print(inc(c),end=" ")
 print(inc(c),end=" ")
 print(inc(c),end=" ")
 --------------------------------
-1 2 3 4 
+1 2 3 4
 
 ================================
 def counter():
@@ -471,7 +471,7 @@ print(foo(),end=" ")
 print(foo(),end=" ")
 print(foo(),end=" ")
 --------------------------------
-1 2 3 4 
+1 2 3 4
 
 ================================
 def inc():
@@ -481,7 +481,7 @@ def inc():
             i += 1
             yield i
     c = counter()
-    
+
     def _inc():
         return next(c)
     return _inc
@@ -509,7 +509,7 @@ foo = fib()
 for _ in range(5):
     print(next(foo),end=" ")
 ---------------------------------
-1 1 2 3 5 
+1 1 2 3 5
 
 =================================
 pre = 0
@@ -528,7 +528,7 @@ fib(5)
 
 + 两个例子等价
 
-生成器与协程 coroutine 
+生成器与协程 coroutine
 
 + 生成器的高级用法
 + 比进程、线程轻量级
@@ -561,10 +561,3 @@ print(next(foo))
 + 上面表达方式等效
 + yield from 是 Python3.3 出现的新的语法
 + yield from iterable 是 for item in iterable：yield item 形式的语法糖
-
-
-
-
-
-
-

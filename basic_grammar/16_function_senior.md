@@ -1,6 +1,6 @@
 # 练习
 
->  字典扁平化
+> 字典扁平化
 
 ```bash
 # 源字典 {'a':{'b':1,'c':2},'d':{'e':3,'f':{'g':4}}}
@@ -72,7 +72,7 @@ print(flatmap(source))
 
 Base64 位编码索引表
 
-![](D:\github\python\basic_grammar\images\Base64.png)
+![base64](./images/Base64.png)
 
 Base64 位编码的基本原则
 
@@ -86,7 +86,7 @@ Base64 位编码的基本原则
 ```bash
 # 如果取的是abc，对应的ASCII码为：0x61 0x62 0x63
 01100001 01100010 01100011 # abc的二进制
-011000	010110	001001	100011 # 每6位一组，前面可以补2个0看作8位
+011000 010110 001001 100011 # 每6位一组，前面可以补2个0看作8位
   24      22      9       35
   
 # 有时也不可能刚好3个字节，如果取的是a，怎么处理？
@@ -109,7 +109,7 @@ def base64(src):
     src = src.encode() # 将字符串转换成 bytes
     ret = bytearray()
     length = len(src)
-    
+
     r = 0 # 记录补 0 的个数
     for offset in range(0,length,3):
         if offset + 3 <= length:
@@ -122,7 +122,7 @@ def base64(src):
         # abc => 0x616263
         b = int.from_bytes(triple,"big")
         print(b,hex(b))
-        
+
         # 01100001 01100010 01100011 # abc
         # 011000  010110  001001  100011 # 每 6 位断开
         for i in range(18,-1,-6):
@@ -131,7 +131,7 @@ def base64(src):
             else:
                 index = b >> i & 0x3F
             ret.append(alphabet[index]) # 得到 base64 编码的列表
-            
+
         # 补了几个 0 就替换几个 =
         for i in range(1,r+1):
             ret[-i] = 0x3D
@@ -158,12 +158,12 @@ alphabet = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 def base64decode(src:bytes):
     ret = bytearray()
     length = len(src)
-    
+
     step = 4 # 对齐的，每次取4个
     for offset in range(0,length,step):
         tmp = 0x00
         block = src[offset:offset + step]
-        
+
         # 开始移位计算
         for i,c in enumerate(reversed(block)):
             index = alphabet.find(c) # 替换字符为序号
@@ -182,9 +182,9 @@ import base64
 print(base64.b64decode(txt).decode())
 ---------------------------------------------------------------------------------
 b'SSBsb3ZlIHlvdSAqIA=='
-I love you * 
+I love you *
 
-I love you * 
+I love you *
 ```
 
 改进：1. reversed 可以不需要，2.  alphabet.find 效率低
@@ -198,12 +198,12 @@ alphabet = OrderedDict(zip(base_tbl,range(64)))
 def base64decode(src:bytes):
     ret = bytearray()
     length = len(src)
-    
+
     step = 4 # 对齐的，每次取 4 个
     for offset in range(0,length,step):
         tmp = 0x00
         block = src[offset:offset + step]
-        
+
         # 开始移位计算
         for i in range(4):
             index = alphabet.get(block[-i-1])
@@ -220,9 +220,9 @@ print()
 import base64
 print(base64.b64decode(txt).decode())
 -----------------------------------------------------------------------------
-I love you * 
+I love you *
 
-I love you * 
+I love you *
 ```
 
 > 写一个命令分发器
@@ -243,7 +243,7 @@ def reg(cmd,fn):
     cmds[cmd] = fn
 
 reg("ls",ls)
-    
+
 def dispatch():
     while True:
         cmd = input("please input cmd:")
@@ -254,7 +254,7 @@ def dispatch():
 dispatch()
 ------------------------------------------------------
 please input cmd:ls
-我是 ls 
+我是 ls
 please input cmd:cat
 没有注册
 please input cmd:quit
@@ -281,7 +281,7 @@ def ls():
 ```bash
 def cmd_dispatcher():
     cmds = {}
-    
+
     def reg(cmd): # 注册函数
         def _reg(fn):
             cmds[cmd] = fn
@@ -289,11 +289,11 @@ def cmd_dispatcher():
         return _reg
     def default_func():
         print("没有注册")
-        
+
     def dispatcher():
         while True:
             cmd = input(">>")
-            
+
             if cmd.strip() == "":
                 return
             cmds.get(cmd,default_func)()
@@ -303,11 +303,11 @@ reg,dispatcher = cmd_dispatcher()
 @reg("ls") # 等价 ls = reg("ls")(ls)
 def ls():
     print("我是 ls ")  
-    
+
 dispatcher()
 ---------------------------------------------------------------------------
 >>ls
-我是 ls 
+我是 ls
 >>cat
 没有注册
 >>
@@ -339,7 +339,7 @@ s2 = "defabcd"
 
 观察，将相邻的1串起来组成一条斜线，哪条斜线最长就是最长公共子串
 
-扫描的过程就是 len(s1) * len(s2) 次，O(n*m) 的效率
+扫描的过程就是 len(s1) *len(s2) 次，O(n*m) 的效率
 
 核心算法就是 s2 的单个字符到 s1 中遍历，相等的话，就在上一个数(横纵坐标减 1 记录的那个数)的基础上加 1，如果是边界情况，直接赋值 1 就好，如下图矩阵所示
 
@@ -359,7 +359,7 @@ s2 = "defabcd"
 
 def findit(str1,str2):
     matrix = []
-    
+
     # 从 x 轴或者 y 轴取都可以，选择 x 轴，xmax 和 xindex
     xmax = 0
     xindex = 0
@@ -373,7 +373,7 @@ def findit(str1,str2):
                     matrix[i].append(1)
                 else:
                     matrix[i].append(matrix[i-1][j-1] + 1)
-                    
+
                 if matrix[i][j] > xmax: # 判断当前加入的值和记录的最大值比较
                     xmax = matrix[i][j] # 记录最大值，用于下次比较
                     xindex = j # 记录当前值的 x 轴偏移量
@@ -383,4 +383,3 @@ print(findit(s1,s2))
 ---------------------------------------------------------------------------------
 abcd
 ```
-

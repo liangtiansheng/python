@@ -11,7 +11,7 @@ def foo1(b,b1=3):
 def foo2(c):
     foo3(c)
     print("foo2 called",c)
-    
+
 def foo3(d):
     print("foo3 called",d)
 
@@ -20,7 +20,7 @@ def main():
     foo1(100,101)
     foo2(200)
     print("main ending")
-    
+
 main()
 ```
 
@@ -57,13 +57,13 @@ def fib(n):
 
 for i in range(5):
     print(fib(i),end=" ")
-    
+
 解析：
 fib(3) + fib(2)
 fib(3)调用fib(3)、fib(2)、fib(1)
 fib(2)调用fib(2)、fib(1)
 fib(1)是边界
-    
+
 ```
 
 递归函数的要求
@@ -90,7 +90,7 @@ delta = (datetime.datetime.now() - start).total_seconds()
 print()
 print("This program used {}s".format(delta))
 -------------------------------------------------------------
-0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765 10946 17711 28657 46368 75025 121393 196418 317811 514229 832040 1346269 2178309 3524578 5702887 9227465 
+0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765 10946 17711 28657 46368 75025 121393 196418 317811 514229 832040 1346269 2178309 3524578 5702887 9227465
 This program used 0.002004s
 
 =============================================================
@@ -105,7 +105,7 @@ delta = (datetime.datetime.now() - start).total_seconds()
 print()
 print("This program used {}s".format(delta))
 -------------------------------------------------------------
-1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765 10946 17711 28657 46368 75025 121393 196418 317811 514229 832040 1346269 2178309 3524578 5702887 9227465 
+1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765 10946 17711 28657 46368 75025 121393 196418 317811 514229 832040 1346269 2178309 3524578 5702887 9227465
 This program used 6.641008s
 ```
 
@@ -132,7 +132,7 @@ delta = (datetime.datetime.now()-start).total_seconds()
 print()
 print("This program used {}s".format(delta))
 ----------------------------------------------------------
-0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765 10946 17711 28657 46368 75025 121393 196418 317811 514229 832040 1346269 2178309 3524578 5702887 9227465 
+0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765 10946 17711 28657 46368 75025 121393 196418 317811 514229 832040 1346269 2178309 3524578 5702887 9227465
 This program used 0.001973s
 ```
 
@@ -246,23 +246,21 @@ print(revert())
 ['5', '4', '3', '2', '1']
 ```
 
-
-
 ```bash
 # 解决猴子吃桃问题
 # 猴子第一天摘n个桃子，当即吃了一半零一个，往后每天都是吃一半零一个，到第10天还没吃，发现只剩一个，求n
-day1	d1 = n//2-1
-day2	d2 = d1//2-1
-day3	d3 = d2//2-1
+day1 d1 = n//2-1
+day2 d2 = d1//2-1
+day3 d3 = d2//2-1
 ...
-day9	1 = d8//2-1
+day9 1 = d8//2-1
 所以反推到 n
-day8	d8 = (1+1)*2
-day7	d7 = (d8+1)*2
-day6	d6 = (d7+1)*2
+day8 d8 = (1+1)*2
+day7 d7 = (d8+1)*2
+day6 d6 = (d7+1)*2
 ...
-day1	d1 = (d2+1)*2
-n		n = (d1+1)*2
+day1 d1 = (d2+1)*2
+n  n = (d1+1)*2
 def peach(days=9,num=1):
     num = (num+1)*2
     if days == 1:
@@ -369,7 +367,7 @@ def sort(iterable,reverse=False):
     ret = []
     for x in iterable:
         for i,y in enumerate(ret):
-            flag = x > y if reverse else x < y	# 表达技巧，将表达式转换成逻辑值
+            flag = x > y if reverse else x < y # 表达技巧，将表达式转换成逻辑值
             if flag:
                 ret.insert(i,x)
                 break
@@ -885,12 +883,12 @@ This is add func
    print(add.__annotations__)
    --------------------------------------
    Help on function add in module __main__:
-   
+
    add(x:int, y:int) -> int
        :param x:int
        :param y:int
        :return: int
-   
+
    None
    9
    magedu
@@ -1063,7 +1061,7 @@ b !== <class 'int'>
 ab
 ```
 
-### functools 模块
+### functools 模块之 partial
 
 partial 方法
 
@@ -1131,13 +1129,13 @@ foo = partial(add,4)
 foo(5)
 ```
 
-+ 这个段码片段不太好理解的部分是 "保留原函数及参数"，一开始是从装饰器的角度来理解，但它并不是装饰器，当 partial 打造了一个函数之后，就会进入 newfunc 片段，这个片段是要接受新的参数，问题是 partial 固定的那一部分参数怎么办呢，按理说必须跟 newfunc 接受的新参数合并才行，所以必须要把 partial 固定的函数及参数保留下来，便于合并 
++ 这个段码片段不太好理解的部分是 "保留原函数及参数"，一开始是从装饰器的角度来理解，但它并不是装饰器，当 partial 打造了一个函数之后，就会进入 newfunc 片段，这个片段是要接受新的参数，问题是 partial 固定的那一部分参数怎么办呢，按理说必须跟 newfunc 接受的新参数合并才行，所以必须要把 partial 固定的函数及参数保留下来，便于合并
 
  @functools.lru_cache(maxsize=128, typed=False)
 
 + Least-recently-used 装饰器，lru 最近最少使用，cache 缓存
 + 如果 maxsize 设置为 None，则禁用 LRU 功能，并且缓存可以无限制增长，当maxsize是二的幂时，LRU功能执行得最好
-+  如果typed设置为True，则不同类型的函数参数将单独缓存。例如，f(3)和f(3.0)将被视为具有不同结果的不同调用
++ 如果typed设置为True，则不同类型的函数参数将单独缓存。例如，f(3)和f(3.0)将被视为具有不同结果的不同调用
 
 ```bash
 import functools
@@ -1322,27 +1320,27 @@ def ly_cache(fn):
     def wrapper(*args,**kwargs): # 接收各种参数
         sig = inspect.signature(fn) # 签名可以辅助构建 key，重点还可以记录默认值
         params = sig.parameters # 只读有序字典
-        
+
         param_names = [key for key in params.keys()] # list(params.keys())
         params_dict = {}
-        
+
         for i,v in enumerate(args):
             k = param_names[i]
             params_dict[k] = v
-            
+
         params_dict.update(kwargs) # 这是优化的结果，最开始 params_dict 用的是元组，改成字典的好处
-        
+
         for k,v in params.items(): # 缺省值处理
             if k not in params_dict.keys():
                 params_dict[k] = v.default
-                
+
         key = tuple(sorted(params_dict.items()))
-        
+
         if key not in local_cache.keys(): # 判断是否需要缓存
             local_cache[key] = fn(*args,**kwargs)
-        
+
         return key, local_cache[key]
-    
+
     return wrapper
 
 @ly_cache
@@ -1381,27 +1379,27 @@ def ly_cache(fn):
     def wrapper(*args,**kwargs): # 接收各种参数
         sig = inspect.signature(fn) # 签名可以辅助构建 key，重点还可以记录默认值
         params = sig.parameters # 只读有序字典
-        
+
         param_names = [key for key in params.keys()] # list(params.keys())
         params_dict = {}
-        
+
         for i,v in enumerate(args):
             k = param_names[i]
             params_dict[k] = v
-            
+
         params_dict.update(kwargs) # 这是优化的结果，最开始 params_dict 用的是元组，改成字典的好处
-        
+
         for k,v in params.items(): # 缺省值处理
             if k not in params_dict.keys():
                 params_dict[k] = v.default
-                
+
         key = tuple(sorted(params_dict.items()))
-        
+
         if key not in local_cache.keys(): # 判断是否需要缓存
             local_cache[key] = fn(*args,**kwargs)
-        
+
         return key, local_cache[key]
-    
+
     return wrapper
 @logger # 等价 add = logger(add)
 @ly_cache # 等价 add = ly_cache(add)
@@ -1460,7 +1458,7 @@ def logger(fn):
 def ck_cache(duration):
     def _cache(fn):
         local_cache = {} # 设计不同函数名对应不同的 cache
-        
+
         @wraps(fn)
         def wrapper(*args,**kwargs): # 接收各种参数
             expire_keys = []  # 清除过期的key
@@ -1469,9 +1467,9 @@ def ck_cache(duration):
                 if now - stamp > duration:
                     expire_keys.append(k)
             for k in expire_keys:
-                local_cache.pop(k)            
-            
-            
+                local_cache.pop(k)
+
+
             sig = inspect.signature(fn) # 签名可以辅助构建 key，重点还可以记录默认值
             params = sig.parameters # 只读有序字典
 
@@ -1543,7 +1541,7 @@ def logger(fn):
 def ck_cache(duration):
     def _cache(fn):
         local_cache = {} # 设计不同函数名对应不同的 cache
-        
+
         @wraps(fn)
         def wrapper(*args,**kwargs): # 接收各种参数
             def clear_expire(cache):
@@ -1554,9 +1552,9 @@ def ck_cache(duration):
                         expire_keys.append(k)
                 for k in expire_keys:
                     cache.pop(k)
-            
-            clear_expire(local_cache)            
-            
+
+            clear_expire(local_cache)
+
             def make_key():
                 sig = inspect.signature(fn) # 签名可以辅助构建 key，重点还可以记录默认值
                 params = sig.parameters # 只读有序字典
@@ -1575,7 +1573,7 @@ def ck_cache(duration):
                         params_dict[k] = v.default
 
                 return tuple(sorted(params_dict.items()))
-            
+
             key = make_key()
 
             if key not in local_cache.keys(): # 判断是否需要缓存
@@ -1609,4 +1607,3 @@ add 0.0
 add 3.00155
 ((('x', 4), ('y', 5), ('z', 6)), (15, 1586069426.772568))
 ```
-
