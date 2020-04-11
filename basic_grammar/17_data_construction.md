@@ -724,7 +724,33 @@ origin = [30,20,80,40,50,10,60,70,90] # 数据存在列表中，打印如下的�
 代码实现
 
 ```bash
+import math
 
+# 居中对齐方案
+def print_tree(array,unit_width=2):
+    length = len(array)
+    depth = math.ceil(math.log2(length + 1)) # 4
+    
+    index = 0
+    
+    width = 2 ** depth - 1 # 行宽，最深的行 15
+    for i in range(depth): # 0 1 2 3
+        for j in range(2 ** i): # 0:0 1:0,1 2:0,1,2,3 3:0-7
+            # 居中打印，后面追加一个空格
+            print("{:^{}}".format(array[index],width * unit_width),end=" " * unit_width)
+            
+            index += 1
+            if index >= length:
+                break
+        width = width // 2 # 居中打印宽度减半
+        print()
+        
+print_tree([x+1 for x in range(9)])
+----------------------------------------------------------------------------------------
+              1                 
+      2               3         
+  4       5       6       7     
+8   9 
 ```
 
 
