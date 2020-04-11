@@ -72,3 +72,192 @@ file 对象使用 open 函数来创建，下表列出了 file 对象常用的函
 11    |file.truncate([size])<br>从文件的首行首字符开始截断，截断文件为 size 个字符，无 size 表示从当前位置截断；截断之后后面的所有字符被删除，其中 Widnows 系统下的换行代表2个字符大小。
 12    |file.write(str)<br>将字符串写入文件，返回的是写入的字符长度。
 13    |file.writelines(sequence)<br>向文件写入一个序列字符串列表，如果需要换行则要自己加入每行的换行符。
+
+## 操作理解
+
+```bash
+f = open("test.txt",mode="w+")
+# Windows <_io.TextIOWrapper name='test.txt' mode='w+' encoding='cp936'>
+# Linux <_io.TextIOWrapper name='test.txt' mode='w+' encoding='UTF-8'>
+print(f.read()) # 读文件
+f.close() # 关闭文件
+```
+
+文件访问的模式有两种，文本模式和二进制模式，不同模式下，操作函数不尽相同，表现的结果也不一样
+
+### open 的参数
+
+#### mode 模式
+
+```bash
+f = open("test.txt")
+f.write("abc")
+f.close()
+-----------------------------------------------
+UnsupportedOperation                      Traceback (most recent call last)
+<ipython-input-10-a73b6e0cc61d> in <module>
+      1 f = open("test.txt")
+----> 2 f.write("abc")
+
+UnsupportedOperation: not writable
+
+===============================================
+
+f = open("test.txt",mode="r")
+f.write("abc")
+f.close()
+-----------------------------------------------
+UnsupportedOperation                      Traceback (most recent call last)
+<ipython-input-12-c61d84458398> in <module>
+      1 f = open("test.txt",mode="r")
+----> 2 f.write("abc")
+      3 f.close()
+
+UnsupportedOperation: not writable
+
+===============================================
+
+f = open("test.txt",mode="w")
+f.write("abc")
+f.close()
+cat test.txt
+-----------------------------------------------
+# 查看不到内容，跟指针有关
+```
+
++ open 默认以 r 模式打开已经存在的文件
++ r 以只读的方式打开文件，如果 write，会抛异常；如果文件不存在，抛出 FileNotFoundError 异常
++ w 表示只写方式打开，如果读取则抛出异常；如果文件不存在，则直接创建文件；如果文件存在则清空文件内容
+
+```bash
+f = open("test1",mode="x")
+# f.read()
+f.write("abc")
+f.close()
+
+f = open("test1",mode="x")
+-----------------------------------------------
+FileExistsError: [Errno 17] File exists: 'test1'
+```
+
++ x 文件不存在，创建文件，并只写方式打开；如果文件存在，则抛出 FileExistsError
+
+```bash
+f = open("test2",mode="a")
+# f.read()
+f.write("abcd")
+f.close()
+```
+
++ 文件存在，只写打开，追加内容；文件不存在，则创建后，只写打开，追加内容
+
+r 是只读，wxa 都是只写；wxa 都可以产生新文件，w 不管文件存在与否，都会生成全新内容的文件；a 不管文件是否存在，都能在打开的文件尾部追加；x 必需要求文件事先不存在，自己创建一个新文件
+
+```bash
+f = open("test3","rb") # 二进制只读
+s = f.read()
+print(type(s)) # bytes
+print(s)
+f.close()
+
+f = open("test3",'wb') # IO对象
+s = f.write("自学成才".encode())
+print(s)
+f.close()
+-------------------------------------------------
+<class 'bytes'>
+b''
+12
+```
+
++ 文本模式 t，**字符流**，将文件的字节按照某种字符编码理解，按照字符操作；open 的默认 mode 就是 rt。
++ 二进制模式 b，**字节流**，将文件就按照字节理解，与字符编码无关；二进制模式操作时，字节操作使用 bytes 类型。
+
+```bash
+# f = open("test3","rw") 报错
+f = open("test3","r+")
+f.write("come on")
+print(f.read()) # 没有显示，为什么
+f.close()
+
+f = open("test3","w+")
+f.read()
+f.close()
+
+f = open("test3","a+")
+f.write("you")
+f.read()
+f.close()
+
+f = open("test4","x+")
+f.write("python")
+f.read()
+f.close()
+```
+
++ \+ 为 r w a x 提供缺失的读写功能，但是，获取文件对象依旧按照 r w a x 自己的特征
++ \+ 不能单独使用，可以认为它是为前面的模式字符做增强功能的
+
+#### 文件指针
+
+mode=r，指针起始在0
+
+mode=a，指针起始在EOF
+
+tell() 显示指针当前位置
+
+seek(offset[,whence]) 移动文件指针位置，offset 偏移多少字节，whence 从哪里开始
+
+文本模式下
+
+whence 0  缺省值，表示从头开始，offset 只能正整数
+
+whence 1 表示从当前位置，offset 只接受 0
+
+whence 2 表示从 EOF 开始，offset 只接受 0
+
+```bash
+# 文本模式
+f = open("test4","r+")
+print(1,"-->",f.tell()) # 起始
+print(2,"-->",f.read())
+print(3,"-->",f.tell()) # EOF
+print(4,"-->",f.seek(0)) # 起始
+print(5,"-->",f.read())
+print(6,"-->",f.seek(2,0))
+print(7,"-->",f.read())
+# print(8,"-->",f.seek(2,1)) # UnsupportedOperation: can't do nonzero cur-relative seeks
+# print(9,"-->",f.seek(2,2)) # UnsupportedOperation: can't do nonzero cur-relative seeks
+f.close()
+
+# 中文
+f = open("test4","w+")
+print(11,"-->",f.write("自学成才")) # 这个地方要注意一下，windows 的编码是 gbk
+print(12,"-->",f.tell())
+f.close()
+
+f = open("test4","r+")
+print(31,"-->",f.read(3))
+print(32,"-->",f.seek(1))
+print(33,"-->",f.tell())
+# print(34,"-->",f.read()) # 报错,因为一个汉字用 gbk 编码，至少是 2 个字节
+print(35,"-->",f.seek(2))
+print(36,"-->",f.read())
+f.close()
+-----------------------------------------------------------------------------------------
+1 --> 0
+2 --> 自学成才
+3 --> 8
+4 --> 0
+5 --> 自学成才
+6 --> 2
+7 --> 学成才
+11 --> 4
+12 --> 8
+31 --> 自学成
+32 --> 1
+33 --> 1
+35 --> 2
+36 --> 学成才
+```
+
