@@ -22,7 +22,7 @@ set path=%path%;C:\python34
 
 ```bash
 $ python3
-  
+$
 ```
 
 执行以上命令后，出现如下窗口信息：
@@ -87,7 +87,7 @@ Hello, Python!
 
 ```bash
 $ chmod +x hello.py
-  
+$
 ```
 
 执行以下命令：

@@ -148,7 +148,7 @@ Python元组包含了以下内置函数
 
 序号|    方法及描述|    实例
 :-|:-|:-
-1|len(tuple)<br>计算元组元素个数。|>>> tuple1 = ('Google', 'Runoob', 'Taobao')<br>>>> len(tuple1)<br>3<br>>>>
-2|max(tuple)<br>返回元组中元素最大值。|>>> tuple2 = ('5', '4', '8')<br>>>> max(tuple2)<br>'8'<br>>>>
-3|min(tuple)<br>返回元组中元素最小值。|>>> tuple2 = ('5', '4', '8')<br>>>> min(tuple2)<br>'4'<br>>>>
-4|tuple(seq)<br>将列表转换为元组。|>>> list1= ['Google', 'Taobao', 'Runoob', 'Baidu']<br>>>> tuple1=tuple(list1)<br>>>> tuple1<br>('Google', 'Taobao', 'Runoob', 'Baidu')
+1|len(tuple)<br />计算元组元素个数。|>>> tuple1 = ('Google', 'Runoob', 'Taobao')<br />>>> len(tuple1)<br />3<br />>>>
+2|max(tuple)<br />返回元组中元素最大值。|>>> tuple2 = ('5', '4', '8')<br />>>> max(tuple2)<br />'8'<br />>>>
+3|min(tuple)<br />返回元组中元素最小值。|>>> tuple2 = ('5', '4', '8')<br />>>> min(tuple2)<br />'4'<br />>>>
+4|tuple(seq)<br />将列表转换为元组。|>>> list1= ['Google', 'Taobao', 'Runoob', 'Baidu']<br />>>> tuple1=tuple(list1)<br />>>> tuple1<br />('Google', 'Taobao', 'Runoob', 'Baidu')

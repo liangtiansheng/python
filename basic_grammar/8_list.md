@@ -520,19 +520,19 @@ print(nums, count_swap, count_iter)
 ```bash
 m_list = [[1,9,8,5,6,7,4,3,2],[1,2,3,4,5,6,7,8,9],[1,2,3,4,5,6,7,9,8],[9,8,7,6,5,4,3,2,1]]
 s_list = m_list[0]
-sc_list = [0] + s_list	# 待排序列最前面加一个位置给哨兵，这个位置必须要有，j -= 1 不能变成负值
+sc_list = [0] + s_list # 待排序列最前面加一个位置给哨兵，这个位置必须要有，j -= 1 不能变成负值
 count_swap = 0
 count_iter = 0
-for i in range(2,len(sc_list)):	# 必须从待排序列的第2个数开始
+for i in range(2,len(sc_list)): # 必须从待排序列的第2个数开始
     count_iter += 1
-    sc_list[0] = sc_list[i]	# 将循环到的数提到哨兵位置
-    j = i - 1	# 从循环到的数前一位开始一一跟哨兵比较
-    if sc_list[j] > sc_list[0]:	# 加上这个判断，哨兵不用赋值到原来的位置上，多此一举
+    sc_list[0] = sc_list[i] # 将循环到的数提到哨兵位置
+    j = i - 1 # 从循环到的数前一位开始一一跟哨兵比较
+    if sc_list[j] > sc_list[0]: # 加上这个判断，哨兵不用赋值到原来的位置上，多此一举
         while sc_list[j] > sc_list[0]:
-            sc_list[j+1] = sc_list[j]	# 比哨兵大，就右移
+            sc_list[j+1] = sc_list[j] # 比哨兵大，就右移
             j -= 1
             count_swap += 1
-        sc_list[j+1] = sc_list[0]	# 不比哨兵大，哨兵插入此值右边
+        sc_list[j+1] = sc_list[0] # 不比哨兵大，哨兵插入此值右边
 print(sc_list[1:])
 print(count_iter)
 print(count_swap)
