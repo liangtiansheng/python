@@ -753,6 +753,83 @@ print_tree([x+1 for x in range(9)])
 8   9
 ```
 
+**堆调整**的核心算法
+
+1. 度数为 2 的结点 A，如果它的左右孩子结点的最大值比它大的，将这个最大值和该结点交换
+2. 度数为 1 的结点 A，如果它的左孩子的值大于它，则交换
+3. 如果结点 A 被交换到新的位置，还需要和其孩子结点重复上面的过程
+
+代码实现
+
+```bash
+import math
+
+# 居中对齐方案
+def print_tree(array,unit_width=2):
+    length = len(array)
+    depth = math.ceil(math.log2(length + 1)) # 4
+
+    index = 0
+
+    width = 2 ** depth - 1 # 行宽，最深的行 15
+    for i in range(depth): # 0 1 2 3
+        for j in range(2 ** i): # 0:0 1:0,1 2:0,1,2,3 3:0-7
+            # 居中打印，后面追加一个空格
+            print("{:^{}}".format(array[index],width * unit_width),end=" " * unit_width)
+
+            index += 1
+            if index >= length:
+                break
+        width = width // 2 # 居中打印宽度减半
+        print()
+
+
+origin = [0,30,20,80,40,50,10,60,70,90] # 加一个 0 让索引从 1 开始
+
+total = len(origin) - 1
+print_tree(origin[1:])
+
+def heap_adjust(n,i,array: list):
+    """
+    调整当前结点(核心算法)
+
+    调整的结点的起点在 n//2，保证所有调整的结点都有孩子结点
+    :param n：待比较数个数
+    :param i：当前结点的下标
+    :param array：待排序数据
+    :return：None
+    """
+
+    while 2 * i <= n:
+        # 孩子结点判断 2i 为左孩子，2i+1 为右孩子
+        lchild_index = 2 * i
+        # 先假定左孩子大，如果存在右孩子且大则最大孩子索引就是右孩子
+        max_child_index = lchild_index # n=2i
+        if n > lchild_index and array[lchild_index + 1] > array[lchild_index]: # n > 2i 说明还有右孩子
+            max_child_index = lchild_index + 1 # n=2i+1
+
+        # 和子树的根结点比较
+        if array[max_child_index] > array[i]:
+            array[i],array[max_child_index] = array[max_child_index],array[i]
+            i = max_child_index
+        else:
+            break
+
+heap_adjust(total,total//2,origin)
+print(origin)
+print_tree(origin[1:])
+-------------------------------------------------------------------------------------------------------
+              30
+      20              80
+  40      50      10      60
+70  90  
+[0, 30, 20, 80, 90, 50, 10, 60, 70, 40]
+              30
+      20              80
+  90      50      10      60
+70  40
+```
+
 ## 数据结构共性
 
 > 线性结构
