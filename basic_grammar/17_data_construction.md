@@ -990,6 +990,30 @@ print_tree(sort(total,origin)[1:])
 
 ```
 
+**改进**，如果最后剩余两个元素的时候，如果后一个结点比堆顶大，就不用调整了
+
+```bash
+def sort(total,array:list):
+    while total > 1:
+        array[1],array[total] = array[total],array[1]
+        total -= 1
+
+        if total == 2 and array[total] >= array[total - 1]:
+            break
+
+        heap_adjust(total,1,array)
+
+    return array
+```
+
+思考：如果有 n 个结点全部是 90，能在哪些地方优化？如果最后一个叶子结点正好是堆顶，就代表树中元素都相等？
+
+```bash
+# 反例
+  90
+80  90
+```
+
 ## 数据结构共性
 
 > 线性结构
