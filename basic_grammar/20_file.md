@@ -261,3 +261,102 @@ f.close()
 36 --> 学成才
 ```
 
++ 文本模式支持从开头向后偏移的方式
++ whence 为 1 表示从当前位置开始偏移，但是只支持偏移 0，相当于原地不动，所以没什么用
++ whence 为 2 表示从 EOF 开始，只支持偏移 0，相当于移动文件指针到 EOF
++ seek 是按照字节偏移的
+
+二进制模式下
+
+whence 0 缺省值，表示从头开始，offset 只能正整数
+
+whence 1 表示从当前位置，offset 可正可负
+
+whence 2 表示从 EOF 开始，offset 可正可负
+
+```bash
+# 二进制模式
+f = open("test4","rb+")
+print(1,"-->",f.tell())
+print(2,"-->",f.read())
+print(3,"-->",f.tell()) # EOF
+print(4,"-->",f.write(b"abc"))
+print(5,"-->",f.seek(0)) # 起始
+print(6,"-->",f.seek(2,1)) # 从当前指针开始，向后 2
+print(7,"-->",f.read())
+print(8,"-->",f.seek(-2,1)) # 从当前指针开始，向前 2
+
+print(9,"-->",f.seek(2,2)) # 从 EOF 开始，向后2
+print(10,"-->",f.seek(0))
+print(11,"-->",f.seek(-2,2)) # 从 EOF 开始，向前 2
+print(12,"-->",f.read())
+
+# print(13,"-->",f.seek(-20,2)) # OSError
+f.close()
+------------------------------------------------------
+1 --> 0
+2 --> b'\xd7\xd4\xd1\xa7\xb3\xc9\xb2\xc5abc'
+3 --> 11
+4 --> 3
+5 --> 0
+6 --> 2
+7 --> b'\xd1\xa7\xb3\xc9\xb2\xc5abcabc'
+8 --> 12
+9 --> 16
+10 --> 0
+11 --> 12
+12 --> b'bc'
+```
+
++ 二进制模式支持任意起点的偏移，从头，从尾，从中间位置开始
++ 向后 seek 可以超界，向是向前 seek 的时候，不能超界，否则抛异常
+
+#### buffering 缓冲区
+
+-1 表示使用缺省大小的 buffer，如果是二进制模式，使用 io.DEFAULT_BUFFER_SIZE 值，默认是 4096 或者 8192；如果是文本模式，如果是终端设备，是行缓存方式，如果不是，则使用二进制模式的策略
+
+1. 0 只在二进制模式使用，表示关 buffer
+2. 1 只在文本模式使用，表示使用行缓冲，意思就是见到换行符就 flush
+3. 大于 1 用于指定 buffer 的大小
+
+**buffer 缓冲区**，缓冲区是一段内存空间，一般来说是一个 FIFO 队列，到缓冲区满了或者达到阈值，数据才会 flush 到磁盘
+
+flush() 将缓冲区数据写入磁盘
+
+close() 关闭前会调用 flush()
+
+io.DEFAULT_BUFFER_SIZE 缺省缓冲区大小，字节
+
+二进制模式
+
+```bash
+import io
+
+f = open("test4","w+b")
+print(io.DEFAULT_BUFFER_SIZE)
+f.write("ccyunchina.com".encode())
+!cat test4 # 没有输出
+f.seek(0)
+!cat test4 # 有输出，动了指针，f.read()也会刷新
+f.write("www.ccyunchina.com".encode())
+f.flush()
+!cat test4 # 有输出
+f.close()
+-------------------------------------------------------------
+8192
+ccyunchina.com
+www.ccyunchina.com
+
+# 不调用 f.read()、f.seek()，也不手动刷新，直观感受撑满缓冲，自动刷新
+f = open("test4","w+b",4)
+f.write(b"yul")
+!cat test4 # 没有输出
+f.write(b"l")
+!cat test4 # 没有输出，这里刚好满4个字节
+f.write(b"!")
+!cat test4 # 缓存已满，自动刷入磁盘
+f.close()
+-------------------------------------------------------------
+yull # "!" 号为什么没有出来，"!" 号将刚满的4个字节刷到磁盘，自己留在缓冲区
+```
+
