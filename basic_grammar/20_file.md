@@ -359,3 +359,89 @@ f.close()
 -------------------------------------------------------------
 yull # "!" 号为什么没有出来，"!" 号将刚满的4个字节刷到磁盘，自己留在缓冲区
 ```
+
+文本模式
+
+```bash
+# buffer=1, 使用行缓冲
+f = open("test4","w+",1)
+f.write("ccyun")
+!cat test4
+f.write("ccyunchian"*4)
+!cat test4 # 到这里还是不会有输出
+f.write("\n")
+!cat test4 # 有输出
+f.write("Hello\nPython")
+!cat test4
+f.close()
+-------------------------------------------------------------
+ccyunccyunchianccyunchianccyunchianccyunchian
+ccyunccyunchianccyunchianccyunchianccyunchian
+Hello
+Python
+
+# buffering>1, 使用指定大小的缓冲区
+f = open("test4","w+",15)
+f.write("ccyun")
+!cat test4
+f.write("china")
+!cat test4
+f.write("Hello\n")
+!cat test4 # 没有输出
+f.write("\nPython")
+!cat test4 # 没有输出
+f.close() # 由此可见，在文本模式下，设置大于1的数值没有多大作用
+-------------------------------------------------------------
+无输出
+
+import io
+
+f = open("test4","w+")
+f.write("a" * (io.DEFAULT_BUFFER_SIZE - 20))
+!cat test4 # 没有输出
+f.write("a" * 20)
+!cat test4 # 没有输出
+
+f.write("a")
+!cat test4 # 刚好输出
+
+f.close()
+```
+
+buffering = 0
+
+这是一种特殊的二进制模式，不需要内存的 buffer，可以看作是一个 FIFO 的文件
+
+```bash
+f = open("test4","wb+",0)
+f.write(b"m")
+!cat test4
+f.write(b"a")
+!cat test4
+f.write(b"g")
+!cat test4
+f.write(b"magedu"*4)
+!cat test4
+f.write(b"\n")
+!cat test4
+f.write(b"Hello\nPython")
+!cat test4
+f.close()
+-------------------------------------------------------------
+m
+ma
+mag
+magmagedumagedumagedumagedu
+magmagedumagedumagedumagedu
+magmagedumagedumagedumagedu
+Hello
+Python
+```
+
+| buffering      | 说明                                                         |
+| :------------- | :----------------------------------------------------------- |
+| buffering = -1 | t 和 b，都是io.DEFAULT_BUFFER_SIZE                           |
+| buffering = 0  | b 关闭缓冲区<br />t 不支持                                   |
+| buffering = 1  | b 就 1 个字节<br />t 行缓冲，遇到换行符才 flush              |
+| buffering > 1  | b 模式表示行缓冲大小。缓冲区的值可以超过 io.DEFAULT_BUFFER_SIZE，直到设定的值超出后才把缓冲区 flush<br />t 模式，是 io.DEFAULT_BUFFER_SIZE，flush 完后把当前字符串也写入磁盘 |
+
