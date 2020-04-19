@@ -463,3 +463,9 @@ f.close()
 ```
 
 windows 下缺省 GBK( 0xB0A1 )，Linux 下缺省 UTF-8( 0xE5 95 8A )
+
+#### 其它参数
+
+errors
+
+什么样的编码
