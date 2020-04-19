@@ -466,6 +466,187 @@ windows 下缺省 GBK( 0xB0A1 )，Linux 下缺省 UTF-8( 0xE5 95 8A )
 
 #### 其它参数
 
-errors
+> errors
 
-什么样的编码
++ 什么样的编码错误将被捕获
+
++ None 和 strict 表示有编码错误将抛出 valueError 异常；ignore 表示忽略
+
+> newline
+
++ 文本模式中，换行的转换，可以为 None、""空串、"\r"、"\n"、"\r\n"
+  + 读时，None 表示 "\r"、"\n"、"\r\n" 都被转换为"\n"；""表示不会自动转换通用换行符；其它合法字符表示换行符就是指定字符，就会按照指定字符换行
+  + 写时，None 表示 "\n" 都会被替换为系统缺省行分隔符 os.linesep；"\n" 或 "" 表示 "\n" 不替换；其它合法字符表示 "\n" 会被替换为指定的字符
+
+```bash
+f = open("d:/test","w")
+f.write("python\rwww.python.org\nwww.ccyunchina.com\r\npython3")
+f.close()
+
+newlines = [None,"","\n","\r\n"]
+
+for nl in newlines:
+    f = open("d:/test","r+",newline=nl)
+    print(f.readlines())
+    f.close()
+----------------------------------------------------------------
+['python\n', 'www.python.org\n', 'www.ccyunchina.com\n', '\n', 'python3']
+['python\r', 'www.python.org\r\n', 'www.ccyunchina.com\r', '\r\n', 'python3']
+['python\rwww.python.org\r\n', 'www.ccyunchina.com\r\r\n', 'python3']
+['python\rwww.python.org\r\n', 'www.ccyunchina.com\r\r\n', 'python3']
+
+cat d:/test
+python \r
+www.python.org \r\n
+www.ccyunchina.com \r
+\r\n
+python3
+```
+
++ 注意文件在写入时也按照上述规则进行了转换，对照着文件对比规则
+
+> closefd
+
++ 关闭文件描述符，True 表示关闭它。False 会在文件关闭后保持这个描述符。fileobj.fileno() 查看
+
+> read
+
++ read(size=-1)
++ size 表示读取的多少个字符或者字节；负数或 None 表示读取到 EOF
+
+```bash
+f = open("d:/test4","r+")
+f.write("ccyunchina")
+f.write("\n")
+f.write("马哥教育")
+f.seek(0)
+print(f.read(12))
+f.close()
+print("~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+f = open("d:/test4","rb+")
+print(f.read(7))
+print(f.read(1))
+f.close()
+--------------------------------------------
+ccyunchina
+马
+~~~~~~~~~~~~~~~~~~~~~~~~~
+b'ccyunch'
+b'i'
+```
+
+> 行读取
+
++ readline(size=-1)
+  + 一行行读取文件内容。size 设置一次能读取行内几个字符或字节。
++ readlines(hint=-1)
+  + 读取所有行的列表。指定 hint 则返回指定的行数。
+
+```bash
+f = open("test4") # 返回可迭代对象
+
+for line in f:
+    print(line)
+
+f.close()
+--------------------------------------------------
+magmagedumagedumagedumagedu
+
+Hello
+
+Python
+```
+
+> write(s)
+
++ 把字符串 s 写入文件中并返回字符的个数
+
+> writelines(lines)
+
++ 把字符串列表写入文件
+
+```bash
+f = open("test","w+")
+lines = ["abc","123\n","ccyunchina"] # 提供换行符
+f.writelines(lines)
+f.seek(0)
+print(f.read())
+f.close()
+-----------------------------------------------
+abc123
+ccyunchina
+```
+
+> close
+
++ flush 并关闭文件对象
++ 文件已经关闭，再关闭没有任何效果
+
+> 其它
+
+```bash
+f = open("test","w+")
+
+print(1,"-->",f.seekable())
+print(2,"-->",f.readable())
+print(3,"-->",f.writable())
+print(4,"-->",f.closed)
+
+f.close()
+-------------------------------------------------
+1 --> True
+2 --> True
+3 --> True
+4 --> False
+```
+
+#### 上下文管理
+
+问题的引出
+
+在 linux 中，执行
+
+```bash
+lst = []
+for _ in range(2000):
+    lst.append(open("test","w")) # OSError: [Errno 24] Too many open files: 'test'
+print(len(lst))
+```
+
++ lsof -p 1281 | grep test | wc -l 查看同时打开了多少个 test 文件
++ ulimit -a 查看所有限制。其中 open files 就是打开文件数的限制，默认 1024
+
+```bash
+for x in lst:
+    x.close()
+```
+
++ 将文件一次关闭，然后就可以继续打开了。再看一次 lsof。
+
+1、异常处理
+
+当出现异常的时候，拦截异常。但是，因为很多代码都可能出现 OSError 异常，还不好判断异常就是因为资源限制产生的。
+
+```bash
+f = open("test")
+try:
+    f.write("abc") # 文件只读，写入失败
+finally:
+    f.close() # 这样才行
+```
+
++ 使用 finally 可以保证打开的文件被关闭
+
+2、上下文管理
+
+一种特殊的语法，交给解释器去释放文件对象
+
+```bash
+del f
+with open("test") as f:
+    f.write("abc") # 文件只读，写入失败
+
+# 测试 f 是否关闭
+f.closed # f的作用域
+```
