@@ -445,3 +445,21 @@ Python
 | buffering = 1  | b 就 1 个字节<br />t 行缓冲，遇到换行符才 flush              |
 | buffering > 1  | b 模式表示行缓冲大小。缓冲区的值可以超过 io.DEFAULT_BUFFER_SIZE，直到设定的值超出后才把缓冲区 flush<br />t 模式，是 io.DEFAULT_BUFFER_SIZE，flush 完后把当前字符串也写入磁盘 |
 
+似乎看起来比较麻烦，一般来说，只需要记得：
+
+1. 文本模式，一般都用默认缓冲区大小
+2. 二进制模式，是一个个字节的操作，可以指定 buffer 的大小
+3. 一般来说，默认缓冲区的大小是个比较好的选择，除非明确知道，否则不调整它
+4. 一般编程中，明确知道需要写磁盘了，都会手动调用一次 flush，而不是等到自动 flush 或者 close 的时候
+
+#### encoding：编码，仅文本模式使用
+
+None 表示使用缺省编码，依赖操作系统。 windows、linux 下测试如下代码
+
+```bash
+f = open("test1","w")
+f.write("啊")
+f.close()
+```
+
+windows 下缺省 GBK( 0xB0A1 )，Linux 下缺省 UTF-8( 0xE5 95 8A )
