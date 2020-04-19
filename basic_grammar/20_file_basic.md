@@ -27,7 +27,7 @@ open(file, mode='r', buffering=-1, encoding=None, errors=None, newline=None, clo
 + errors: 报错级别
 + newline: 区分换行符
 + closefd: 传入的file参数类型
-+ opener:
++ opener: 
 
 mode 参数有：
 
