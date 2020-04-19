@@ -650,3 +650,170 @@ with open("test") as f:
 # 测试 f 是否关闭
 f.closed # f的作用域
 ```
+
+#### 练习
+
+1、指定一个源文件，实现 copy 到目标目录
+
+```bash
+filename1 = "/tmp/test.txt"
+filename2 = "/tmp/test1.txt"
+
+f = open(filename1,"w+")
+lines = ["abc","123","ccyunchina"]
+f.writelines("\n".join(lines))
+f.seek(0)
+print(f.read())
+f.close()
+
+def copy(src,dest):
+    with open(src) as f1:
+        with open(dest,"w") as f2:
+            f2.write(f1.read())
+
+copy(filename1,filename2)
+
+print("~~~~~~~~~~~~~~~~~~")
+
+!cat /tmp/test1.txt
+-------------------------------------------------------
+abc
+123
+ccyunchina
+~~~~~~~~~~~~~~~~~~
+abc
+123
+ccyunchina
+```
+
+2、有一个文件，对其进行单词统计，不区分大小写，并显示单词重复最多的10个单词
+
+```bash
+d = {}
+with open ("/tmp/sample.txt",encoding="utf8") as f:
+    for line in f:
+        words = line.split()
+        for word in map(str.lower,words):
+            d[word] = d.get(word,0) + 1
+print(sorted(d.items(),key=lambda item: item[1],reverse=True)[:10])
+-----------------------------------------------------------------------
+[('the', 136), ('is', 60), ('a', 54), ('path', 52), ('if', 42), ('and', 39), ('to', 34), ('of', 33), ('on', 32), ('return', 30)]
+```
+
+这种代码只能解决空格分割的字符串，如果像 "os.path.exists(path)" 这种字符串被认为含有 2 个 path，怎么改进
+
+```bash
+def makekey(s:str):
+    chars = set(r"""!"'#./\()[],*-""")
+    key = s.lower()
+    ret = []
+    for i,c in enumerate(key):
+        if c in chars:
+            ret.append(" ")
+        else:
+            ret.append(c)
+    return "".join(ret).split()
+
+d = {}
+with open ("/tmp/sample.txt",encoding="utf8") as f:
+    for line in f:
+        words = line.split()
+        for wordlist in map(makekey,words):
+            for word in wordlist:
+                d[word] = d.get(word,0) + 1
+print(sorted(d.items(),key=lambda item: item[1],reverse=True)[:10])
+-----------------------------------------------------------------------
+[('path', 138), ('the', 136), ('is', 60), ('a', 59), ('os', 49), ('if', 43), ('and', 40), ('to', 34), ('on', 33), ('of', 33)]
+```
+
+```bash
+# 分割 key 的另一种思路
+def makekey(s:str):
+    chars = set(r"""!'"#./\()[],*-""")
+    key = s.lower()
+    ret = []
+    start = 0
+    length = len(key)
+
+    for i, c in enumerate(key):
+        if c in chars:
+            if start == i:
+                start += 1
+                continue
+            ret.append(key[start:i])
+            start = i + 1
+    else:
+        if start < len(key):
+            ret.append(key[start:])
+    return ret
+print(makekey("os.path.-exists(path))"))
+------------------------------------------------------------------------
+['os', 'path', 'exists', 'path']
+```
+
+## StringIO 和 BytesIO
+
+> StringIO
+
++ io 模块中的类
+  + from io import StringIO
++ 内存中，开辟的一个文本模式的 buffer，可以像文件对象一样操作它
++ 当 close 方法被调用的时候，这个 buffer 会被释放
+
+getvalue() 获取全部内容。跟文件指针没有关系
+
+```bash
+from io import StringIO
+sio = StringIO() # 内存中构建，像文件对象一样操作
+print(sio.readable(),sio.writable(),sio.seekable())
+sio.write("magedu\nPython")
+sio.seek(0)
+print(sio.readline())
+print(sio.getvalue()) # 无视指针，输出全部内容
+sio.close()
+-----------------------------------------------------------
+True True True
+magedu
+
+magedu
+Python
+```
+
++ 一般来说，磁盘的操作比内存的操作要慢得多，内存足够情况下，一般的优化思路是少落地，减少磁盘IO的过程，可以大大提高程序的运行效率
+
+> BytesIO
+
++ io 模块中的类
+  + from io import BytesIO
++ 内存中，开辟的一个二进制模式的 buffer，可以像文件对象一样操作它
++ 当 close 方法被调用的时候，这个 buffer 会被释放
+
+```bash
+from io import BytesIO
+bio = BytesIO()
+print(bio.readable(),bio.writable(),bio.seekable())
+bio.write(b"ccyunchina\nPython")
+bio.seek(0)
+print(bio.readline())
+print(bio.getvalue()) # 无视指针，输出全部内容
+bio.close()
+-------------------------------------------------------
+True True True
+b'ccyunchina\n'
+b'ccyunchina\nPython'
+```
+
+> file-like 对象
+
++ 类文件对象，可以像文件对象一样操作
++ socket 对象、输入输出对象(stdin、stdout)都是类文件对象
+
+```bash
+from sys import stdout
+f = stdout
+print(type(f))
+f.write("ccyunchina.com")
+----------------------------------------------------------
+<class 'ipykernel.iostream.OutStream'>
+ccyunchina.com
+```
