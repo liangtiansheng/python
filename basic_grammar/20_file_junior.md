@@ -228,3 +228,154 @@ anaconda-ks.cfg	file
 test.txt	file
 ```
 
+通配符 --> 返回一个生成器
+
++ glob(pattern) 通配给定的模式
++ rglob(pattern) 通配给定的模式，递归目录
+
+```bash
+from pathlib import Path
+
+p = Path()
+
+p1 = list(p.glob(".*")) # 返回当前目录下以 . 开头的文件
+p2 = list(p.glob("**/*.py")) # 递归所有目录，等同 rglob
+print(p2)
+
+g = p.rglob("*.py") # 生成器
+print(1,"-->",next(g))
+print(2,"-->",next(g))
+--------------------------------------------------------
+[PosixPath('a/b/c/d/1.py'), PosixPath('a/b/c/d/2.py'), PosixPath('a/b/c/d/3.py')]
+1 --> a/b/c/d/1.py
+2 --> a/b/c/d/2.py
+```
+
+模式匹配 --> 返回 True/False
+
++ match(pattern)
+
+```bash
+from pathlib import Path
+
+print(1,"-->",Path('a/b.py').match("*.py"))
+print(2,"-->",Path('a/b/c.py').match('b/*.py'))
+print(3,"-->",Path("/a/b/c.py").match("a/*.py"))
+print(4,"-->",Path("/a/b/c.py").match('a/*/*.py'))
+print(5,"-->",Path('/a/b/c.py').match('a/**/*.py'))
+print(6,"-->",Path('/a/b/c.py').match('**/*.py'))
+-----------------------------------------------------------
+1 --> True
+2 --> True
+3 --> False
+4 --> True
+5 --> True
+6 --> True
+```
+
+显示文件信息
+
++ stat() 相当于 stat 命令
++ lstat() 同 stat()，但如果是符号链接，则显示符号链接本身的文件信息
+
+```bash
+[root@lytest1 ~]# ln -sv test t
+‘t’ -> ‘test’
+from pathlib import Path
+p = Path("test")
+print(1,"-->",p.stat())
+print()
+p1 = Path('t')
+print(2,"-->",p1.stat())
+print()
+print(3,"-->",p1.lstat())
+---------------------------------------------------------------
+1 --> os.stat_result(st_mode=33188, st_ino=100735060, st_dev=64768, st_nlink=1, st_uid=0, st_gid=0, st_size=0, st_atime=1587271470, st_mtime=1587272239, st_ctime=1587272239)
+
+2 --> os.stat_result(st_mode=33188, st_ino=100735060, st_dev=64768, st_nlink=1, st_uid=0, st_gid=0, st_size=0, st_atime=1587271470, st_mtime=1587272239, st_ctime=1587272239)
+
+3 --> os.stat_result(st_mode=41471, st_ino=101232439, st_dev=64768, st_nlink=1, st_uid=0, st_gid=0, st_size=4, st_atime=1587340972, st_mtime=1587340956, st_ctime=1587340956)
+```
+
+### 文件操作
+
+open(mode='r',buffering=-1,encoding=None,errors=None,newline=None) --> 返回一个文件对象
+
++ 使用方法类似内建函数 open
++ read_bytes()，以 'rb' 读取路径对应文件，并返回二进制流。看源码
++ read_text(encoding=None,errors=None)，以 'rt' 方式读取路径对应文件，返回文本
++ Path.write_bytes(data)，以 'wb' 方式写入数据到路径对应文件
++ write_text(data,encoding=None,errors=None)，以 'wt' 方式写入字符串到路径对应文件
+
+```bash
+from pathlib import Path
+
+p = Path("my_binary_file")
+p.write_bytes(b"Binary file contents\n")
+print(1,"-->",p.read_bytes())
+
+p = Path("my_text_file")
+p.write_text("Text file contents\n")
+print(2,"-->",p.read_text())
+
+p = Path("test.py")
+p.write_text("hello python")
+print(3,"-->",p.read_text())
+
+with p.open() as f:
+    print(1,"-->",f.read(7))
+------------------------------------------------------------------------
+1 --> b'Binary file contents\n'
+2 --> Text file contents
+
+3 --> hello python
+1 --> hello p
+```
+
+### OS 模块
+
+操作系统平台
+
+| 属性或方法   | 结果                                 |
+| ------------ | ------------------------------------ |
+| os.name      | windows 是 nt，linux 是 posix        |
+| os.uname()   | *nix 支持                            |
+| sys.platform | windows 显示 win32，linux 显示 linux |
+
+os.listdir("d:") --> 返回目录内容列表
+
+os 也有 open、read、write 等方法，但是太低级，建议使用内建函数 open、read、write，使用方法相似
+
+```bash
+[root@lytest1 ~]# ln -sv test t1
+‘t1’ -> ‘test’
+```
+
+os.stat(path,*,dir_fd=None,follow_symlinks=True)，本质上调用 linux 系统的 stat
+
++ path，路径的 string 或者 bytes，或者 fd 文件描述符
++ follow_symlinks True，返回文件本身信息，False 且如果是软链接则显示软链接本身
+
+```bash
+import os,sys
+print(1,"-->",os.stat("test"))
+print(2,"-->",os.stat("t1",follow_symlinks=True))
+print(3,"-->",os.stat("t1",follow_symlinks=False))
+-----------------------------------------------------------------
+1 --> os.stat_result(st_mode=33188, st_ino=100735060, st_dev=64768, st_nlink=1, st_uid=0, st_gid=0, st_size=0, st_atime=1587271470, st_mtime=1587272239, st_ctime=1587272239)
+2 --> os.stat_result(st_mode=33188, st_ino=100735060, st_dev=64768, st_nlink=1, st_uid=0, st_gid=0, st_size=0, st_atime=1587271470, st_mtime=1587272239, st_ctime=1587272239)
+3 --> os.stat_result(st_mode=41471, st_ino=101232445, st_dev=64768, st_nlink=1, st_uid=0, st_gid=0, st_size=4, st_atime=1587387215, st_mtime=1587386620, st_ctime=1587386620)
+```
+
+os.chmod(path,mode,*,dir_fd=None,follow_symlinks=True)
+
+os.chmod("test",0o777)
+
+os.chown(path,uid,gid)，改变文件的属主、属组，但需要足够的权限
+
+### shutil 模块
+
+拷贝文件时，如果只是将内容进行拷贝，那很容易丢失信息，像 stat 数据信息、权限等；Python 提供了一个方便的库 shutil(高级文件操作)
+
+#### copy 复制
+
