@@ -34,7 +34,7 @@ while p1 != path.dirname(p1):
 /etc/sysconfig/network network
 /etc/sysconfig sysconfig
 /etc etc
-/ 
+/
 ```
 
 Python3.4 版本之后，建议使用 pathlib 模块，提供 Path 对象来操作。包括目录和文件。
@@ -186,7 +186,7 @@ print(13,"-->",p.rmdir()) # 删除空目录。没有提供判断目录为空的�
 print(14,"-->",p.touch(mode=0o666,exist_ok=True)) # 创建一个文件
 print(15,"-->",p.as_uri()) # 将路径返回成 URI，例如 "file:///etc/passwd"
 
-print(16,"-->",p.mkdir(mode=0o777,parents=True,exist_ok=True)) 
+print(16,"-->",p.mkdir(mode=0o777,parents=True,exist_ok=True))
 # parents，是否创建父目录，True 等同于 mkdir -p；False时，父目录不存在，抛出 FileNotFoundError
 # exist_ok 参数，在 3.5 版本加入。 False时，路径存在，抛出 FileExistsError；True时，FileExistsError被忽略
 
