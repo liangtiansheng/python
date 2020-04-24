@@ -379,3 +379,139 @@ os.chown(path,uid,gid)，改变文件的属主、属组，但需要足够的权�
 
 #### copy 复制
 
+copyfile(src,dst,*,follow_symlinks=True)
+
++ 复制文件内容，不含元数据。src、dst 为文件的路径字符串，本质上调用的就是 copyfileobj，所以不带元数据二进制内容复制。
+
+copymode(src,dst,*,follow_symlinks=True)
+
++ 仅仅复制权限。
+
+```bash
+import shutil,os
+
+shutil.copyfile("test","test1")
+print(1,"-->",os.stat("test"))
+print(2,"-->",os.stat("test1"))
+!chmod -x test
+!ls -l test test1
+print()
+shutil.copymode("test","test1")
+print(1,"-->",os.stat("test"))
+print(2,"-->",os.stat("test1"))
+!ls -l test test1
+-----------------------------------------------------------------------------
+1 --> os.stat_result(st_mode=33261, st_ino=100735060, st_dev=64768, st_nlink=1, st_uid=0, st_gid=0, st_size=0, st_atime=1587728047, st_mtime=1587272239, st_ctime=1587728029)
+2 --> os.stat_result(st_mode=33261, st_ino=101232444, st_dev=64768, st_nlink=1, st_uid=0, st_gid=0, st_size=0, st_atime=1587388696, st_mtime=1587728047, st_ctime=1587728047)
+-rw-r--r-- 1 root root 0 Apr 19 12:57 test
+-rwxr-xr-x 1 root root 0 Apr 24 19:34 test1
+
+1 --> os.stat_result(st_mode=33188, st_ino=100735060, st_dev=64768, st_nlink=1, st_uid=0, st_gid=0, st_size=0, st_atime=1587728047, st_mtime=1587272239, st_ctime=1587728047)
+2 --> os.stat_result(st_mode=33188, st_ino=101232444, st_dev=64768, st_nlink=1, st_uid=0, st_gid=0, st_size=0, st_atime=1587388696, st_mtime=1587728047, st_ctime=1587728048)
+-rw-r--r-- 1 root root 0 Apr 19 12:57 test
+-rw-r--r-- 1 root root 0 Apr 24 19:34 test1
+```
+
+copystat(src, dst, *, follow_symlinks=True)
+
++ 复制元数据，stat 包含权限
+
+```bash
+import shutil,os
+
+!stat test test1
+
+shutil.copystat("test","test1")
+!stat test test1
+------------------------------------------------------------------------------
+  File: ‘test’
+  Size: 0         	Blocks: 0          IO Block: 4096   regular empty file
+Device: fd00h/64768d	Inode: 100735060   Links: 1
+Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
+Access: 2020-04-24 19:34:07.783686437 +0800
+Modify: 2020-04-19 12:57:19.418985610 +0800
+Change: 2020-04-24 19:34:07.799686559 +0800
+ Birth: -
+  File: ‘test1’
+  Size: 0         	Blocks: 0          IO Block: 4096   regular empty file
+Device: fd00h/64768d	Inode: 101232444   Links: 1
+Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
+Access: 2020-04-20 21:18:16.915399593 +0800
+Modify: 2020-04-24 19:34:07.783686437 +0800
+Change: 2020-04-24 19:34:08.035688370 +0800
+ Birth: -
+  File: ‘test’
+  Size: 0         	Blocks: 0          IO Block: 4096   regular empty file
+Device: fd00h/64768d	Inode: 100735060   Links: 1
+Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
+Access: 2020-04-24 19:34:07.783686437 +0800
+Modify: 2020-04-19 12:57:19.418985610 +0800
+Change: 2020-04-24 19:34:07.799686559 +0800
+ Birth: -
+  File: ‘test1’
+  Size: 0         	Blocks: 0          IO Block: 4096   regular empty file
+Device: fd00h/64768d	Inode: 101232444   Links: 1
+Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
+Access: 2020-04-24 19:34:07.783686437 +0800
+Modify: 2020-04-19 12:57:19.418985610 +0800
+Change: 2020-04-24 19:40:28.879436570 +0800
+ Birth: -
+```
+
+copy(src, dst, *, follow_symlinks=True)
+
++ 复制文件内容、权限和部分元数据，不包括创建时间和修改时间
++ 本质上调用的是
+  + copyfile(src, dst, follow_symlinks=follow_symlinks)
+  + copymode(src, dst, follow_symlinks=follow_symlinks)
+
+copy2 比 copy 多了复制全部元数据，但需要平台支持
+
++ 本质上调用的是
+  + copyfile(src, dst, follow_symlinks=follow_symlinks)
+  + copystat(src, dst, follow_symlinks=follow_symlinks)
+
+copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2, ignore_dangling_symlinks=False)
+
++ 递归复制目录。默认使用 copy2，也就是带更多的元数据复制
++ src、dst 必须是目录，src 必须存在，dst 必须不存在
++ ignore = func，提供一个 callable(src, names) -> ignored_names。提供一个函数，它会被调用。src 是源目录，names 是 os.listdir(src) 的结果，就是列出 src 中的文件名，返回值是要被过滤的文件名的 set 类型数据
+
+```bash
+# d:/temp 下有 a、b 目录
+def ignore(src,names):
+    ig = filter(lambda x: x.startswith("a"),names)
+    return set(ig)
+
+import shutil
+shutil.copytree("d:/temp","d:/tt/o",ignore=ignore)
+```
+
+#### rm 删除
+
+shutil.rmtree(path, ignore_errors=False, onerror=None)
+
++ 递归删除，如同 rm -rf 一样危险，慎用
++ 它不是原子操作，有可能删除错误，就会中断，已经删除的就删除了
++ ignore_errors 为 true，忽略错误，当为 False 或者 omitted 时 onerror 生效
++ onerror 为 callable，接受函数 function、path 和 execinfo
+
+```bash
+shutil.rmtree("d:/temp") # 类似 rm -rf
+```
+
+#### move 移动
+
+move(src, dst, copy_function=copy2)
+
++ 递归移动文件、目录到目标，返回目标
++ 本身使用的是 os.rename 方法
++ 如果不支持 rename，如果是目录则想 copytree 再删除源目录
++ 默认使用 copy2 方法
+
+```bash
+os.rename("d:/t.txt","d:/temp/t")
+os.rename("test3","/tmp/py/test300")
+```
+
+_shutil 还有打包功能，生成 tar 并压缩，支持 zip、gz、bz、xz_
