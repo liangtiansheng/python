@@ -514,4 +514,4 @@ os.rename("d:/t.txt","d:/temp/t")
 os.rename("test3","/tmp/py/test300")
 ```
 
-_shutil 还有打包功能，生成 tar 并压缩，支持 zip、gz、bz、xz_
+__shutil 还有打包功能__，生成 tar 并压缩，支持 zip、gz、bz、xz
