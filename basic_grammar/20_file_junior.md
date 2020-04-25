@@ -215,17 +215,17 @@ for x in p.parents[len(p.parents)-1].iterdir():
         print("other file")
 --------------------------------------------------------------------
 True
-.bash_logout	file
-.bash_profile	file
-.bashrc	file
-.cshrc	file
-.tcshrc	file
-original-ks.cfg	file
-anaconda-ks.cfg	file
-.bash_history	file
-.cache	dir	Not Empty
-.ipython	dir	Not Empty
-test.txt	file
+.bash_logout file
+.bash_profile file
+.bashrc file
+.cshrc file
+.tcshrc file
+original-ks.cfg file
+anaconda-ks.cfg file
+.bash_history file
+.cache dir Not Empty
+.ipython dir Not Empty
+test.txt file
 ```
 
 通配符 --> 返回一个生成器
@@ -332,7 +332,7 @@ with p.open() as f:
 1 --> hello p
 ```
 
-### OS 模块
+## OS 模块
 
 操作系统平台
 
@@ -373,11 +373,49 @@ os.chmod("test",0o777)
 
 os.chown(path,uid,gid)，改变文件的属主、属组，但需要足够的权限
 
-### shutil 模块
+## shutil 模块
 
 拷贝文件时，如果只是将内容进行拷贝，那很容易丢失信息，像 stat 数据信息、权限等；Python 提供了一个方便的库 shutil(高级文件操作)
 
-#### copy 复制
+### copy 复制
+
+copyfileobj(fsrc,fdst[,length])
+
++ 文件对象的复制，fsrc 和 fdst 是 open 打开的文件对象，复制内容。fdst 要求可写
++ length 指定了表示 buffer 的大小
+
+```bash
+import shutil
+
+with open("test","r+") as f1:
+    f1.write("abcd\n1234")
+    f1.flush()
+    with open("test1","w+") as f2:
+        shutil.copyfileobj(f1,f2)
+!cat test1 # 为什么会是空的呢
+# 看一下源码
+def copyfileobj(fsrc, fdst, length=16*1024):
+    """copy data from file-like object fsrc to file-like object fdst"""
+    while 1:
+        buf = fsrc.read(length)
+        if not buf:
+            break
+        fdst.write(buf)
+# f1 flush() 后内容写到 test，但是指针在哪里？
+# 指针在末尾，所以源码中 read 再 write 是空
+
+改成：
+
+import shutil
+
+with open("test","r+") as f1:
+    f1.write("abcd\n1234")
+    f1.flush()
+    f1.seek(0)
+    with open("test1","w+") as f2:
+        shutil.copyfileobj(f1,f2)
+!cat test1
+```
 
 copyfile(src,dst,*,follow_symlinks=True)
 
@@ -425,32 +463,32 @@ shutil.copystat("test","test1")
 !stat test test1
 ------------------------------------------------------------------------------
   File: ‘test’
-  Size: 0         	Blocks: 0          IO Block: 4096   regular empty file
-Device: fd00h/64768d	Inode: 100735060   Links: 1
+  Size: 0          Blocks: 0          IO Block: 4096   regular empty file
+Device: fd00h/64768d Inode: 100735060   Links: 1
 Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
 Access: 2020-04-24 19:34:07.783686437 +0800
 Modify: 2020-04-19 12:57:19.418985610 +0800
 Change: 2020-04-24 19:34:07.799686559 +0800
  Birth: -
   File: ‘test1’
-  Size: 0         	Blocks: 0          IO Block: 4096   regular empty file
-Device: fd00h/64768d	Inode: 101232444   Links: 1
+  Size: 0          Blocks: 0          IO Block: 4096   regular empty file
+Device: fd00h/64768d Inode: 101232444   Links: 1
 Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
 Access: 2020-04-20 21:18:16.915399593 +0800
 Modify: 2020-04-24 19:34:07.783686437 +0800
 Change: 2020-04-24 19:34:08.035688370 +0800
  Birth: -
   File: ‘test’
-  Size: 0         	Blocks: 0          IO Block: 4096   regular empty file
-Device: fd00h/64768d	Inode: 100735060   Links: 1
+  Size: 0          Blocks: 0          IO Block: 4096   regular empty file
+Device: fd00h/64768d Inode: 100735060   Links: 1
 Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
 Access: 2020-04-24 19:34:07.783686437 +0800
 Modify: 2020-04-19 12:57:19.418985610 +0800
 Change: 2020-04-24 19:34:07.799686559 +0800
  Birth: -
   File: ‘test1’
-  Size: 0         	Blocks: 0          IO Block: 4096   regular empty file
-Device: fd00h/64768d	Inode: 101232444   Links: 1
+  Size: 0          Blocks: 0          IO Block: 4096   regular empty file
+Device: fd00h/64768d Inode: 101232444   Links: 1
 Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
 Access: 2020-04-24 19:34:07.783686437 +0800
 Modify: 2020-04-19 12:57:19.418985610 +0800
@@ -479,15 +517,16 @@ copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2, ignore_dang
 
 ```bash
 # d:/temp 下有 a、b 目录
+# 要结合源码看
 def ignore(src,names):
-    ig = filter(lambda x: x.startswith("a"),names)
-    return set(ig)
+    ig = filter(lambda x: x.startswith("a"),names) # 返回以a开头为true的迭代器
+    return set(ig) # 返回集合，去重
 
 import shutil
 shutil.copytree("d:/temp","d:/tt/o",ignore=ignore)
 ```
 
-#### rm 删除
+### rm 删除
 
 shutil.rmtree(path, ignore_errors=False, onerror=None)
 
@@ -500,7 +539,7 @@ shutil.rmtree(path, ignore_errors=False, onerror=None)
 shutil.rmtree("d:/temp") # 类似 rm -rf
 ```
 
-#### move 移动
+### move 移动
 
 move(src, dst, copy_function=copy2)
 
