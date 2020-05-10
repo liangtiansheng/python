@@ -379,3 +379,178 @@ x = 100
 [test2]
 test2 = 1000
 ```
+
+## 序列化和反序列化
+
+> 为什么要序列化
+
++ 内存中的字典、列表、集合以及各种对象，如何保存到一个文件中？
++ 如果是自己定义的类的实例，如何保存到一个文件中？
++ 如何从文件中读取数据，并让他们在内存中再次变成自己对应的类的实例？
++ 要设计一套**协议**，按照某种规则，把内存中数据保存到文件中。文件是一个字节序列，所以必须把数据转换成字节序列，输出到文件。这就是序列化。反之，从文件的字节序列恢复到内存，就是反序列化。
+
+> 定义
+
++ serialization
+  + 序列化，将内存中对象存储下来，把它变成一个个字节 --> 二进制
++ deserialization
+  + 反序列化，将文件的一个个字节恢复成内存中对象 <-- 二进制
++ 序列化保存到文件就是持久化
++ 可以将数据序列化后持久化，或者网络传输；也可以将从文件中或者网络接收到的字节序列反序列化
+
+### pickle 库
+
+pickle 是 python 中的序列化、反序列化模块
+
++ dumps 对象序列化为 bytes 对象
++ dump 对象序列化到文件对象，就是存入文件
++ loads 从 bytes 对象反序列化
++ load 对象反序列化，从文件读取数据
+
+```bash
+import pickle
+
+filename = "d:/tmp/ser"
+
+d = {"a":1,"b":"abc","c":[1,2,3]}
+l = list("123")
+i = 99
+
+with open(filename,"wb") as f:
+    pickle.dump(d,f)
+    pickle.dump(l,f)
+    pickle.dump(i,f)
+
+with open(filename,"rb") as f:
+    print(f.read(),f.seek(0))
+    for _ in range(3):
+        x = pickle.load(f)
+        print(type(x),x)
+-----------------------------------------------------------
+b'\x80\x03}q\x00(X\x01\x00\x00\x00aq\x01K\x01X\x01\x00\x00\x00bq\x02X\x03\x00\x00\x00abcq\x03X\x01\x00\x00\x00cq\x04]q\x05(K\x01K\x02K\x03eu.\x80\x03]q\x00(X\x01\x00\x00\x001q\x01X\x01\x00\x00\x002q\x02X\x01\x00\x00\x003q\x03e.\x80\x03Kc.' 0
+<class 'dict'> {'a': 1, 'b': 'abc', 'c': [1, 2, 3]}
+<class 'list'> ['1', '2', '3']
+<class 'int'> 99
+```
+
+```bash
+import pickle
+
+# 对象序列化
+class AA:
+    tttt = "ABC"
+    def show(self):
+        print("abc")
+
+a1 = AA()
+
+sr = pickle.dumps(a1)
+print("sr={}".format(sr)) # AA
+
+a2 = pickle.loads(sr)
+print(a2.tttt)
+a2.show()
+---------------------------------------------------------------
+sr=b'\x80\x03c__main__\nAA\nq\x00)\x81q\x01.'
+ABC
+abc
+```
+
++ 这个例子中，其实就保存了一个类名，因为所有其他的东西都是类定义的东西，是不变的，所以只序列化一个 AA 类名
++ 反序列化时找到类就可以恢复一个对象
+
+```bash
+import pickle
+
+# 定义类
+class AAA:
+    def __init__(self):
+        self.tttt = "abc"
+
+# 创建AAA类的实例
+a1 = AAA()
+
+# 序列化
+ser = pickle.dumps(a1)
+print(1,"-->","ser={}".format(ser))
+
+# 反序列化
+a2 = pickle.loads(ser)
+print(2,"-->",a2,type(a2))
+print(3,"-->",a2.tttt)
+print(4,"-->",id(a1),id(a2))
+-------------------------------------------------------------------
+1 --> ser=b'\x80\x03c__main__\nAAA\nq\x00)\x81q\x01}q\x02X\x04\x00\x00\x00ttttq\x03X\x03\x00\x00\x00abcq\x04sb.'
+2 --> <__main__.AAA object at 0x0000029774F75548> <class '__main__.AAA'>
+3 --> abc
+4 --> 2849520006280 2849525683528
+```
+
++ 可以看出这回除了必须保存的AAA，还序列化了 tttt 和 abc，因为这是每一个对象自己的属性，每一个对象不一样的，所以这些数据需要序列化。
+
+#### 序列化、反序列化实验
+
+定义类 AAA，并序列化到文件
+
+```bash
+import pickle
+
+class AAA:
+    def __init__(self):
+        self.tttt = "abc"
+
+aaa = AAA()
+sr = pickle.dumps(aaa)
+print(len(sr),sr)
+
+file = "d:/tmp/ser"
+with open(file, "wb") as f:
+    pickle.dump(aaa, f)
+-----------------------------------------------------------------------
+49 b'\x80\x03c__main__\nAAA\nq\x00)\x81q\x01}q\x02X\x04\x00\x00\x00ttttq\x03X\x03\x00\x00\x00abcq\x04sb.'
+```
+
+将产生的序列化文件发送到其它节点上
+
+增加一个 x.py 文件，内容如下。最后执行这个脚本。
+
+```bash
+import pickle
+
+with open("ser","rb") as f:
+    a = pickle.load(f)
+```
+
++ 会抛出异常 AttributeError: Can't get attribute 'AAA' on <module '__main__' from 'x.py'>
++ 这个异常实际上是找不到 AAA 类的定义，增加类定义即可解决
++ 反序列化的时候要找到 AAA 类的定义，才能成功。否则就会抛出异常。
++ 可以这样理解：反序列化的时候，类是模子，二进制序列就是铁水
+
+```bash
+import pickle
+
+class AAA:
+    def show(self):
+        print("xyz")
+
+with open("ser","rb") as f:
+    a = pickle.load(f)
+    print(a)
+    a.show()
+-----------------------------------------------------------------------
+<__main__.AAA object at 0x7f2ffe2e0908>
+xyz
+```
+
++ 这里定义了类 AAA，并且上面的代码也能成功的执行。
++ **注意！！！**这里的 AAA 定义和原来完全不同了。
++ 因此，序列化、反序列化必须保证使用**同一套类**的定义，否则会带来不可预料的结果。
+
+### 序列化应用
+
+1. 一般来说，本地序列化的情况，应用较少。大多数场景都应用在网络传输中。
+2. 将数据序列化后通过网络传输到远程节点，远程服务器接收到数据反序列化后，就可以使用了。
+3. 但是，要注意一点，远程接收端，反序列化时必须有对应的数据类型，否则就会报错。**尤其是自定义类**，必须远程得有一致的定义。
+4. 现在，大多数项目，都不是单机的，也不是单服务的，需要通过网络将数据传送到其他节点上去，这就需要大量的序列化、反序列化过程。
+5. 但是，问题是，Python 程序之间还可以都是用 pickle 解决序列化、反序列化，如果是跨平台、跨语言、跨协议，pickle 就不太合适了，就需要公共的协议。例如 XML、Json、Protocol Buffer 等。
+6. 不同的协议，效率不同、学习曲线不同，适用场景不同，要根据不同的情况分析选型。
