@@ -240,7 +240,7 @@ print("int:{0:d}; hex:{0:x}; oct:{0:o}; bin:{0:b}".format(42))
 print("int:{0:d}; hex:{0:#x}; oct:{0:#o}; bin:{0:#b}".format(42))
 
 octets = [192,168,0,1]
-print("{:02X}{:02X}{:02X}{:02X}".format(*octets))
+print("{:02X}{:02X}{:02X}{:02X}".format(*octets)) # 两个字符，前面补0
 ---------------------------------------------------------------------------
 int:42; hex:2a; oct:52; bin:101010
 int:42; hex:0x2a; oct:0o52; bin:0b101010
