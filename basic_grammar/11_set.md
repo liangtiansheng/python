@@ -56,7 +56,7 @@ TypeError: unhashable type: 'list'
 ## set的元素
 
 + set的元素要求必须可以hash
-+ 目前学过的不可hash的类型有list、set
++ 目前学过的不可hash的类型有list、set、dict
 + 元素不可以索引
 + set可以迭代
 
