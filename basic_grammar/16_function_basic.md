@@ -1190,7 +1190,7 @@ print(*double_values(*[random.randint(10,20) for _ in range(10)]))
 
 编写一个函数，接受一个参数 n，n 为正整数，左右两种打印方式
 
-![数阵](images\数阵.png)
+![数阵](images/数阵.png)
 
 ```bash
 def show(n):
