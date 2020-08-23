@@ -1198,7 +1198,7 @@ lru_cache 装饰器加速一下 fibonacci 数列
 import functools
 @functools.lru_cache() # maxsize=None
 def fib(n):
-    if n < 3:
+    if n < 2:
         return n
     return fib(n-1) + fib(n-2)
 print([fib(x) for x in range(35)])
