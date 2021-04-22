@@ -658,11 +658,15 @@ TypeError: unhashable type: 'list'
 2. 中序遍历，也叫中根遍历，LDR
 3. 后序遍历，也叫后根遍历，LRD
 
+
 ![前序遍历](./images/前序遍历 DLR.png)
+
 
 ![中序遍历](./images/中序遍历.png)
 
+
 ![后序遍历](./images/后序遍历LRD.png)
+
 
 ## 堆排序 Heap Sort
 
