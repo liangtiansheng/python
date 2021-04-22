@@ -659,7 +659,7 @@ TypeError: unhashable type: 'list'
 3. 后序遍历，也叫后根遍历，LRD
 
 
-![前序遍历](./images/前序遍历 DLR.png)
+![前序遍历](./images/前序遍历%20DLR.png)
 
 
 ![中序遍历](./images/中序遍历.png)
